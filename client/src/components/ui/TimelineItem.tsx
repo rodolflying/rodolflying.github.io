@@ -33,9 +33,9 @@ const TimelineItem = ({ experience }: TimelineItemProps) => {
           </div>
         </div>
         <p className="text-gray-400 mb-2">{company}</p>
-        <ul className="list-disc list-inside text-gray-300 space-y-2 mt-4">
+        <ul className="list-disc ml-5 text-gray-300 space-y-2 mt-4">
           {description[language].map((item, index) => (
-            <li key={index}>{item}</li>
+            <li key={index} className="pl-1">{item}</li>
           ))}
         </ul>
         <div className="flex flex-wrap gap-2 mt-4">

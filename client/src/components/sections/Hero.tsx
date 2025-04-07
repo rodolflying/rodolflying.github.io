@@ -23,7 +23,7 @@ const Hero = () => {
         if (displayText.length === currentRole.length) {
           setIsDeleting(true);
           clearTimeout(timeout);
-          setTimeout(() => setIsDeleting(true), 1500);
+          setTimeout(() => setIsDeleting(true), 3000); // Longer pause at full text
         }
       } else {
         setDisplayText(currentRole.slice(0, displayText.length - 1));
@@ -33,19 +33,19 @@ const Hero = () => {
           setCurrentRoleIndex((currentRoleIndex + 1) % roles.length);
         }
       }
-    }, isDeleting ? 50 : 150);
+    }, isDeleting ? 200 : 300); // Slower typing and deleting speeds
     
     return () => clearTimeout(timeout);
   }, [displayText, currentRoleIndex, isDeleting]);
 
   const downloadCV = () => {
-    // This would be implemented to actually download the CV
-    const link = document.createElement('a');
-    link.href = language === 'en' ? '/cv_rodolfo_sepulveda_en.pdf' : '/cv_rodolfo_sepulveda_es.pdf';
-    link.download = language === 'en' ? 'rodolfo_sepulveda_cv_en.pdf' : 'rodolfo_sepulveda_cv_es.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Use direct import paths for the CV files
+    const enCVPath = language === 'en' 
+      ? '/attached_assets/rodolfo_sepulveda_cv_en.pdf' 
+      : '/attached_assets/rodolfo_sepulveda_cv_es.pdf';
+    
+    // Open in a new tab to avoid download issues
+    window.open(enCVPath, '_blank');
   };
 
   return (

@@ -21,11 +21,11 @@ const Home = () => {
         <Navbar />
         <main className="flex-grow">
           <Hero />
+          <Services />
           <About />
           <Skills />
           <Experience />
           <Projects />
-          <Services />
           <Contact />
         </main>
         <Footer />

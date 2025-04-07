@@ -1,6 +1,7 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import { Mail, Phone, Linkedin, Github, Heart } from 'lucide-react';
 import { FaMedium } from 'react-icons/fa';
+import starAppsLogo from '@assets/STAR_APPSpng.png';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -11,7 +12,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
             <div className="flex items-center">
-              <img src="/star-apps-logo.svg" alt="Star Apps Logo" className="h-10 mr-3" />
+              <img src={starAppsLogo} alt="Star Apps Logo" className="h-10 mr-3" />
               <span className="text-xl font-['Orbitron'] font-bold text-white">
                 RODOLFO <span className="text-[#00FFC8]">SEPÚLVEDA</span>
               </span>

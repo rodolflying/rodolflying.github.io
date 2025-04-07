@@ -338,7 +338,7 @@ export const projects: Project[] = [
         'Inteligencia competitiva mejorada',
       ],
     },
-    image: 'https://images.unsplash.com/photo-1605004781326-7175b71ea82e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
     color: '#FF9500',
   },
   {

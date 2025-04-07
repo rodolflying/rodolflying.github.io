@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import { useLanguage } from '@/hooks/useLanguage';
 import LanguageSwitch from './ui/LanguageSwitch';
 import { Menu, X } from 'lucide-react';
+import starAppsLogo from '@assets/STAR_APPSpng.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <img 
-              src="/star-apps-logo.svg" 
+              src={starAppsLogo} 
               alt="Star Apps Logo" 
               className="h-10 mr-3" 
             />
