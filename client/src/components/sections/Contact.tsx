@@ -189,10 +189,10 @@ const Contact = () => {
                       {t('contact.email_label')}
                     </p>
                     <a 
-                      href="mailto:rodolfo.antonio.sep@gmail.com" 
+                      href="mailto:rodolflying@gmail.com" 
                       className="text-white hover:text-[#00FFC8] transition-colors duration-300"
                     >
-                      rodolfo.antonio.sep@gmail.com
+                      rodolflying@gmail.com
                     </a>
                   </div>
                 </div>
@@ -206,7 +206,9 @@ const Contact = () => {
                       {t('contact.phone_label')}
                     </p>
                     <a 
-                      href="tel:+56956632620" 
+                      href="https://wa.me/56956632620" 
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-white hover:text-[#6B38FB] transition-colors duration-300"
                     >
                       +56 9 5663 2620
@@ -238,12 +240,12 @@ const Contact = () => {
                   <div>
                     <p className="text-gray-400 text-sm mb-1">GitHub</p>
                     <a 
-                      href="https://github.com/rodolfosep" 
+                      href="https://github.com/rodolflying" 
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="text-white hover:text-[#FF9500] transition-colors duration-300"
                     >
-                      rodolfosep
+                      rodolflying
                     </a>
                   </div>
                 </div>

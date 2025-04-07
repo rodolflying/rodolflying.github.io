@@ -16,7 +16,7 @@ const Footer = () => {
                 RODOLFO <span className="text-[#00FFC8]">SEPÚLVEDA</span>
               </span>
             </div>
-            <p className="text-gray-400 mt-2">© 2024 All Rights Reserved</p>
+            <p className="text-gray-400 mt-2">© 2025 All Rights Reserved</p>
           </div>
           
           <div className="flex space-x-6">
@@ -28,9 +28,11 @@ const Footer = () => {
               <Mail className="w-5 h-5" />
             </a>
             <a 
-              href="tel:+56956632620" 
+              href="https://wa.me/56956632620" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
-              aria-label="Phone"
+              aria-label="WhatsApp"
             >
               <Phone className="w-5 h-5" />
             </a>

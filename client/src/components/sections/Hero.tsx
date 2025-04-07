@@ -104,9 +104,11 @@ const Hero = () => {
                 <Mail className="w-6 h-6" />
               </a>
               <a 
-                href="tel:+56956632620" 
+                href="https://wa.me/56956632620" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
-                aria-label="Phone"
+                aria-label="WhatsApp"
               >
                 <Phone className="w-6 h-6" />
               </a>

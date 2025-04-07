@@ -5,6 +5,7 @@ export default {
     skills: 'Habilidades',
     experience: 'Experiencia',
     projects: 'Proyectos',
+    services: 'Servicios',
     contact: 'Contacto',
   },
   hero: {
@@ -33,6 +34,50 @@ export default {
   },
   projects: {
     title: 'PROYECTOS DESTACADOS',
+  },
+  services: {
+    title: 'MIS SERVICIOS',
+    automation: {
+      title: 'Automatización Inteligente',
+      items: [
+        'Scripts en Python para tareas repetitivas',
+        'Interfaces de escritorio intuitivas para scripts',
+        'Automatización de procesos en Excel'
+      ]
+    },
+    webdev: {
+      title: 'Desarrollo Web',
+      items: [
+        'Landing pages modernas y 100% responsive',
+        'Sitios web dinámicos con bases de datos (SQL / NoSQL)',
+        'Gestión de usuarios, autenticación y dashboards',
+        'Integración de pagos WebPay'
+      ]
+    },
+    backend: {
+      title: 'Back-End & APIs',
+      items: [
+        'Desarrollo robusto de APIs en Python y Node.js',
+        'Consumo de APIs externas (REST / GraphQL)',
+        'Infraestructura flexible en AWS y Google Cloud (GCP)'
+      ]
+    },
+    webscraping: {
+      title: 'Web Scraping & ETL',
+      items: [
+        'Extracción de datos de sitios web',
+        'Transformación y carga de datos (ETL)',
+        'Automatizaciones escalables con seguimiento'
+      ]
+    },
+    consulting: {
+      title: 'Consultoría y Formación Personalizada',
+      items: [
+        'Clases de programación 1 a 1 o grupales',
+        'Apoyo con proyectos reales y portfolio',
+        'Revisión y mejora de código'
+      ]
+    }
   },
   contact: {
     title: 'CONTACTO',
