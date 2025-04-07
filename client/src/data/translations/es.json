@@ -1,0 +1,152 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "experience": "Experiencia",
+    "skills": "Habilidades",
+    "projects": "Proyectos",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "INGENIERO DE DATOS",
+    "subtitle": "Innovador tecnológico que crea soluciones digitales a través de ciencia de datos, automatización y desarrollo.",
+    "contact": "Contáctame",
+    "download": "Descargar CV"
+  },
+  "about": {
+    "title": "SOBRE MÍ",
+    "subtitle": "Ingeniero de datos y desarrollador con experiencia en automatización, integración de IA y creación de soluciones de datos eficientes.",
+    "cards": {
+      "profile": {
+        "title": "PERFIL PROFESIONAL",
+        "content": "Profesional motivado por la tecnología, la innovación y la programación para resolver problemas del mundo real. Capacidad demostrada para dirigir e interactuar con equipos multidisciplinarios."
+      },
+      "education": {
+        "title": "FORMACIÓN ACADÉMICA",
+        "degree": "Ingeniería Civil Industrial",
+        "university": "Universidad Católica del Norte",
+        "exchange": "Programa de Intercambio",
+        "exchangeUniversity": "Universidad de Cádiz, España"
+      },
+      "languages": {
+        "title": "IDIOMAS Y HERRAMIENTAS",
+        "programming": "Lenguajes de Programación",
+        "human": "Idiomas",
+        "spanish": "Español (Nativo)",
+        "english": "Inglés (Avanzado)"
+      }
+    },
+    "features": {
+      "dataEngineering": "INGENIERÍA DE DATOS",
+      "dataEngineeringDesc": "Construcción de pipelines e infraestructura de datos robustos",
+      "aiIntegration": "INTEGRACIÓN DE IA",
+      "aiIntegrationDesc": "Implementación de soluciones de ML e IA para empresas",
+      "dataVisualization": "VISUALIZACIÓN DE DATOS",
+      "dataVisualizationDesc": "Creación de dashboards e informes perspicaces",
+      "webDevelopment": "DESARROLLO WEB",
+      "webDevelopmentDesc": "Construcción de aplicaciones web modernas e interfaces"
+    }
+  },
+  "experience": {
+    "title": "EXPERIENCIA",
+    "subtitle": "Trayectoria profesional a través de la ciencia de datos, ingeniería y desarrollo.",
+    "viewResume": "Ver Currículum Completo",
+    "items": {
+      "dataScientist": {
+        "title": "CIENTÍFICO DE DATOS",
+        "company": "Grupo Copesa, La Tercera",
+        "tasks": [
+          "Automaticé el envío de 15 newsletters a más de 1 millón de destinatarios utilizando AWS Pinpoint",
+          "Diseñé y automaticé informes sobre métricas clave: noticias más vistas/comentadas, resultados de encuestas y rendimiento de newsletters",
+          "Implementé segmentación publicitaria y contenido personalizado a través de la API de Piano Composer"
+        ]
+      },
+      "projectEngineer": {
+        "title": "INGENIERO DE PROYECTOS Y DESARROLLO",
+        "company": "Consorcio Heuma, UCN",
+        "tasks": [
+          "Automaticé informes financieros para ~1500 archivos/formularios utilizando Python Selenium",
+          "Desarrollé una interfaz para automatizar la gestión de procesos de compras, bancarios y financieros"
+        ]
+      },
+      "dataEngineer": {
+        "title": "INGENIERO DE DATOS",
+        "company": "Rebaño Consultores",
+        "tasks": [
+          "Creé y depuré una base de datos con ~2 millones de registros en AWS",
+          "Colaboré en el análisis de datos mediante IA y ML para PNL, logrando una mejora del 700% respecto al proceso manual"
+        ]
+      },
+      "founder": {
+        "title": "FUNDADOR Y SOCIO",
+        "company": "Star Apps SpA",
+        "tasks": [
+          "Cofundé una startup enfocada en desarrollar aplicaciones y soluciones TI aplicando ML e IA"
+        ]
+      }
+    }
+  },
+  "skills": {
+    "title": "HABILIDADES Y TECNOLOGÍAS",
+    "subtitle": "Tecnologías, frameworks y herramientas en mi arsenal de desarrollo.",
+    "cards": {
+      "programming": "LENGUAJES DE PROGRAMACIÓN",
+      "frameworks": "FRAMEWORKS Y LIBRERÍAS",
+      "tools": "HERRAMIENTAS Y PLATAFORMAS",
+      "software": "DOMINIO DE SOFTWARE"
+    }
+  },
+  "projects": {
+    "title": "PROYECTOS",
+    "subtitle": "Demostrando mis capacidades técnicas a través de aplicaciones del mundo real.",
+    "viewDetails": "Ver Detalles",
+    "viewAll": "Ver Todos los Proyectos",
+    "items": {
+      "dataplatform": {
+        "title": "Plataforma de Datos de Clientes",
+        "description": "Reestructuré y optimicé bases de datos de audiencias para una empresa de medios, creando una plataforma unificada de datos de clientes.",
+        "category": "Plataforma de Datos"
+      },
+      "automation": {
+        "title": "Automatización Financiera",
+        "description": "Desarrollé una interfaz para automatizar informes financieros para ~1500 archivos y formularios, agilizando procesos de compras y bancarios.",
+        "category": "Automatización"
+      },
+      "nlp": {
+        "title": "Análisis de Datos NLP",
+        "description": "Implementé técnicas de IA y ML para procesamiento de lenguaje natural, logrando una mejora de eficiencia del 700% sobre procesos manuales.",
+        "category": "IA/ML"
+      }
+    }
+  },
+  "contact": {
+    "title": "CONTACTO",
+    "subtitle": "¿Interesado en trabajar juntos? Conectemos y hablemos sobre tu proyecto.",
+    "getInTouch": "PONERSE EN CONTACTO",
+    "sendMessage": "ENVIAR UN MENSAJE",
+    "phone": "Teléfono",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "send": "Enviar Mensaje",
+      "sending": "Enviando..."
+    },
+    "success": {
+      "title": "Mensaje Enviado",
+      "message": "¡Gracias por tu mensaje! Me pondré en contacto contigo pronto."
+    },
+    "error": {
+      "title": "Error",
+      "message": "Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde."
+    }
+  },
+  "footer": {
+    "tagline": "Soluciones basadas en datos para desafíos modernos",
+    "rights": "Todos los derechos reservados.",
+    "designed": "Diseñado con",
+    "and": "y",
+    "tech": "tecnología futurista"
+  }
+}
