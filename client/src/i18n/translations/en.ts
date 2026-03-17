@@ -6,7 +6,23 @@ export default {
     experience: 'Experience',
     projects: 'Projects',
     services: 'Services',
+    downloads: 'Downloads',
+    blog: 'Blog',
     contact: 'Contact',
+  },
+  home: {
+    explore_title: 'Explore the Site',
+    explore_subtitle: 'Navigate the different sections to discover my work, download free tools, or read technical tutorials.',
+    about_desc: 'Learn about my background, skills, and work experience in data, automation, and AI.',
+    services_desc: 'Automation, web development, APIs, web scraping, and personalized consulting.',
+    projects_desc: 'Real projects with impact: from mass newsletters to data platforms.',
+    downloads_desc: 'Download free programs I have built: Python GUIs packaged as .exe files.',
+    blog_desc: 'Tutorials, guides, and technical articles. Learn how to use my tools.',
+    contact_desc: 'Reach me via WhatsApp or email. Let\'s work together on your next project.',
+    cta_title: 'Ready to collaborate?',
+    cta_subtitle: 'Whether it\'s a freelance project, consulting, or exploring the free tools — I\'m available.',
+    cta_contact: 'Get In Touch',
+    cta_download: 'View Downloads',
   },
   hero: {
     intro: 'Professional motivated by technology, innovation, and programming to solve real-world problems. Specialized in data science, automation, and AI solutions.',
@@ -78,6 +94,25 @@ export default {
         'Code review and improvement'
       ]
     }
+  },
+  downloads: {
+    badge: 'FREE TOOLS',
+    title: 'DOWNLOADS',
+    subtitle: 'Programs I built to solve real problems. Python GUIs packaged as .exe — no Python installation required.',
+    info_title: 'About the programs',
+    info_text: 'All programs are Windows executables (.exe) packaged with PyInstaller. You don\'t need to install Python or any dependency. Just unzip the .zip file and run the executable. If you have issues, check the blog for the usage guide.',
+    empty: 'More programs coming soon...',
+    more_coming: 'Want to see the source code or contribute?',
+    github_link: 'View my GitHub repositories',
+  },
+  blog: {
+    badge: 'TUTORIALS & ARTICLES',
+    title: 'BLOG',
+    subtitle: 'Tool usage manuals, programming tutorials, and technical articles. Also published on Medium.',
+    medium_link: 'View all on Medium',
+    cta_title: 'Follow on Medium',
+    cta_text: 'I regularly publish articles about Python, automation, data science, and more. Follow me so you don\'t miss anything.',
+    cta_btn: 'Follow on Medium',
   },
   contact: {
     title: 'GET IN TOUCH',

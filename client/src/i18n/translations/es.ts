@@ -6,7 +6,23 @@ export default {
     experience: 'Experiencia',
     projects: 'Proyectos',
     services: 'Servicios',
+    downloads: 'Descargas',
+    blog: 'Blog',
     contact: 'Contacto',
+  },
+  home: {
+    explore_title: 'Explora el Sitio',
+    explore_subtitle: 'Navega por las diferentes secciones para conocer mi trabajo, descargar herramientas gratuitas o leer tutoriales.',
+    about_desc: 'Conoce mi trayectoria, habilidades y experiencia laboral en data, automatización e IA.',
+    services_desc: 'Automatización, desarrollo web, APIs, web scraping y consultoría personalizada.',
+    projects_desc: 'Proyectos reales con impacto: desde newsletters masivos hasta plataformas de datos.',
+    downloads_desc: 'Descarga programas gratuitos que he creado: GUIs en Python convertidas a .exe.',
+    blog_desc: 'Tutoriales, guías y artículos técnicos. Documenta cómo usar mis herramientas.',
+    contact_desc: 'Escríbeme por WhatsApp o correo. Trabajemos juntos en tu próximo proyecto.',
+    cta_title: '¿Listo para colaborar?',
+    cta_subtitle: 'Ya sea un proyecto freelance, consultoría o simplemente explorar las herramientas gratuitas, estoy disponible.',
+    cta_contact: 'Contáctame',
+    cta_download: 'Ver Descargas',
   },
   hero: {
     intro: 'Profesional motivado por la tecnología, la innovación y el uso de la programación para resolver problemas del mundo real. Especializado en ciencia de datos, automatización y soluciones de IA.',
@@ -78,6 +94,25 @@ export default {
         'Revisión y mejora de código'
       ]
     }
+  },
+  downloads: {
+    badge: 'HERRAMIENTAS GRATUITAS',
+    title: 'DESCARGAS',
+    subtitle: 'Programas que he creado para resolver problemas reales. GUIs en Python empaquetadas como .exe — sin necesidad de instalar Python.',
+    info_title: 'Sobre los programas',
+    info_text: 'Todos los programas son ejecutables de Windows (.exe) empaquetados con PyInstaller. No necesitas instalar Python ni ninguna dependencia. Simplemente descomprime el .zip y ejecuta el archivo. Si tienes problemas, revisa el blog para encontrar la guía de uso.',
+    empty: 'Próximamente más programas...',
+    more_coming: '¿Quieres ver el código fuente o contribuir?',
+    github_link: 'Ver mis repositorios en GitHub',
+  },
+  blog: {
+    badge: 'TUTORIALES & ARTÍCULOS',
+    title: 'BLOG',
+    subtitle: 'Manuales de uso de mis herramientas, tutoriales de programación y artículos técnicos. Publicados también en Medium.',
+    medium_link: 'Ver todos en Medium',
+    cta_title: 'Sigue en Medium',
+    cta_text: 'Publica artículos regularmente sobre Python, automatización, data science y más. Sígueme para no perderte nada.',
+    cta_btn: 'Seguir en Medium',
   },
   contact: {
     title: 'CONTACTO',
