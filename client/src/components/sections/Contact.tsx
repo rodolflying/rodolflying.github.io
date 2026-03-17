@@ -223,12 +223,12 @@ const Contact = () => {
                   <div>
                     <p className="text-gray-400 text-sm mb-1">LinkedIn</p>
                     <a 
-                      href="https://www.linkedin.com/in/rodolfo-sepulveda-847537135/" 
+                      href="https://www.linkedin.com/in/rodolfo-sepulveda-847532135/"
                       target="_blank"
                       rel="noopener noreferrer" 
                       className="text-white hover:text-[#FF2D55] transition-colors duration-300"
                     >
-                      rodolfo-sepulveda-847537135
+                      rodolfo-sepulveda-847532135
                     </a>
                   </div>
                 </div>

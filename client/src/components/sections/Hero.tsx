@@ -11,7 +11,7 @@ const Hero = () => {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   
-  const roles = ['DATA ENGINEER', 'DATA SCIENTIST', 'DEVELOPER', 'INNOVATOR'];
+  const roles = ['DATA ENGINEER', 'DATA SCIENTIST', 'FREELANCER', 'DEVELOPER'];
 
   useEffect(() => {
     const currentRole = roles[currentRoleIndex];
@@ -33,7 +33,7 @@ const Hero = () => {
           setCurrentRoleIndex((currentRoleIndex + 1) % roles.length);
         }
       }
-    }, isDeleting ? 200 : 300); // Slower typing and deleting speeds
+    }, isDeleting ? 150 : 250); // Slower typing and deleting speeds
     
     return () => clearTimeout(timeout);
   }, [displayText, currentRoleIndex, isDeleting]);
@@ -41,7 +41,7 @@ const Hero = () => {
   const downloadCV = () => {
     // Use direct import paths for the CV files
     const enCVPath = language === 'en' 
-      ? '/attached_assets/rodolfo_sepulveda_cv_en.pdf' 
+      ? '/client/src/assets/rodolfo_sepulveda_cv_en.pdf' 
       : '/attached_assets/rodolfo_sepulveda_cv_es.pdf';
     
     // Open in a new tab to avoid download issues
@@ -97,7 +97,7 @@ const Hero = () => {
             
             <div className="flex mt-8 space-x-4">
               <a 
-                href="mailto:rodolfo.antonio.sep@gmail.com" 
+                href="mailto:rodolflying@gmail.com" 
                 className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
                 aria-label="Email"
               >
@@ -113,7 +113,7 @@ const Hero = () => {
                 <Phone className="w-6 h-6" />
               </a>
               <a 
-                href="https://www.linkedin.com/in/rodolfo-sepulveda-847537135/" 
+                href="https://www.linkedin.com/in/rodolfo-sepulveda-847532135/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
@@ -131,7 +131,7 @@ const Hero = () => {
                 <FaMedium className="w-6 h-6" />
               </a>
               <a 
-                href="https://github.com/rodolfosep" 
+                href="https://github.com/rodolflying" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"

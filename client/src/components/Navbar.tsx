@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 import { useLanguage } from '@/hooks/useLanguage';
 import LanguageSwitch from './ui/LanguageSwitch';
 import { Menu, X } from 'lucide-react';
-import starAppsLogo from '@assets/STAR_APPSpng.png';
+import starAppsLogo from '@assets/START_APPS_LOGO-removebg-preview.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,11 +15,11 @@ const Navbar = () => {
 
   const navLinks = [
     { href: "#home", label: "navbar.home" },
+    { href: "#services", label: "navbar.services" },
     { href: "#about", label: "navbar.about" },
     { href: "#skills", label: "navbar.skills" },
     { href: "#experience", label: "navbar.experience" },
     { href: "#projects", label: "navbar.projects" },
-    { href: "#services", label: "navbar.services" },
     { href: "#contact", label: "navbar.contact" }
   ];
 

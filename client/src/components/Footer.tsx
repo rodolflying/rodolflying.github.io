@@ -1,7 +1,7 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import { Mail, Phone, Linkedin, Github, Heart } from 'lucide-react';
 import { FaMedium } from 'react-icons/fa';
-import starAppsLogo from '@assets/STAR_APPSpng.png';
+import starAppsLogo from '@assets/START_APPS_LOGO-removebg-preview.png';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -22,7 +22,7 @@ const Footer = () => {
           
           <div className="flex space-x-6">
             <a 
-              href="mailto:rodolfo.antonio.sep@gmail.com" 
+              href="mailto:rodolflying@gmail.com" 
               className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
               aria-label="Email"
             >
@@ -38,7 +38,7 @@ const Footer = () => {
               <Phone className="w-5 h-5" />
             </a>
             <a 
-              href="https://www.linkedin.com/in/rodolfo-sepulveda-847537135/" 
+              href="https://www.linkedin.com/in/rodolfo-sepulveda-847532135/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
@@ -56,7 +56,7 @@ const Footer = () => {
               <FaMedium className="w-5 h-5" />
             </a>
             <a 
-              href="https://github.com/rodolfosep" 
+              href="https://github.com/rodolflying" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-[#00FFC8] transition-colors duration-300"
