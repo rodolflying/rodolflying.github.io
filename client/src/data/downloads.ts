@@ -39,7 +39,7 @@ export const downloads: Download[] = [
     tags: ['Python', 'GUI', 'Web Scraping', 'Excel', 'CSV', 'Jobs'],
     icon: 'search',
     color: '#00FFC8',
-    downloadUrl: '/src/assets/BuscadorTrabajoPro.rar',
+    downloadUrl: 'https://drive.google.com/file/d/1JlL72ZsiYLx7votpGRABtBAyeAfPza_h/view?usp=sharing',
     githubUrl: 'https://github.com/rodolflying',
     features: {
       en: [
