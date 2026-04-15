@@ -58,12 +58,39 @@ export const skills: Skill[] = [
       es: 'Servicios API',
     },
     icon: 'plug',
-    items: ['AWS Pinpoint', 'Piano Composer', 'ChatGPT API', 'REST', 'GraphQL', 'Web Scraping'],
+    items: ['AWS Pinpoint', 'Piano Composer', 'ChatGPT API', 'Gemini', 'REST', 'GraphQL', 'Web Scraping'],
     color: '#FF2D55',
   },
 ];
 
 export const experiences: Experience[] = [
+  {
+    id: 0,
+    role: {
+      en: 'Technological Projects Engineer',
+      es: 'Ingeniero de Proyectos Tecnológicos',
+    },
+    company: 'AMinerals, FCAB (Ferrocarril de Antofagasta a Bolivia)',
+    period: '2025 - Present',
+    description: {
+      en: [
+        'Developed RPA (Robotic Process Automation) solutions for real-time monitoring of critical equipment (Radios, GPS, Satellite Modems, Starlink, PLCs)',
+        'Led comprehensive management of key technological projects, including Optalert, Emergency Stop, traffic light monitoring, and RPA Discovery',
+        'Automated Power BI reports by implementing ETL data flows with Python, Oracle, Azure Entra ID, and Power BI Gateway',
+        'Managed and automated SAP transactions to optimize operational processes',
+        'Automated hardware maintenance processes using the Fracttal platform',
+      ],
+      es: [
+        'Desarrollé soluciones RPA (Robotic Process Automation) para el monitoreo en tiempo real del estado de equipos críticos (Radios, GPS, Módems Satelitales, Starlink, PLCs)',
+        'Lideré la gestión integral de proyectos tecnológicos clave, incluyendo Optalert, Parada de Emergencia, monitoreo de semáforos y RPA Discovery',
+        'Automaticé reportes en Power BI, implementando flujos de datos ETL con Python, Oracle, Azure Entra ID y Power BI Gateway',
+        'Gestioné y automaticé transacciones en SAP para optimizar procesos operativos',
+        'Automaticé procesos de mantenimiento de hardware utilizando la plataforma Fracttal',
+      ],
+    },
+    skills: ['RPA', 'Python', 'Power BI', 'SAP', 'ETL', 'Azure Entra ID', 'Project Management'],
+    color: '#00FFC8',
+  },
   {
     id: 1,
     role: {
@@ -254,43 +281,39 @@ export const projects: Project[] = [
   {
     id: 3,
     title: {
-      en: 'Financial Process Automation',
-      es: 'Automatización de Procesos Financieros',
+      en: 'SGP CORFO Mass Data Upload',
+      es: 'Carga Masiva Plataforma SGP CORFO',
     },
     description: {
-      en: 'Python-Selenium solution for automating financial reporting processes for 1500+ documents, improving efficiency by 80%',
-      es: 'Solución Python-Selenium para automatizar procesos de rendición financiera de más de 1500 documentos, mejorando la eficiencia en un 80%',
+      en: 'Python-Selenium solution for automating mass data upload to the SGP CORFO platform for 1500+ documents.',
+      es: 'Solución Python-Selenium para automatizar la carga masiva de datos en la plataforma SGP de CORFO para más de 1500 documentos.',
     },
     category: 'Automation',
-    technologies: ['Python', 'Selenium', 'Web Automation', 'Finance', 'Reporting', 'Data Extraction'],
+    technologies: ['Python', 'Selenium', 'Web Automation', 'Data Extraction'],
     features: {
       en: [
-        'Automated form filling and submission',
-        'Document classification and processing',
+        'Automated document upload and processing',
+        'Data extraction and validation',
+        'Bulk process management',
         'Error detection and handling',
-        'Financial data validation',
-        'Comprehensive reporting dashboard',
       ],
       es: [
-        'Llenado y envío automatizado de formularios',
-        'Clasificación y procesamiento de documentos',
+        'Carga y procesamiento automatizado de documentos',
+        'Extracción y validación de datos',
+        'Gestión de procesos masivos',
         'Detección y manejo de errores',
-        'Validación de datos financieros',
-        'Panel de informes completo',
       ],
     },
     results: {
       en: [
-        '80% efficiency improvement in financial reporting',
+        '80% efficiency improvement in document processing',
         '95% reduction in manual data entry errors',
         'Reduced reporting time from weeks to hours',
-        'Standardized reporting across departments',
       ],
       es: [
-        '80% de mejora de eficiencia en informes financieros',
+        '80% de mejora de eficiencia en el procesamiento de documentos',
         '95% de reducción en errores de ingreso manual de datos',
-        'Tiempo de informes reducido de semanas a horas',
-        'Informes estandarizados en todos los departamentos',
+        'Tiempo de carga masiva reducido de semanas a horas',
       ],
     },
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
@@ -389,46 +412,209 @@ export const projects: Project[] = [
   {
     id: 6,
     title: {
-      en: 'Star Apps AI Assistant',
-      es: 'Asistente IA de Star Apps',
+      en: 'Computrabajo Job Scraper GUI',
+      es: 'Scraper GUI de Computrabajo',
     },
     description: {
-      en: 'AI-powered virtual assistant for business process automation and customer service integration',
-      es: 'Asistente virtual con IA para automatización de procesos empresariales e integración de servicio al cliente',
+      en: 'Desktop GUI application in Python to scrape, filter, and extract job listings from Computrabajo into Excel/CSV.',
+      es: 'Aplicación de escritorio GUI en Python para extraer, filtrar y guardar ofertas de empleo de Computrabajo en Excel/CSV.',
     },
-    category: 'AI Development',
-    technologies: ['LLM', 'React', 'Node.js', 'ChatGPT API', 'Customer Service', 'Process Automation'],
+    category: 'Automation',
+    technologies: ['Python', 'Tkinter', 'BeautifulSoup', 'Web Scraping', 'Pandas'],
     features: {
       en: [
-        'Natural language understanding and processing',
-        'Integration with business systems and workflows',
-        'Multi-channel support (chat, email, voice)',
-        'Learning capabilities from user interactions',
-        'Custom business logic implementation',
+        'Intuitive desktop Graphical User Interface',
+        'Advanced filters (salary, location, remote work)',
+        'Data export to Excel and CSV',
+        'Multi-country support across LATAM',
       ],
       es: [
-        'Comprensión y procesamiento de lenguaje natural',
-        'Integración con sistemas y flujos de trabajo empresariales',
-        'Soporte multicanal (chat, correo electrónico, voz)',
-        'Capacidades de aprendizaje de las interacciones del usuario',
-        'Implementación de lógica empresarial personalizada',
+        'Interfaz Gráfica de Usuario (GUI) intuitiva de escritorio',
+        'Filtros avanzados (salario, ubicación, teletrabajo)',
+        'Exportación de datos a Excel y CSV',
+        'Soporte multi-país en toda LATAM',
       ],
     },
     results: {
       en: [
-        '24/7 customer support availability',
-        '40% reduction in support ticket resolution time',
-        'Increased customer satisfaction metrics',
-        'Automated handling of 70% of routine inquiries',
+        'Massive reduction in time spent searching for jobs',
+        'Automated extraction of thousands of job postings',
+        'Professional data cleaning and formatting',
       ],
       es: [
-        'Disponibilidad de soporte al cliente 24/7',
-        '40% de reducción en el tiempo de resolución de tickets de soporte',
-        'Aumento de las métricas de satisfacción del cliente',
-        'Manejo automatizado del 70% de las consultas rutinarias',
+        'Reducción masiva de tiempo en la búsqueda de empleo',
+        'Extracción automatizada de miles de ofertas de trabajo',
+        'Limpieza y formateo profesional de datos',
       ],
     },
-    image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
     color: '#FF2D55',
+    link: '/downloads',
+  },
+  {
+    id: 7,
+    title: {
+      en: 'JK Consultores - Financial Web',
+      es: 'JK Consultores - Web Financiera',
+    },
+    description: {
+      en: 'Corporate website for a financial consulting firm, featuring accounting, HR, and auditing service sections.',
+      es: 'Sitio web corporativo para consultora financiera, con secciones de servicios contables, RRHH y auditoría.',
+    },
+    category: 'Web Development',
+    technologies: ['React', 'Framer Motion', 'Tailwind CSS', 'SEO', 'Responsive Design'],
+    features: {
+      en: [
+        'Clean and professional corporate interface',
+        'Detailed service section for different business areas',
+        'Fast loading speeds and optimized performance',
+        'Contact system for potential clients',
+      ],
+      es: [
+        'Interfaz corporativa limpia y profesional',
+        'Sección detallada de servicios para áreas de negocio',
+        'Velocidad de carga rápida y rendimiento optimizado',
+        'Sistema de contacto para clientes potenciales',
+      ],
+    },
+    results: {
+      en: [
+        'Enhanced online professional presence',
+        'Streamlined service information for potential leads',
+        'Improved brand credibility via high-end design',
+      ],
+      es: [
+        'Presencia profesional en línea mejorada',
+        'Información de servicios simplificada para leads',
+        'Credibilidad de marca mejorada mediante diseño de alto nivel',
+      ],
+    },
+    image: 'https://jkconsultores.cl/assets/Contabilidad%20y%20Finanzas_1754402129940-BhAxipcE.png',
+    color: '#00FFC8',
+    link: 'https://jkconsultores.cl/',
+  },
+  {
+    id: 8,
+    title: {
+      en: 'Holistic Therapist Platform & Blog',
+      es: 'Plataforma Terapeuta Holística & Blog',
+    },
+    description: {
+      en: 'Modern platform for a holistic therapist with an integrated blog system for spirituality and well-being articles.',
+      es: 'Plataforma moderna para terapeuta holística con sistema de blog integrado para artículos de espiritualidad y bienestar.',
+    },
+    category: 'Web Development',
+    technologies: ['React', 'Markdown', 'Blog System', 'Responsive UX', 'Tailwind CSS'],
+    features: {
+      en: [
+        'Full content management system for blog posts',
+        'Zen-inspired visual layout for therapy services',
+        'High performance and SEO optimization for articles',
+        'Social media integration and contact forms',
+      ],
+      es: [
+        'Sistema de gestión de contenidos para el blog',
+        'Diseño visual inspirado en lo Zen para servicios de terapia',
+        'Alto rendimiento y optimización SEO para artículos',
+        'Integración con redes sociales y formularios de contacto',
+      ],
+    },
+    results: {
+      en: [
+        'Increased audience reach through technical and spiritual blog posts',
+        'Unified digital presence for multiple therapy disciplines',
+        'Higher engagement from community through educational content',
+      ],
+      es: [
+        'Aumento del alcance mediante el blog técnico y espiritual',
+        'Presencia digital unificada para múltiples disciplinas',
+        'Mayor compromiso de la comunidad mediante contenido educativo',
+      ],
+    },
+    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    color: '#FF9500',
+    link: 'https://programming-runnner.github.io/',
+  },
+  {
+    id: 9,
+    title: {
+      en: 'SII Bot (Chile Tax Declaration)',
+      es: 'Bot SII (Declaración F29 sin movimientos)',
+    },
+    description: {
+      en: 'Automates the monthly F29 tax declaration for inactive companies in Chile using Python and Selenium.',
+      es: 'Automatiza la declaración mensual del Formulario F29 para empresas sin movimientos en Chile usando Python y Selenium.',
+    },
+    category: 'Automation',
+    technologies: ['Python', 'Selenium', 'Web Automation', 'Chilean Tax (SII)'],
+    features: {
+      en: [
+        'Automated login and navigation on the SII portal',
+        'Zero-movement declaration submission in one click',
+        'Automatic download and saving of the PDF voucher',
+        'Generates CSV logs for tracking submissions',
+      ],
+      es: [
+        'Inicio de sesión y navegación automática en el portal del SII',
+        'Envío de la declaración sin movimientos en un clic',
+        'Descarga automática y guardado del comprobante PDF',
+        'Genera logs en formato CSV para el seguimiento',
+      ],
+    },
+    results: {
+      en: [
+        'Created specifically to avoid unnecessary tax fines',
+        'Open-source project on GitHub',
+        'Solves a common bureaucratic problem for entrepreneurs',
+      ],
+      es: [
+        'Creado específicamente para evitar multas tributarias innecesarias',
+        'Proyecto de código abierto publicado en GitHub',
+        'Resuelve un problema burocrático común para emprendedores',
+      ],
+    },
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    color: '#00FFC8',
+    link: 'https://github.com/rodolflying/sii_bot',
+  },
+  {
+    id: 10,
+    title: {
+      en: 'Good News Telegram Bot',
+      es: 'Bot de Telegram de Buenas Noticias',
+    },
+    description: {
+      en: 'Automated Telegram channel that actively scrapes Chilean news sites and uses AI to curate and publish only positive news.',
+      es: 'Canal automatizado de Telegram que analiza sitios de noticias chilenos y usa IA para curar y publicar exclusivamente noticias positivas.',
+    },
+    category: 'AI Development',
+    technologies: ['Python', 'Telegram API', 'NLP', 'Web Scraping', 'Prompt Engineering'],
+    features: {
+      en: [
+        'Periodic news scraping from major news outlets',
+        'AI-based sentiment analysis to filter bad news',
+        'Automated formatting and posting to a Telegram channel',
+        'Continuous execution via scheduled tasks',
+      ],
+      es: [
+        'Scraping periódico de noticias de los principales medios',
+        'Análisis de sentimiento con IA para filtrar noticias negativas',
+        'Formateo y publicación automatizada en un canal de Telegram',
+        'Ejecución continua a través de tareas programadas',
+      ],
+    },
+    results: {
+      en: [
+        'Creates a healthier news consumption environment',
+        'Fully autonomous pipeline from extraction to publishing',
+      ],
+      es: [
+        'Crea un entorno de consumo de noticias más saludable',
+        'Pipeline completamente autónomo desde la extracción hasta la publicación',
+      ],
+    },
+    image: 'https://images.unsplash.com/photo-1529243856184-fd5465488984?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    color: '#FF9500',
+    link: 'https://github.com/rodolflying/good_news',
   },
 ];

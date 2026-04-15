@@ -1,6 +1,28 @@
+# Dependencias y compilación
 node_modules
 dist
 .DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
+
+# Backend y DB (Se moverán a un repo privado/Vercel)
+server/
+drizzle.config.ts
+
+# Secretos
+.env
+.env.local
+
+# Archivos de la plataforma Replit / Agents
+.agents/
+.local/
+.replit
+replit.md
+
+# Logs y otros
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos pesados extraídos
+*.rar
+*.zip
+client/src/assets/BuscadorTrabajoPro.rar

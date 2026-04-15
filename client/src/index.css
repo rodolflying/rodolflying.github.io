@@ -64,9 +64,8 @@
   
   .timeline-line {
     position: absolute;
-    left: 15px;
-    top: 0;
-    width: 3px;
+    left: 31px;
+    width: 2px;
     height: 100%;
     background: linear-gradient(to bottom, #00FFC8, #6B38FB);
   }

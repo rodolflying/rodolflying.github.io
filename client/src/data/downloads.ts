@@ -34,12 +34,12 @@ export const downloads: Download[] = [
       es: 'Una potente aplicación GUI en Python que te permite buscar y descargar miles de ofertas de empleo de Computrabajo en múltiples países. Exporta resultados a CSV o Excel y aplica filtros avanzados para encontrar trabajos remotos, filtrar por salario, ubicación, industria y más. Perfecta para buscadores de empleo y reclutadores.',
     },
     version: '1.0.0',
-    size: '~15 MB',
+    size: '376 MB',
     category: { en: 'Web Scraping', es: 'Web Scraping' },
     tags: ['Python', 'GUI', 'Web Scraping', 'Excel', 'CSV', 'Jobs'],
     icon: 'search',
     color: '#00FFC8',
-    downloadUrl: '/attached_assets/computrabajo_scraper.zip',
+    downloadUrl: '/src/assets/BuscadorTrabajoPro.rar',
     githubUrl: 'https://github.com/rodolflying',
     features: {
       en: [
@@ -60,8 +60,8 @@ export const downloads: Download[] = [
       ],
     },
     requirements: {
-      en: ['Windows 10/11 (64-bit)', 'No Python installation required', '200MB free disk space', 'Internet connection'],
-      es: ['Windows 10/11 (64-bit)', 'No requiere instalación de Python', '200MB de espacio libre en disco', 'Conexión a Internet'],
+      en: ['Windows 10/11 (64-bit)', 'No Python installation required', '500MB free disk space', 'Internet connection'],
+      es: ['Windows 10/11 (64-bit)', 'No requiere instalación de Python', '500MB de espacio libre en disco', 'Conexión a Internet'],
     },
     screenshots: [
       'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',

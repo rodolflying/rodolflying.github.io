@@ -58,18 +58,35 @@ const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#121212] to-transparent opacity-70"></div>
           <div 
-            className={`absolute top-6 right-6 px-4 py-2 bg-[${project.color}] text-[#121212] rounded-full text-sm font-semibold`}
+            className="absolute top-6 right-6 px-4 py-2 text-[#121212] rounded-full text-sm font-semibold"
+            style={{ backgroundColor: project.color }}
           >
             {project.category}
           </div>
         </div>
         
-        <div className="p-8">
-          <h3 
-            className={`text-2xl font-['Orbitron'] text-[${project.color}] mb-4`}
-          >
-            {project.title[language]}
-          </h3>
+        <div className="p-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
+          <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+            <h3 
+              className="text-2xl font-['Orbitron']"
+              style={{ color: project.color }}
+            >
+              {project.title[language]}
+            </h3>
+            
+            {project.link && (
+              <a 
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 rounded-lg font-bold text-sm transition-all duration-300 hover:opacity-90 flex items-center gap-2"
+                style={{ backgroundColor: project.color, color: '#121212' }}
+              >
+                <span>{language === 'en' ? 'Visit Website' : 'Visitar Sitio Web'}</span>
+                <span className="text-lg">↗</span>
+              </a>
+            )}
+          </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-2">

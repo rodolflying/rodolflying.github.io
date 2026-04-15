@@ -12,7 +12,7 @@ const Hero = () => {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const roles = ['DATA ENGINEER', 'DATA SCIENTIST', 'FREELANCER', 'DEVELOPER'];
+  const roles = ['SOFTWARE ENGINEER', 'DATA ENGINEER', 'DATA SCIENTIST', 'FREELANCER'];
 
   useEffect(() => {
     const currentRole = roles[currentRoleIndex];
@@ -37,8 +37,8 @@ const Hero = () => {
 
   const downloadCV = () => {
     const cvPath = language === 'en'
-      ? '/attached_assets/rodolfo_sepulveda_cv_en.pdf'
-      : '/attached_assets/rodolfo_sepulveda_cv_es.pdf';
+      ? '/src/assets/CV_eng.pdf'
+      : '/src/assets/CV.pdf';
     window.open(cvPath, '_blank');
   };
 

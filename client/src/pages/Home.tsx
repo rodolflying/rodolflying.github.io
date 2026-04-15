@@ -52,8 +52,8 @@ const StatsBar = () => {
   const stats = [
     { value: '5+', label: 'Años de experiencia' },
     { value: '20+', label: 'Proyectos completados' },
-    { value: '1M+', label: 'Registros procesados' },
-    { value: '3', label: 'Países' },
+    { value: '1M+', label: 'Datos procesados' },
+    { value: '5+', label: 'Certificaciones' },
   ];
 
   return (

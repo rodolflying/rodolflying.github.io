@@ -25,7 +25,7 @@ export default {
     cta_download: 'View Downloads',
   },
   hero: {
-    intro: 'Professional motivated by technology, innovation, and programming to solve real-world problems. Specialized in data science, automation, and AI solutions.',
+    intro: 'Technology-driven professional motivated by innovation and programming to solve real-world problems. Specialized in Software Engineering, Data Science, and Industrial Automation (RPA).',
     contact_btn: 'Get In Touch',
     projects_btn: 'View Projects',
     download_cv: 'Download CV',
@@ -33,10 +33,10 @@ export default {
   about: {
     title: 'ABOUT ME',
     profile: 'Professional Profile',
-    profile_text: 'Professional motivated by technology, innovation, and the use of programming to solve real-world problems. Demonstrated ability to effectively lead and interact with multidisciplinary teams. Committed to continuous learning through courses and hands-on projects.',
+    profile_text: 'Technology-driven professional motivated by innovation and programming to solve real-world problems. Specialized in process optimization through Software Engineering, Data Science, and RPA Automation. Experienced in leading complex technological projects with direct impact on operational efficiency.',
     education: 'Education',
     education1_title: 'B.S. Industrial Engineering',
-    education2_title: 'Undergraduate Exchange Program',
+    education2_title: 'Undergraduate Exchange Program - Cádiz, Spain',
     skills: 'Technical Skills',
     languages: 'Languages',
     spanish: 'Spanish (Native)',
@@ -54,44 +54,47 @@ export default {
   services: {
     title: 'MY SERVICES',
     automation: {
-      title: 'Intelligent Automation',
+      title: 'RPA & Process Automation',
       items: [
-        'Python scripts for repetitive tasks',
-        'Intuitive desktop interfaces for scripts',
-        'Excel process automation'
+        'RPA solutions for real-time monitoring',
+        'Automation of SAP transactions and ERPs',
+        'ETL report optimization with Power BI',
+        'Hardware maintenance automation (Fracttal / Monitoring)'
       ]
     },
     webdev: {
-      title: 'Web Development',
+      title: 'Full Stack Development',
       items: [
-        'Modern and 100% responsive landing pages',
-        'Dynamic websites with databases (SQL / NoSQL)',
-        'User management, authentication and dashboards',
-        'WebPay payment integration'
+        'Modern web applications with React & TypeScript',
+        'Interactive dashboards for data visualization',
+        'Payment integration, authentication, and security',
+        '100% responsive and cloud-ready architecture'
       ]
     },
     backend: {
-      title: 'Back-End & APIs',
+      title: 'AI Agents & LLM Integration',
       items: [
-        'Robust API development in Python and Node.js',
-        'External API consumption (REST / GraphQL)',
-        'Flexible infrastructure on AWS and Google Cloud (GCP)'
+        'Development of custom Intelligent Agents (Gemini/GPT)',
+        'Workflow automation with generative AI',
+        'Natural Language Processing (NLP) model integration',
+        'Specialized virtual assistants for businesses'
       ]
     },
     webscraping: {
-      title: 'Web Scraping & ETL',
+      title: 'Data Engineering & ETL',
       items: [
-        'Data extraction from websites',
-        'Data transformation and loading (ETL)',
-        'Scalable automations with tracking'
+        'Massive data extraction (Scalable Web Scraping)',
+        'Processing and cleaning of millions of records',
+        'Data infrastructure on AWS / GCP / Supabase',
+        'Database architecture for Data Science'
       ]
     },
     consulting: {
-      title: 'Consulting & Personalized Training',
+      title: 'Tech Consulting & Cloud',
       items: [
-        '1-on-1 or group programming classes',
-        'Support with real projects and portfolios',
-        'Code review and improvement'
+        'Cloud solution architecture',
+        'Technical mentoring and programming training',
+        'Operational industrial process optimization'
       ]
     }
   },

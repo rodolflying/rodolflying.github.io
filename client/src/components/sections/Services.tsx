@@ -37,64 +37,70 @@ const Services = () => {
   const serviceItemsContent = {
     automation: {
       en: [
-        'Python scripts for repetitive tasks',
-        'Intuitive desktop interfaces for scripts',
-        'Excel process automation'
+        'RPA solutions for real-time monitoring',
+        'Automation of SAP transactions and ERPs',
+        'ETL report optimization with Power BI',
+        'Hardware maintenance automation (Fracttal)'
       ],
       es: [
-        'Scripts en Python para tareas repetitivas',
-        'Interfaces de escritorio intuitivas para scripts',
-        'Automatización de procesos en Excel'
+        'Soluciones RPA para monitoreo en tiempo real',
+        'Automatización de transacciones en SAP y ERPs',
+        'Optimización de reportes ETL con Power BI',
+        'Automatización de mantenimiento (Fracttal)'
       ]
     },
     webdev: {
       en: [
-        'Modern and 100% responsive landing pages',
-        'Dynamic websites with databases (SQL / NoSQL)',
-        'User management, authentication and dashboards',
-        'WebPay payment integration'
+        'Modern web applications with React & TypeScript',
+        'Interactive dashboards for data visualization',
+        'Payment integration, authentication, and security',
+        '100% responsive and cloud-ready architecture'
       ],
       es: [
-        'Landing pages modernas y 100% responsive',
-        'Sitios web dinámicos con bases de datos (SQL / NoSQL)',
-        'Gestión de usuarios, autenticación y dashboards',
-        'Integración de pagos WebPay'
+        'Aplicaciones web modernas con React y TypeScript',
+        'Dashboards interactivos para visualización de datos',
+        'Integración de pagos, autenticación y seguridad',
+        'Arquitectura 100% responsive y cloud-ready'
       ]
     },
     backend: {
       en: [
-        'Robust API development in Python and Node.js',
-        'External API consumption (REST / GraphQL)',
-        'Flexible infrastructure on AWS and Google Cloud (GCP)'
+        'Development of custom Intelligent Agents (Gemini/GPT)',
+        'Workflow automation with generative AI',
+        'Natural Language Processing (NLP) model integration',
+        'Specialized virtual assistants for businesses'
       ],
       es: [
-        'Desarrollo robusto de APIs en Python y Node.js',
-        'Consumo de APIs externas (REST / GraphQL)',
-        'Infraestructura flexible en AWS y Google Cloud (GCP)'
+        'Desarrollo de Agentes Inteligentes personalizados (Gemini/GPT)',
+        'Automatización de flujos de trabajo con IA generativa',
+        'Integración de modelos de procesamiento de lenguaje natural (NLP)',
+        'Asistentes virtuales especializados para empresas'
       ]
     },
     webscraping: {
       en: [
-        'Data extraction from websites',
-        'Data transformation and loading (ETL)',
-        'Scalable automations with tracking'
+        'Massive data extraction (Scalable Web Scraping)',
+        'Processing and cleaning of millions of records',
+        'Data infrastructure on AWS / GCP / Supabase',
+        'Database architecture for Data Science'
       ],
       es: [
-        'Extracción de datos de sitios web',
-        'Transformación y carga de datos (ETL)',
-        'Automatizaciones escalables con seguimiento'
+        'Extracción masiva de datos (Web Scraping escalable)',
+        'Flujos de procesamiento y limpieza de millones de registros',
+        'Infraestructura de datos en AWS / GCP / Supabase',
+        'Arquitectura de bases de datos para Data Science'
       ]
     },
     consulting: {
       en: [
-        '1-on-1 or group programming classes',
-        'Support with real projects and portfolios',
-        'Code review and improvement'
+        'Cloud solution architecture',
+        'Technical mentoring and programming training',
+        'Operational industrial process optimization'
       ],
       es: [
-        'Clases de programación 1 a 1 o grupales',
-        'Apoyo con proyectos reales y portfolio',
-        'Revisión y mejora de código'
+        'Arquitectura de soluciones en la nube',
+        'Mentoría técnica y formación en programación',
+        'Optimización de procesos operativos industriales'
       ]
     }
   };

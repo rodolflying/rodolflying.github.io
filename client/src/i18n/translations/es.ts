@@ -25,7 +25,7 @@ export default {
     cta_download: 'Ver Descargas',
   },
   hero: {
-    intro: 'Profesional motivado por la tecnología, la innovación y el uso de la programación para resolver problemas del mundo real. Especializado en ciencia de datos, automatización y soluciones de IA.',
+    intro: 'Profesional motivado por la tecnología, la innovación y el uso de la programación para resolver problemas del mundo real. Especializado en Ingeniería de Software, Ciencia de Datos y Automatización Industrial (RPA).',
     contact_btn: 'Contactar',
     projects_btn: 'Ver Proyectos',
     download_cv: 'Descargar CV',
@@ -33,10 +33,10 @@ export default {
   about: {
     title: 'SOBRE MÍ',
     profile: 'Perfil Profesional',
-    profile_text: 'Profesional motivado por la tecnología, la innovación y el uso de la programación para resolver problemas del mundo real. Capacidad demostrada para dirigir e interactuar eficazmente con equipos multidisciplinarios. En constante actualización de conocimientos a través de cursos y desarrollo de proyectos prácticos.',
+    profile_text: 'Profesional motivado por la tecnología, la innovación y el uso de la programación para resolver problemas del mundo real. Especializado en la optimización de procesos mediante Ingeniería de Software, Ciencia de Datos y Automatización RPA. Experiencia liderando proyectos tecnológicos complejos con impacto directo en la eficiencia operativa.',
     education: 'Formación Académica',
     education1_title: 'Ingeniería Civil Industrial',
-    education2_title: 'Intercambio Pregrado',
+    education2_title: 'Intercambio Pregrado - Cádiz, España',
     skills: 'Habilidades Técnicas',
     languages: 'Idiomas',
     spanish: 'Español (Nativo)',
@@ -54,44 +54,47 @@ export default {
   services: {
     title: 'MIS SERVICIOS',
     automation: {
-      title: 'Automatización Inteligente',
+      title: 'RPA & Automatización de Procesos',
       items: [
-        'Scripts en Python para tareas repetitivas',
-        'Interfaces de escritorio intuitivas para scripts',
-        'Automatización de procesos en Excel'
+        'Soluciones RPA para monitoreo en tiempo real',
+        'Automatización de transacciones en SAP y ERPs',
+        'Optimización de reportes ETL con Power BI',
+        'Automatización de mantenimiento (Fracttal / Monitoreo)'
       ]
     },
     webdev: {
-      title: 'Desarrollo Web',
+      title: 'Desarrollo Full Stack',
       items: [
-        'Landing pages modernas y 100% responsive',
-        'Sitios web dinámicos con bases de datos (SQL / NoSQL)',
-        'Gestión de usuarios, autenticación y dashboards',
-        'Integración de pagos WebPay'
+        'Aplicaciones web modernas con React y TypeScript',
+        'Dashboards interactivos para visualización de datos',
+        'Integración de pagos, autenticación y seguridad',
+        'Arquitectura 100% responsive y cloud-ready'
       ]
     },
     backend: {
-      title: 'Back-End & APIs',
+      title: 'Agentes de IA & Integración LLM',
       items: [
-        'Desarrollo robusto de APIs en Python y Node.js',
-        'Consumo de APIs externas (REST / GraphQL)',
-        'Infraestructura flexible en AWS y Google Cloud (GCP)'
+        'Desarrollo de Agentes Inteligentes personalizados (Gemini/GPT)',
+        'Automatización de flujos de trabajo con IA generativa',
+        'Integración de modelos de procesamiento de lenguaje natural (NLP)',
+        'Asistentes virtuales especializados para empresas'
       ]
     },
     webscraping: {
-      title: 'Web Scraping & ETL',
+      title: 'Data Engineering & ETL',
       items: [
-        'Extracción de datos de sitios web',
-        'Transformación y carga de datos (ETL)',
-        'Automatizaciones escalables con seguimiento'
+        'Extracción masiva de datos (Web Scraping escalable)',
+        'Flujos de procesamiento y limpieza de millones de registros',
+        'Infraestructura de datos en AWS / GCP / Supabase',
+        'Arquitectura de bases de datos para Data Science'
       ]
     },
     consulting: {
-      title: 'Consultoría y Formación Personalizada',
+      title: 'Consultoría Tecnológica & Cloud',
       items: [
-        'Clases de programación 1 a 1 o grupales',
-        'Apoyo con proyectos reales y portfolio',
-        'Revisión y mejora de código'
+        'Arquitectura de soluciones en la nube',
+        'Mentoría técnica y formación en programación',
+        'Optimización de procesos operativos industriales'
       ]
     }
   },

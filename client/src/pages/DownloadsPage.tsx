@@ -136,7 +136,7 @@ const DownloadCard = ({ item }: { item: Download }) => {
             }}
           >
             <DownloadIcon className="w-4 h-4" />
-            Descargar .zip
+            Descargar Archivo
           </a>
           {item.githubUrl && (
             <a

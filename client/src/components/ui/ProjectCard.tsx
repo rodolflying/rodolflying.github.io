@@ -13,7 +13,8 @@ const ProjectCard = ({ project, onShowDetails }: ProjectCardProps) => {
 
   return (
     <div 
-      className={`cyberpunk-border bg-[#1E1E1E] rounded-lg overflow-hidden group hover:shadow-lg hover:shadow-[${color}]/20 transition duration-300`}
+      className="cyberpunk-border bg-[#1E1E1E] rounded-lg overflow-hidden group transition duration-300"
+      style={{ borderColor: `${color}33`, boxShadow: `0 0 20px ${color}10` }}
     >
       <div className="h-48 bg-[#2A2A2A] overflow-hidden relative">
         <img 
@@ -23,7 +24,8 @@ const ProjectCard = ({ project, onShowDetails }: ProjectCardProps) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#121212] to-transparent opacity-70"></div>
         <div 
-          className={`absolute top-4 right-4 px-3 py-1 bg-[${color}] text-[#121212] rounded-full text-xs font-semibold`}
+          className="absolute top-4 right-4 px-3 py-1 text-[#121212] rounded-full text-xs font-semibold"
+          style={{ backgroundColor: color }}
         >
           {category}
         </div>
@@ -31,11 +33,12 @@ const ProjectCard = ({ project, onShowDetails }: ProjectCardProps) => {
       
       <div className="p-6">
         <h3 
-          className={`text-xl font-['Orbitron'] text-[${color}] mb-3`}
+          className="text-xl font-['Orbitron'] mb-3"
+          style={{ color: color }}
         >
           {title[language]}
         </h3>
-        <p className="text-gray-300 mb-4">
+        <p className="text-gray-300 mb-4 line-clamp-2">
           {description[language]}
         </p>
         <div className="flex flex-wrap gap-2 mb-4">
@@ -50,7 +53,8 @@ const ProjectCard = ({ project, onShowDetails }: ProjectCardProps) => {
         </div>
         <button 
           onClick={() => onShowDetails(project)}
-          className={`mt-2 px-4 py-2 w-full bg-transparent border border-[${color}] text-[${color}] rounded hover:bg-[${color}]/10 transition duration-300`}
+          className="mt-2 px-4 py-2 w-full bg-transparent border rounded transition duration-300"
+          style={{ borderColor: color, color: color }}
         >
           {language === 'en' ? 'View Details' : 'Ver Detalles'}
         </button>
