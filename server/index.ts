@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
-
 import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -8,9 +7,9 @@ import { setupVite, serveStatic, log } from "./vite";
 export const app = express();
 app.use(cors());
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: false }));
 
+// Logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -29,11 +28,9 @@ app.use((req, res, next) => {
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "…";
       }
-
       log(logLine);
     }
   });
@@ -41,27 +38,26 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
-  const server = await registerRoutes(app);
+// IMPORTANT: We register routes before starting the async setup
+// This ensures that serverless environments like Vercel see the routes immediately
+const serverPromise = registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+// Global Error Handler
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(status).json({ message });
+});
 
-    res.status(status).json({ message });
-    throw err;
-  });
-
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
-
-  if (process.env.NODE_ENV !== "production") {
+// Setup dev server or static serving
+if (process.env.NODE_ENV !== "production") {
+  (async () => {
+    const server = await serverPromise;
+    if (app.get("env") === "development") {
+      await setupVite(app, server);
+    } else {
+      serveStatic(app);
+    }
     const port = 5001;
     server.listen({
       port,
@@ -69,7 +65,11 @@ app.use((req, res, next) => {
     }, () => {
       log(`serving on port ${port}`);
     });
-  }
-})();
+  })();
+} else {
+  // In production (Vercel), we just serve static files if not an API call
+  serveStatic(app);
+}
 
 export default app;
+

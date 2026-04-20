@@ -8,7 +8,7 @@ async function throwIfResNotOk(res: Response) {
 }
 
 const API_URL = import.meta.env.PROD 
-  ? 'https://rodolflying-github-io.vercel.app' 
+  ? 'https://rodolflying-github-io.vercel.app'.replace(/\/$/, '') 
   : '';
 
 export async function apiRequest(
