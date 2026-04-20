@@ -54,7 +54,7 @@ if (process.env.NODE_ENV !== "production") {
   (async () => {
     const server = await serverPromise;
     if (app.get("env") === "development") {
-      const { setupVite } = await import("./vite");
+      const { setupVite } = await import("./vite.js");
       await setupVite(app, server);
     } else {
       serveStatic(app);
@@ -68,9 +68,11 @@ if (process.env.NODE_ENV !== "production") {
     });
   })();
 } else {
-  // In production (Vercel)
-  serveStatic(app);
+  // In production (Vercel), we ONLY provide the API
+  // Static content is hosted on GitHub Pages
+  console.log("Running in API-only mode (Production)");
 }
+
 
 export default app;
 
