@@ -4,7 +4,8 @@ dist
 .DS_Store
 
 # Backend y DB (Se moverán a un repo privado/Vercel)
-server/
+# server/ -- Comentado para permitir despliegue en Vercel
+
 drizzle.config.ts
 
 # Secretos
