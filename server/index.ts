@@ -1,8 +1,9 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { registerRoutes } from "./routes";
-import { log, serveStatic } from "./utils";
+import { registerRoutes } from "./routes.js";
+import { log, serveStatic } from "./utils.js";
+
 
 export const app = express();
 app.use(cors());

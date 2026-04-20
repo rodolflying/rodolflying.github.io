@@ -1,4 +1,4 @@
-import { users, messages, type User, type InsertUser, type Message, type InsertMessage } from "@shared/schema";
+import { users, messages, type User, type InsertUser, type Message, type InsertMessage } from "../shared/schema.js";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 // modify the interface with any CRUD methods
