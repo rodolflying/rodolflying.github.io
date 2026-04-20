@@ -2,7 +2,7 @@ import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { log, serveStatic } from "./utils";
 
 export const app = express();
 app.use(cors());
@@ -39,7 +39,6 @@ app.use((req, res, next) => {
 });
 
 // IMPORTANT: We register routes before starting the async setup
-// This ensures that serverless environments like Vercel see the routes immediately
 const serverPromise = registerRoutes(app);
 
 // Global Error Handler
@@ -54,6 +53,7 @@ if (process.env.NODE_ENV !== "production") {
   (async () => {
     const server = await serverPromise;
     if (app.get("env") === "development") {
+      const { setupVite } = await import("./vite");
       await setupVite(app, server);
     } else {
       serveStatic(app);
@@ -67,9 +67,10 @@ if (process.env.NODE_ENV !== "production") {
     });
   })();
 } else {
-  // In production (Vercel), we just serve static files if not an API call
+  // In production (Vercel)
   serveStatic(app);
 }
 
 export default app;
+
 
