@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // CORS headers
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://rodolflying.github.io",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
@@ -26,7 +26,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message, honey } = req.body;
+
+    // Honeypot check: If the hidden 'honey' field is filled, it's likely a bot.
+    // We return success to fool the bot, but we don't save anything.
+    if (honey) {
+      console.log("Bot detected via honeypot. Ignoring message.");
+      return res.status(200).json({
+        success: true,
+        message: "Message received successfully",
+      });
+    }
 
     // Basic validation
     if (!name || !email || !subject || !message) {

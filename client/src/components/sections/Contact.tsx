@@ -11,12 +11,14 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, Linkedin, Github } from 'lucide-react';
 import { FaMedium } from 'react-icons/fa';
 import starAppsLogo from '@assets/STAR_APPSpng.png';
+import confetti from 'canvas-confetti';
 
 const contactSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
   email: z.string().email({ message: 'Please enter a valid email' }),
   subject: z.string().min(2, { message: 'Subject must be at least 2 characters' }),
   message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
+  honey: z.string().optional(), // Honeypot trap
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -41,6 +43,14 @@ const Contact = () => {
       return response.json();
     },
     onSuccess: () => {
+      // Lanzar confeti!
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#007BFF', '#00F0FF', '#0F9D58']
+      });
+
       toast({
         title: t('contact.success_title'),
         description: t('contact.success_message'),
@@ -94,7 +104,13 @@ const Contact = () => {
               {t('contact.form_title')}
             </h3>
             
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Honeypot Input: Oculto para bots */}
+          <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+            <label htmlFor="honey">Do not fill this out if you are human</label>
+            <input id="honey" type="text" {...register('honey')} tabIndex={-1} autoComplete="off" />
+          </div>
+
+          <form onSubmit={handleSubmit((data) => onSubmit(data as ContactMessage))} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                   {t('contact.name')}
