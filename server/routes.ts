@@ -5,8 +5,14 @@ import { insertMessageSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint
+  app.get("/api/health", (_req, res) => {
+    res.json({ status: "ok", message: "Server is running" });
+  });
+
   // Contact form endpoint
   app.post("/api/contact", async (req, res) => {
+
     try {
       const messageData = insertMessageSchema.parse(req.body);
       
