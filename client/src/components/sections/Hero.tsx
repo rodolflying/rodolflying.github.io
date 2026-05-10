@@ -37,8 +37,8 @@ const Hero = () => {
 
   const downloadCV = () => {
     const cvPath = language === 'en'
-      ? '/src/assets/CV_eng.pdf'
-      : '/src/assets/CV.pdf';
+      ? '/CV_eng.pdf'
+      : '/CV.pdf';
     window.open(cvPath, '_blank');
   };
 

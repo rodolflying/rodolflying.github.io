@@ -27,7 +27,9 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
+          cp ./dist/public/index.html ./dist/public/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
