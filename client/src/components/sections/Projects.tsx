@@ -45,7 +45,8 @@ const Projects = () => {
     'AI Development',
     'Data Engineering',
     'Data Science',
-    'Process Optimization'
+    'Process Optimization',
+    'Entertainment'
   ];
 
   return (

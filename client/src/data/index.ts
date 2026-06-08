@@ -617,4 +617,82 @@ export const projects: Project[] = [
     color: '#FF9500',
     link: 'https://github.com/rodolflying/good_news',
   },
+  {
+    id: 11,
+    title: {
+      en: 'Acordes Guitar & Piano Visualizer',
+      es: 'Visualizador de Acordes de Guitarra & Piano',
+    },
+    description: {
+      en: 'Interactive web application to search, visualize, and learn chords for guitar and piano with visual diagrams.',
+      es: 'Aplicación web interactiva para buscar, visualizar y aprender acordes de guitarra y piano con diagramas gráficos.',
+    },
+    category: 'Entertainment',
+    technologies: ['HTML', 'CSS', 'JavaScript', 'Responsive Design'],
+    features: {
+      en: [
+        'Interactive keyboard and fretboard layouts',
+        'Advanced scale and chord search filters',
+        'Real-time visual diagram rendering',
+        'Mobile-friendly layout for easy practice',
+      ],
+      es: [
+        'Diseño interactivo de teclado y diapasón de guitarra',
+        'Filtros de búsqueda avanzada de acordes y escalas',
+        'Renderizado visual de diagramas en tiempo real',
+        'Diseño responsivo optimizado para móviles',
+      ],
+    },
+    results: {
+      en: [
+        'Streamlined learning curve for musicians',
+        'Intuitive interface requiring no pre-requisite downloads',
+      ],
+      es: [
+        'Curva de aprendizaje simplificada para músicos',
+        'Interfaz intuitiva sin necesidad de descargar complementos',
+      ],
+    },
+    image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    color: '#00FFC8',
+    link: 'https://rodolflying.github.io/Acordes/',
+  },
+  {
+    id: 12,
+    title: {
+      en: 'Infinity Stones Interactive Experience',
+      es: 'Experiencia Interactiva Gemas del Infinito',
+    },
+    description: {
+      en: 'An interactive web-based showcase exploring the Marvel Universe Infinity Stones with high-fidelity visual animations.',
+      es: 'Una vitrina web interactiva que explora las Gemas del Infinito de Marvel con animaciones y efectos visuales de alta fidelidad.',
+    },
+    category: 'Entertainment',
+    technologies: ['HTML', 'CSS', 'JavaScript', 'Web Animations', 'Interactive SVG'],
+    features: {
+      en: [
+        'Interactive rendering of all 6 Infinity Stones',
+        'Dynamic visual effects and background theme shifts based on selected stones',
+        'Detailed lore and historical information for each gem',
+      ],
+      es: [
+        'Renderizado interactivo de las 6 Gemas del Infinito',
+        'Efectos visuales dinámicos y cambios de tema de fondo según la gema seleccionada',
+        'Información histórica y lore detallado de cada gema',
+      ],
+    },
+    results: {
+      en: [
+        'High engagement rates from interactive storytelling',
+        'Demonstration of modern CSS transitions and interactive SVGs',
+      ],
+      es: [
+        'Altos índices de interacción gracias al storytelling interactivo',
+        'Demostración práctica de transiciones CSS modernas y SVGs dinámicos',
+      ],
+    },
+    image: 'https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    color: '#FF2D55',
+    link: 'https://rodolflying.github.io/gemas_del_infinito/',
+  },
 ];

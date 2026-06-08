@@ -1,9 +1,10 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import Layout from '@/components/Layout';
 import Hero from '@/components/sections/Hero';
+import Services from '@/components/sections/Services';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Code2, Download, BookOpen, User, ArrowRight, Zap, Globe } from 'lucide-react';
+import { Code2, Download, BookOpen, User, ArrowRight } from 'lucide-react';
 
 const SectionCard = ({
   href,
@@ -79,15 +80,13 @@ const StatsBar = () => {
 };
 
 const Home = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const cards = [
     { href: '/about', icon: User, title: t('navbar.about'), description: t('home.about_desc'), color: '#00FFC8', delay: 0.1 },
-    { href: '/services', icon: Zap, title: t('navbar.services'), description: t('home.services_desc'), color: '#FF2D55', delay: 0.2 },
-    { href: '/projects', icon: Code2, title: t('navbar.projects'), description: t('home.projects_desc'), color: '#6B38FB', delay: 0.3 },
-    { href: '/downloads', icon: Download, title: t('navbar.downloads'), description: t('home.downloads_desc'), color: '#FF9500', delay: 0.4 },
-    { href: '/blog', icon: BookOpen, title: t('navbar.blog'), description: t('home.blog_desc'), color: '#00FFC8', delay: 0.5 },
-    { href: '/contact', icon: Globe, title: t('navbar.contact'), description: t('home.contact_desc'), color: '#FF2D55', delay: 0.6 },
+    { href: '/projects', icon: Code2, title: t('navbar.projects'), description: t('home.projects_desc'), color: '#6B38FB', delay: 0.2 },
+    { href: '/downloads', icon: Download, title: t('navbar.downloads'), description: t('home.downloads_desc'), color: '#FF9500', delay: 0.3 },
+    { href: '/blog', icon: BookOpen, title: t('navbar.blog'), description: t('home.blog_desc'), color: '#00FFC8', delay: 0.4 },
   ];
 
   return (
@@ -95,7 +94,11 @@ const Home = () => {
       <Hero />
       <StatsBar />
 
-      <section className="pb-24">
+      {/* Main Services, Methodology and Comparison Section */}
+      <Services />
+
+      {/* Secondary Resources and Navigation */}
+      <section className="py-20 border-t border-gray-800 bg-[#0f0f0f]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-12"
@@ -104,14 +107,16 @@ const Home = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h2 className="text-2xl md:text-3xl font-['Orbitron'] font-bold text-white mb-3">
-              {t('home.explore_title')}
+              {language === 'es' ? 'Recursos & Proyectos' : 'Resources & Projects'}
             </h2>
             <p className="text-gray-400 max-w-xl mx-auto text-sm md:text-base">
-              {t('home.explore_subtitle')}
+              {language === 'es'
+                ? 'Conoce nuestros casos de éxito, descarga herramientas corporativas de código abierto o lee recursos técnicos.'
+                : 'Explore our success cases, download open-source corporate utilities, or read engineering resources.'}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {cards.map((card) => (
               <SectionCard key={card.href} {...card} />
             ))}
@@ -119,6 +124,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Call To Action Banner */}
       <section className="py-16 bg-gradient-to-br from-[#00FFC8]/5 via-transparent to-[#6B38FB]/5 border-t border-gray-800">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div

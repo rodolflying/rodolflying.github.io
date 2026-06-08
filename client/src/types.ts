@@ -1,4 +1,4 @@
-export type ProjectCategory = 'Data Engineering' | 'Data Science' | 'Automation' | 'Process Optimization' | 'AI Development' | 'Web Development';
+export type ProjectCategory = 'Data Engineering' | 'Data Science' | 'Automation' | 'Process Optimization' | 'AI Development' | 'Web Development' | 'Entertainment';
 
 export interface Project {
   id: number;
