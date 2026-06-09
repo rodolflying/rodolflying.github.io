@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useAnimation, useMotionValue, useTransform } from 'framer-motion';
 import starAppsLogo from '@assets/START_APPS_LOGO-removebg-preview.png';
 
 const InteractiveLogo = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [ripples, setRipples] = useState<{ id: number; cx: number; cy: number }[]>([]);
+  const isMountedRef = useRef(true);
 
   // Framer Motion controls for coordination
   const starControls = useAnimation();
@@ -38,63 +39,74 @@ const InteractiveLogo = () => {
     const id = Date.now();
     setRipples((prev) => [...prev, { id, cx, cy }]);
     setTimeout(() => {
-      setRipples((prev) => prev.filter((r) => r.id !== id));
+      if (isMountedRef.current) {
+        setRipples((prev) => prev.filter((r) => r.id !== id));
+      }
     }, 1200);
   };
 
   // Perform the click sequence
   const triggerClick = async () => {
-    if (isAnimating) return;
+    if (isAnimating || !isMountedRef.current) return;
     setIsAnimating(true);
 
-    // 1. Hand Pointer pushes down (click) & Star squeeze
-    await Promise.all([
+    try {
+      // 1. Hand Pointer pushes down (click) & Star squeeze
+      if (!isMountedRef.current) return;
+      await Promise.all([
+        handControls.start({
+          scale: 0.82,
+          x: -4,
+          y: 4,
+          transition: { duration: 0.08, ease: 'easeIn' }
+        }),
+        starControls.start({
+          scale: 0.94,
+          transition: { duration: 0.08 }
+        })
+      ]);
+
+      // Fire ripple circles originating from the hand click coordinates (170, 125)
+      if (!isMountedRef.current) return;
+      addRipple(170, 125);
+
+      // 2. Bounce back & Pulse star with neon flare
+      if (!isMountedRef.current) return;
+      await Promise.all([
+        handControls.start({
+          scale: 1,
+          x: 0,
+          y: 0,
+          transition: { duration: 0.15, ease: 'easeOut' }
+        }),
+        starControls.start({
+          scale: [0.94, 1.15, 1],
+          filter: [
+            'drop-shadow(0 0 10px rgba(0, 255, 200, 0.3))',
+            'drop-shadow(0 0 35px rgba(0, 255, 200, 0.85))',
+            'drop-shadow(0 0 12px rgba(0, 255, 200, 0.3))'
+          ],
+          transition: { duration: 0.4, times: [0, 0.3, 1], ease: 'easeOut' }
+        })
+      ]);
+
+      if (!isMountedRef.current) return;
+      setIsAnimating(false);
+
+      // Resume the gentle floating idle state for the hand
+      if (!isMountedRef.current) return;
       handControls.start({
-        scale: 0.82,
-        x: -4,
-        y: 4,
-        transition: { duration: 0.08, ease: 'easeIn' }
-      }),
-      starControls.start({
-        scale: 0.94,
-        transition: { duration: 0.08 }
-      })
-    ]);
-
-    // Fire ripple circles originating from the hand click coordinates (170, 125)
-    addRipple(170, 125);
-
-    // 2. Bounce back & Pulse star with neon flare
-    await Promise.all([
-      handControls.start({
-        scale: 1,
-        x: 0,
-        y: 0,
-        transition: { duration: 0.15, ease: 'easeOut' }
-      }),
-      starControls.start({
-        scale: [0.94, 1.15, 1],
-        filter: [
-          'drop-shadow(0 0 10px rgba(0, 255, 200, 0.3))',
-          'drop-shadow(0 0 35px rgba(0, 255, 200, 0.85))',
-          'drop-shadow(0 0 12px rgba(0, 255, 200, 0.3))'
-        ],
-        transition: { duration: 0.4, times: [0, 0.3, 1], ease: 'easeOut' }
-      })
-    ]);
-
-    setIsAnimating(false);
-
-    // Resume the gentle floating idle state for the hand
-    handControls.start({
-      y: [0, -4, 0],
-      x: [0, 2, 0],
-      transition: {
-        repeat: Infinity,
-        duration: 3,
-        ease: 'easeInOut'
-      }
-    });
+        y: [0, -4, 0],
+        x: [0, 2, 0],
+        transition: {
+          repeat: Infinity,
+          duration: 3,
+          ease: 'easeInOut'
+        }
+      });
+    } catch (e) {
+      console.warn("Animation interrupted:", e);
+    }
   };
 
   const handleManualClick = () => {
@@ -103,11 +115,15 @@ const InteractiveLogo = () => {
 
   // Play intro sequence on mount
   useEffect(() => {
+    isMountedRef.current = true;
+
     const runIntro = async () => {
       // Setup star container initial state
+      if (!isMountedRef.current) return;
       starControls.set({ scale: 0.8, opacity: 0 });
       
       // Position hand off-screen initially
+      if (!isMountedRef.current) return;
       handControls.set({
         x: 90,
         y: 110,
@@ -116,6 +132,7 @@ const InteractiveLogo = () => {
       });
 
       // 1. Star fades and scales in
+      if (!isMountedRef.current) return;
       await starControls.start({
         scale: 1,
         opacity: 1,
@@ -123,6 +140,7 @@ const InteractiveLogo = () => {
       });
 
       // 2. Hand Pointer slides in smoothly
+      if (!isMountedRef.current) return;
       await handControls.start({
         x: 0,
         y: 0,
@@ -132,13 +150,21 @@ const InteractiveLogo = () => {
       });
 
       // Wait a fraction of a second before clicking
+      if (!isMountedRef.current) return;
       await new Promise((r) => setTimeout(r, 250));
 
       // 3. Trigger Click
+      if (!isMountedRef.current) return;
       await triggerClick();
     };
 
     runIntro();
+
+    return () => {
+      isMountedRef.current = false;
+      starControls.stop();
+      handControls.stop();
+    };
   }, []);
 
   return (
