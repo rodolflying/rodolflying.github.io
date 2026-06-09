@@ -166,10 +166,11 @@ const AiAgentSimulator = () => {
     let step = 1;
     const interval = setInterval(() => {
       if (step < conversation.length) {
-        setMessages(prev => [...prev, conversation[step]]);
+        const currentStep = step;
+        setMessages(prev => [...prev, conversation[currentStep]]);
         setKpis({
           tokensSec: Math.floor(140 + Math.random() * 20),
-          cost: parseFloat((0.00015 * step).toFixed(5))
+          cost: parseFloat((0.00015 * currentStep).toFixed(5))
         });
         step++;
       } else {
@@ -202,7 +203,7 @@ const AiAgentSimulator = () => {
 
       {/* Terminal log output */}
       <div className="flex-1 bg-black/85 rounded p-3 border border-gray-850 overflow-y-auto max-h-[130px] space-y-2 text-left min-h-[110px]">
-        {messages.map((msg, i) => (
+        {messages.filter(Boolean).map((msg, i) => (
           <div key={i} className={`rounded px-2 py-1 leading-relaxed ${
             msg.sender === 'user' 
               ? 'bg-[#121212] border border-gray-850 text-gray-300' 
