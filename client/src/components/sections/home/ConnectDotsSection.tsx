@@ -102,16 +102,23 @@ const MovingDot = ({
   const Icon = dot.icon;
 
   return (
+    // Three layers on purpose: framer-motion's inline transforms (x/y, rotate) would
+    // override Tailwind's translate classes if they shared an element.
     <motion.div className="absolute left-0 top-0 z-10 will-change-transform" style={{ x, y }}>
-      <motion.div className="-translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5" style={{ rotate }}>
-        <motion.div
-          className="float-slow w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-night-800 flex items-center justify-center border-2 shadow-lg"
-          style={{ borderColor: border, animationDelay: `${index * -0.7}s` }}
-        >
-          <Icon className="w-6 h-6 text-slate-100" />
+      <div className="-translate-x-1/2 -translate-y-1/2">
+        <motion.div className="relative flex justify-center" style={{ rotate }}>
+          <motion.div
+            className="float-slow w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-night-800 flex items-center justify-center border-2 shadow-lg"
+            style={{ borderColor: border, animationDelay: `${index * -0.7}s` }}
+          >
+            <Icon className="w-6 h-6 text-slate-100" />
+          </motion.div>
+          {/* Label hangs below so the icon itself is centred on the wire end */}
+          <span className="absolute top-full mt-1.5 text-xs sm:text-sm font-medium text-slate-200 whitespace-nowrap">
+            {dot.label[language]}
+          </span>
         </motion.div>
-        <span className="text-xs sm:text-sm font-medium text-slate-200 whitespace-nowrap">{dot.label[language]}</span>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
@@ -224,7 +231,7 @@ const ConnectDotsSection = () => {
                     style={{ opacity: hubGlow, background: 'radial-gradient(circle, rgba(71,229,194,0.45), transparent 70%)' }}
                   />
                   <img src={starAppsLogo} alt="" className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl" />
-                  <span className="absolute top-full mt-2 font-brand text-xs text-white tracking-widest whitespace-nowrap">STAR APPS</span>
+                  <span className="absolute top-full mt-2 px-2 py-0.5 rounded bg-night/85 font-brand text-xs text-white tracking-widest whitespace-nowrap">STAR APPS</span>
                 </motion.div>
               </div>
 
