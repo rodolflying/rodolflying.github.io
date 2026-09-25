@@ -14,11 +14,9 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/', label: 'navbar.home' },
-    { href: '/about', label: 'navbar.about' },
     { href: '/services', label: 'navbar.services' },
     { href: '/projects', label: 'navbar.projects' },
-    { href: '/downloads', label: 'navbar.downloads' },
-    { href: '/blog', label: 'navbar.blog' },
+    { href: '/about', label: 'navbar.about' },
     { href: '/contact', label: 'navbar.contact' },
   ];
 
@@ -28,7 +26,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-[#0a0a0a] bg-opacity-95 backdrop-blur-md z-50 border-b border-gray-800">
+    <nav className="fixed top-0 w-full bg-[#070B14] bg-opacity-95 backdrop-blur-md z-50 border-b border-night-line">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3">
           <Link href="/" className="flex items-center group">
@@ -37,8 +35,8 @@ const Navbar = () => {
               alt="Star Apps Logo"
               className="h-9 mr-2"
             />
-            <span className="text-lg font-['Orbitron'] font-bold text-white tracking-wider">
-              STAR <span className="text-[#00FFC8]">APPS</span>
+            <span className="text-lg font-brand font-bold text-white tracking-wider">
+              STAR <span className="text-star">APPS</span>
             </span>
           </Link>
 
@@ -49,13 +47,21 @@ const Navbar = () => {
                 href={link.href}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                   isActive(link.href)
-                    ? 'text-[#00FFC8] bg-[#00FFC8]/10 border border-[#00FFC8]/30'
-                    : 'text-gray-400 hover:text-[#00FFC8] hover:bg-[#00FFC8]/5'
+                    ? 'text-[#47E5C2] bg-[#47E5C2]/10 border border-[#47E5C2]/30'
+                    : 'text-slate-400 hover:text-[#47E5C2] hover:bg-[#47E5C2]/5'
                 }`}
               >
                 {t(link.label)}
               </Link>
             ))}
+
+            <Link
+              href="/contact?service=diagnostico"
+              className="ml-2 px-4 py-2 rounded-lg text-sm font-bold bg-[#47E5C2] text-[#070B14] hover:bg-[#47E5C2]/85 transition-colors"
+            >
+              {t('navbar.cta')}
+            </Link>
+
             <div className="ml-2">
               <LanguageSwitch />
             </div>
@@ -66,7 +72,7 @@ const Navbar = () => {
             <button
               type="button"
               onClick={toggleMenu}
-              className="text-gray-300 hover:text-[#00FFC8] transition-colors"
+              className="text-slate-300 hover:text-[#47E5C2] transition-colors"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -75,7 +81,7 @@ const Navbar = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-800 animate-in slide-in-from-top-2">
+          <div className="lg:hidden py-4 border-t border-night-line animate-in slide-in-from-top-2">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => (
                 <Link
@@ -83,14 +89,21 @@ const Navbar = () => {
                   href={link.href}
                   className={`px-4 py-3 rounded-md text-sm font-medium transition-all duration-300 ${
                     isActive(link.href)
-                      ? 'text-[#00FFC8] bg-[#00FFC8]/10 border-l-2 border-[#00FFC8]'
-                      : 'text-gray-400 hover:text-[#00FFC8] hover:bg-[#00FFC8]/5'
+                      ? 'text-[#47E5C2] bg-[#47E5C2]/10 border-l-2 border-[#47E5C2]'
+                      : 'text-slate-400 hover:text-[#47E5C2] hover:bg-[#47E5C2]/5'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t(link.label)}
                 </Link>
               ))}
+              <Link
+                href="/contact?service=diagnostico"
+                className="mt-2 px-4 py-3 rounded-md text-sm font-bold text-center bg-[#47E5C2] text-[#070B14]"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {t('navbar.cta')}
+              </Link>
             </div>
           </div>
         )}

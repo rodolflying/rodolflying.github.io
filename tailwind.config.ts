@@ -5,12 +5,23 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        brand: ['Orbitron', 'sans-serif'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        // Star Apps brand: night sky + the logo's mint + starlight gold
+        night: { DEFAULT: '#070B14', 900: '#0A1020', 800: '#0E1626', 700: '#131D31', line: '#1E2A40' },
+        star: { DEFAULT: '#47E5C2', soft: '#8DF0D8', deep: '#1FB894' },
+        gold: { DEFAULT: '#FFC857', soft: '#FFE2A3' },
+        sky: { star: '#7C9CFF' },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

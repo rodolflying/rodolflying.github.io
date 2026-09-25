@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage.js";
+import { sendContactEmails } from "./mailer.js";
 import { insertMessageSchema } from "../shared/schema.js";
 import { z } from "zod";
 
@@ -14,16 +15,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contact", async (req, res) => {
 
     try {
+      // Honeypot: bots fill the hidden field; pretend success and drop it.
+      if (req.body?.honey) {
+        return res.status(200).json({ success: true, message: "Message received successfully" });
+      }
+
       const messageData = insertMessageSchema.parse(req.body);
-      
-      // Here we would typically send an email notification as well
-      // but for simplicity we'll just store the message
-      
+
       await storage.createMessage(messageData);
-      
-      res.status(200).json({ 
-        success: true, 
-        message: "Message received successfully" 
+
+      // The message is already persisted, so an email failure must not fail the request.
+      try {
+        await sendContactEmails(messageData);
+      } catch (mailError) {
+        console.error("Contact email error:", mailError);
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Message received successfully"
       });
     } catch (error) {
       if (error instanceof z.ZodError) {

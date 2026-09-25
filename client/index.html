@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <!--
+      Static defaults for crawlers that don't run JS (WhatsApp, LinkedIn, Slack previews).
+      data-rh lets react-helmet-async take them over once the app mounts, so they are
+      replaced per page instead of duplicated.
+    -->
+    <title>Star Apps | Software a la medida, RPA e IA sin licencias</title>
+    <meta data-rh="true" name="description" content="Desarrollo de software a la medida, automatización RPA e integración de IA con código abierto. Sin licencias recurrentes, código 100% tuyo y soporte continuo." />
+    <meta data-rh="true" property="og:type" content="website" />
+    <meta data-rh="true" property="og:site_name" content="Star Apps" />
+    <meta data-rh="true" property="og:title" content="Star Apps | Software a la medida, RPA e IA sin licencias" />
+    <meta data-rh="true" property="og:description" content="Desarrollo de software a la medida, automatización RPA e integración de IA con código abierto. Sin licencias recurrentes, código 100% tuyo y soporte continuo." />
+    <meta data-rh="true" property="og:url" content="%VITE_SITE_URL%/" />
+    <meta data-rh="true" property="og:image" content="%VITE_SITE_URL%/og-default.png" />
+    <meta data-rh="true" name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- This script injects a replit badge into the page, please feel free to remove this line -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-badge-v3.js"></script>
   </body>
 </html>

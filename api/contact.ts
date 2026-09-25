@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createClient } from "@supabase/supabase-js";
+import { sendContactEmails } from "../server/mailer.js";
 
 // CORS headers
 const corsHeaders = {
@@ -70,6 +71,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         success: false,
         message: "Failed to save message",
       });
+    }
+
+    // The message is already persisted, so an email failure must not fail the request.
+    try {
+      await sendContactEmails({ name, email, subject, message });
+    } catch (mailError) {
+      console.error("Contact email error:", mailError);
     }
 
     return res.status(200).json({

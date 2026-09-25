@@ -7,9 +7,8 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-const API_URL = import.meta.env.PROD 
-  ? 'https://rodolflying-github-io.vercel.app'
-  : '';
+// Configured in client/.env (VITE_API_URL). Empty means same origin; dev always uses the local server.
+const API_URL = import.meta.env.PROD ? ((import.meta.env.VITE_API_URL as string | undefined) ?? '') : '';
 
 export async function apiRequest(
   method: string,

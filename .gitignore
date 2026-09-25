@@ -27,3 +27,18 @@ yarn-error.log*
 *.rar
 *.zip
 client/src/assets/BuscadorTrabajoPro.rar
+
+# Archivos personales (CVs, foto) fuera del repo público
+_privado/
+
+# Public build config (no secrets): site and API URLs
+!client/.env
+
+# Internal planning docs: mention the employer and internal systems. Never publish (the Pages repo is public).
+auditoria_*.md
+backlog.csv
+project_charter.md
+_historico_md/
+
+# Local Claude/editor config
+.claude/

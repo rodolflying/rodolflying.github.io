@@ -22,13 +22,13 @@ export const LanguageSwitch = ({ isMobile = false }: LanguageSwitchProps) => {
         />
         <label
           htmlFor={id}
-          className="cursor-pointer absolute top-0 left-0 right-0 bottom-0 bg-[#2A2A2A] rounded-full"
+          className="cursor-pointer absolute top-0 left-0 right-0 bottom-0 bg-[#1E2A40] rounded-full"
         >
           <span
             className={`absolute top-[3px] w-[24px] h-[24px] rounded-full transition-all duration-300 ${
               language === 'es' 
-                ? 'bg-[#FF2D55] right-[3px]' 
-                : 'bg-[#00FFC8] left-[3px]'
+                ? 'bg-[#FF7A85] right-[3px]' 
+                : 'bg-[#47E5C2] left-[3px]'
             }`}
           />
         </label>

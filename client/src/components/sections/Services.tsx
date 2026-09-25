@@ -68,49 +68,49 @@ const RpaSimulator = () => {
   }, [running]);
 
   return (
-    <div className="flex flex-col h-full justify-between p-4 font-mono text-[11px] md:text-xs text-[#00FFC8] bg-gray-950/80 rounded-lg">
+    <div className="flex flex-col h-full justify-between p-4 font-mono text-xs md:text-xs text-[#47E5C2] bg-night-900/80 rounded-lg">
       {/* Visual Pipeline */}
-      <div className="flex justify-between items-center bg-black/40 p-2.5 rounded border border-gray-800 mb-3">
+      <div className="flex justify-between items-center bg-black/40 p-2.5 rounded border border-night-line mb-3">
         <div className="flex flex-col items-center">
-          <div className="w-8 h-8 rounded-full bg-gray-950 border border-gray-700 flex items-center justify-center text-gray-400 font-sans font-bold">SAP</div>
-          <span className="text-[9px] text-gray-500 mt-1">Origen</span>
+          <div className="w-8 h-8 rounded-full bg-night-900 border border-slate-700 flex items-center justify-center text-slate-400 font-sans font-bold">SAP</div>
+          <span className="text-xs text-slate-400 mt-1">Origen</span>
         </div>
         <div className="flex-1 px-3 relative">
-          <div className="h-[2px] bg-gray-800 w-full" />
+          <div className="h-[2px] bg-slate-800 w-full" />
           {running && (
             <motion.div 
-              className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-[#00FFC8] -translate-y-1/2 shadow-[0_0_8px_#00FFC8]"
+              className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-[#47E5C2] -translate-y-1/2 shadow-[0_0_8px_#47E5C2]"
               animate={{ left: ['0%', '100%'] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
             />
           )}
         </div>
         <div className="flex flex-col items-center">
-          <div className="w-8 h-8 rounded-full bg-gray-950 border border-[#00FFC8]/40 flex items-center justify-center text-[#00FFC8]">
-            <Cpu className="w-4 h-4 text-[#00FFC8] animate-spin-slow" />
+          <div className="w-8 h-8 rounded-full bg-night-900 border border-[#47E5C2]/40 flex items-center justify-center text-[#47E5C2]">
+            <Cpu className="w-4 h-4 text-[#47E5C2] animate-spin-slow" />
           </div>
-          <span className="text-[9px] text-[#00FFC8] mt-1">Bot</span>
+          <span className="text-xs text-[#47E5C2] mt-1">Bot</span>
         </div>
         <div className="flex-1 px-3 relative">
-          <div className="h-[2px] bg-gray-800 w-full" />
+          <div className="h-[2px] bg-slate-800 w-full" />
           {running && (
             <motion.div 
-              className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-[#6B38FB] -translate-y-1/2 shadow-[0_0_8px_#6B38FB]"
+              className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-[#7C9CFF] -translate-y-1/2 shadow-[0_0_8px_#7C9CFF]"
               animate={{ left: ['0%', '100%'] }}
               transition={{ duration: 2, delay: 1, repeat: Infinity, ease: 'linear' }}
             />
           )}
         </div>
         <div className="flex flex-col items-center">
-          <div className="w-8 h-8 rounded-full bg-gray-950 border border-gray-750 flex items-center justify-center text-[#FF9500]">
-            <Database className="w-4 h-4 text-[#FF9500]" />
+          <div className="w-8 h-8 rounded-full bg-night-900 border border-slate-750 flex items-center justify-center text-[#FFC857]">
+            <Database className="w-4 h-4 text-[#FFC857]" />
           </div>
-          <span className="text-[9px] text-gray-500 mt-1">Destino</span>
+          <span className="text-xs text-slate-400 mt-1">Destino</span>
         </div>
       </div>
 
       {/* Terminal log output */}
-      <div className="flex-1 bg-black/85 rounded p-3 border border-gray-850 overflow-y-auto max-h-[130px] space-y-1 text-left min-h-[110px] shadow-inner">
+      <div className="flex-1 bg-black/85 rounded p-3 border border-night-line overflow-y-auto max-h-[130px] space-y-1 text-left min-h-[110px] shadow-inner">
         {logs.map((log, i) => (
           <div 
             key={i} 
@@ -118,8 +118,8 @@ const RpaSimulator = () => {
               log.includes('[SUCCESS]') || log.includes('[RPA]') 
                 ? 'text-white font-bold' 
                 : log.includes('[SYS]') 
-                ? 'text-gray-400' 
-                : 'text-[#00FFC8]'
+                ? 'text-slate-400' 
+                : 'text-[#47E5C2]'
             }
           >
             {log}
@@ -128,14 +128,14 @@ const RpaSimulator = () => {
       </div>
 
       {/* Control bar */}
-      <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-850">
+      <div className="flex items-center justify-between mt-3 pt-2 border-t border-night-line">
         <div className="flex items-center space-x-2">
           <div className={`w-2 h-2 rounded-full ${running ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
-          <span className="text-[10px] text-gray-400 font-sans">{running ? `EJECUTANDO - ${progress}%` : 'COMPLETADO'}</span>
+          <span className="text-xs text-slate-400 font-sans">{running ? `EJECUTANDO - ${progress}%` : 'COMPLETADO'}</span>
         </div>
         <button 
           onClick={() => { setLogs([]); setRunning(true); setProgress(0); }}
-          className="px-2.5 py-1 text-[10px] font-sans font-bold bg-[#00FFC8]/10 border border-[#00FFC8] rounded text-[#00FFC8] hover:bg-[#00FFC8]/25 transition active:scale-95"
+          className="px-2.5 py-1 text-xs font-sans font-bold bg-[#47E5C2]/10 border border-[#47E5C2] rounded text-[#47E5C2] hover:bg-[#47E5C2]/25 transition active:scale-95"
         >
           Reiniciar Bot
         </button>
@@ -183,49 +183,49 @@ const AiAgentSimulator = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full justify-between p-4 font-mono text-[11px] md:text-xs text-[#FF2D55] bg-gray-950/80 rounded-lg">
+    <div className="flex flex-col h-full justify-between p-4 font-mono text-xs md:text-xs text-[#FF7A85] bg-night-900/80 rounded-lg">
       {/* Node Network Visualizer */}
-      <div className="h-10 flex items-center justify-around bg-black/45 border border-gray-800 rounded mb-3 px-4 relative overflow-hidden">
+      <div className="h-10 flex items-center justify-around bg-black/45 border border-night-line rounded mb-3 px-4 relative overflow-hidden">
         {[...Array(6)].map((_, i) => (
           <motion.div 
             key={i} 
-            className="w-2 h-2 rounded-full bg-[#FF2D55]/60 z-10"
+            className="w-2 h-2 rounded-full bg-[#FF7A85]/60 z-10"
             animate={typing ? {
               scale: [1, 1.4, 1],
-              backgroundColor: ['#FF2D55', '#6B38FB', '#FF2D55']
+              backgroundColor: ['#FF7A85', '#7C9CFF', '#FF7A85']
             } : {}}
             transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.25 }}
           />
         ))}
         {/* Animated connecting canvas background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FF2D55]/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#FF7A85]/5 to-transparent pointer-events-none" />
       </div>
 
       {/* Terminal log output */}
-      <div className="flex-1 bg-black/85 rounded p-3 border border-gray-850 overflow-y-auto max-h-[130px] space-y-2 text-left min-h-[110px]">
+      <div className="flex-1 bg-black/85 rounded p-3 border border-night-line overflow-y-auto max-h-[130px] space-y-2 text-left min-h-[110px]">
         {messages.filter(Boolean).map((msg, i) => (
           <div key={i} className={`rounded px-2 py-1 leading-relaxed ${
             msg.sender === 'user' 
-              ? 'bg-[#121212] border border-gray-850 text-gray-300' 
+              ? 'bg-[#070B14] border border-night-line text-slate-300' 
               : msg.type === 'thought'
-              ? 'text-gray-500 italic text-[10px]'
+              ? 'text-slate-400 italic text-xs'
               : msg.type === 'action'
-              ? 'text-[#6B38FB]'
-              : 'text-white border-l-2 border-[#FF2D55] pl-2'
+              ? 'text-[#7C9CFF]'
+              : 'text-white border-l-2 border-[#FF7A85] pl-2'
           }`}>
-            <span className="text-[8px] block text-gray-500 uppercase tracking-wider mb-0.5">
+            <span className="text-xs block text-slate-400 uppercase tracking-wider mb-0.5">
               {msg.sender === 'user' ? 'Cliente' : 'Agente IA'}
             </span>
             <span className="whitespace-pre-wrap">{msg.text}</span>
           </div>
         ))}
-        {typing && <span className="inline-block animate-pulse text-[#FF2D55] text-[10px]">▋ IA pensando...</span>}
+        {typing && <span className="inline-block animate-pulse text-[#FF7A85] text-xs">▋ IA pensando...</span>}
       </div>
 
       {/* Control bar */}
-      <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-850 text-[10px] text-gray-400 font-sans">
+      <div className="flex items-center justify-between mt-3 pt-2 border-t border-night-line text-xs text-slate-400 font-sans">
         <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${typing ? 'bg-pink-500 animate-pulse' : 'bg-gray-600'}`} />
+          <div className={`w-2 h-2 rounded-full ${typing ? 'bg-pink-500 animate-pulse' : 'bg-slate-600'}`} />
           <span>INFERENCIA: {typing ? `${kpis.tokensSec} tok/s` : 'OK'}</span>
         </div>
         <div>COSTO: ${kpis.cost} USD</div>
@@ -242,22 +242,22 @@ const FullStackSimulator = () => {
 
   const containerWidths = {
     desktop: 'w-full',
-    tablet: 'w-3/4 border-x border-dashed border-gray-700',
-    mobile: 'w-[180px] md:w-[200px] border-x border-dashed border-gray-700'
+    tablet: 'w-3/4 border-x border-dashed border-slate-700',
+    mobile: 'w-[180px] md:w-[200px] border-x border-dashed border-slate-700'
   };
 
   return (
-    <div className="flex flex-col h-full justify-between p-3 text-white bg-gray-950/80 rounded-lg">
+    <div className="flex flex-col h-full justify-between p-3 text-white bg-night-900/80 rounded-lg">
       {/* Device frame controls */}
-      <div className="flex justify-between items-center border-b border-gray-850 pb-2 mb-2">
-        <span className="text-[9px] uppercase font-['Orbitron'] tracking-wider text-gray-500">Vista de Dispositivo</span>
-        <div className="flex space-x-1 bg-black p-0.5 rounded border border-gray-850">
+      <div className="flex justify-between items-center border-b border-night-line pb-2 mb-2">
+        <span className="text-xs uppercase font-display tracking-wider text-slate-400">Vista de Dispositivo</span>
+        <div className="flex space-x-1 bg-black p-0.5 rounded border border-night-line">
           {(['desktop', 'tablet', 'mobile'] as const).map(d => (
             <button
               key={d}
               onClick={() => setDevice(d)}
-              className={`px-1.5 py-0.5 rounded text-[8px] font-sans font-bold capitalize transition ${
-                device === d ? 'bg-[#FF9500] text-black shadow' : 'text-gray-400 hover:text-white'
+              className={`px-1.5 py-0.5 rounded text-xs font-sans font-bold capitalize transition ${
+                device === d ? 'bg-[#FFC857] text-black shadow' : 'text-slate-400 hover:text-white'
               }`}
             >
               {d}
@@ -269,13 +269,13 @@ const FullStackSimulator = () => {
       {/* Mini App Screen */}
       <div className="flex-1 flex items-center justify-center overflow-hidden min-h-[130px] bg-black/30 rounded p-1">
         <motion.div 
-          className={`h-full bg-[#151515] rounded border border-gray-800 flex flex-col p-2 transition-all duration-300 ${containerWidths[device]}`}
+          className={`h-full bg-[#0E1626] rounded border border-night-line flex flex-col p-2 transition-all duration-300 ${containerWidths[device]}`}
           layout
         >
           {/* Mock App Header */}
-          <div className="flex justify-between items-center border-b border-gray-850 pb-1 mb-1.5">
-            <span className="text-[7px] font-['Orbitron'] font-bold text-[#FF9500]">STAR_DASH</span>
-            <div className="w-1.5 h-1.5 rounded-full bg-[#FF9500]/70" />
+          <div className="flex justify-between items-center border-b border-night-line pb-1 mb-1.5">
+            <span className="text-[7px] font-display font-bold text-[#FFC857]">STAR_DASH</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#FFC857]/70" />
           </div>
 
           {/* Metric Cards Grid */}
@@ -283,38 +283,38 @@ const FullStackSimulator = () => {
             <button 
               onClick={() => setChartMetric('users')}
               className={`p-1 rounded border text-left transition select-none ${
-                chartMetric === 'users' ? 'border-[#FF9500] bg-[#FF9500]/5' : 'border-gray-850 bg-gray-900/40'
+                chartMetric === 'users' ? 'border-[#FFC857] bg-[#FFC857]/5' : 'border-night-line bg-slate-900/40'
               }`}
             >
-              <span className="text-[6px] text-gray-500 block">Clientes</span>
-              <span className="text-[9px] font-bold text-white">{users}</span>
+              <span className="text-[6px] text-slate-400 block">Clientes</span>
+              <span className="text-xs font-bold text-white">{users}</span>
             </button>
             <button 
               onClick={() => setChartMetric('revenue')}
               className={`p-1 rounded border text-left transition select-none ${
-                chartMetric === 'revenue' ? 'border-[#FF9500] bg-[#FF9500]/5' : 'border-gray-850 bg-gray-900/40'
+                chartMetric === 'revenue' ? 'border-[#FFC857] bg-[#FFC857]/5' : 'border-night-line bg-slate-900/40'
               }`}
             >
-              <span className="text-[6px] text-gray-500 block">Ventas</span>
-              <span className="text-[9px] font-bold text-white">$4.9K</span>
+              <span className="text-[6px] text-slate-400 block">Ventas</span>
+              <span className="text-xs font-bold text-white">$4.9K</span>
             </button>
           </div>
 
           {/* Simple Vector Chart bar simulation */}
-          <div className="flex-1 bg-gray-950 rounded p-1 flex items-end justify-between gap-1 border border-gray-850 min-h-[35px]">
+          <div className="flex-1 bg-night-900 rounded p-1 flex items-end justify-between gap-1 border border-night-line min-h-[35px]">
             {chartMetric === 'users' ? (
               <>
-                <motion.div className="bg-[#FF9500] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '35%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
-                <motion.div className="bg-[#FF9500] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '65%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
-                <motion.div className="bg-[#FF9500] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '45%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
-                <motion.div className="bg-[#FF9500] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '85%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#FFC857] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '35%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#FFC857] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '65%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#FFC857] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '45%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#FFC857] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '85%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
               </>
             ) : (
               <>
-                <motion.div className="bg-[#00FFC8] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '20%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
-                <motion.div className="bg-[#00FFC8] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '50%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
-                <motion.div className="bg-[#00FFC8] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '75%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
-                <motion.div className="bg-[#00FFC8] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '95%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#47E5C2] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '20%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#47E5C2] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '50%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#47E5C2] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '75%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
+                <motion.div className="bg-[#47E5C2] w-full rounded-t" initial={{ height: 0 }} animate={{ height: '95%' }} transition={{ duration: 0.3 }} style={{ maxHeight: '100%' }} />
               </>
             )}
           </div>
@@ -322,11 +322,11 @@ const FullStackSimulator = () => {
       </div>
 
       {/* Control Panel Footer */}
-      <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-gray-850 text-[9px] text-gray-500">
+      <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-night-line text-xs text-slate-400">
         <span>Prueba Interactiva: Alterna pestañas</span>
         <button 
           onClick={() => setUsers(prev => prev + 1)}
-          className="text-[#FF9500] font-bold hover:underline select-none"
+          className="text-[#FFC857] font-bold hover:underline select-none"
         >
           + Agregar Cliente
         </button>
@@ -351,28 +351,28 @@ const DataScrapingSimulator = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full justify-between p-4 font-mono text-[11px] md:text-xs text-[#6B38FB] bg-gray-950/80 rounded-lg">
+    <div className="flex flex-col h-full justify-between p-4 font-mono text-xs md:text-xs text-[#7C9CFF] bg-night-900/80 rounded-lg">
       {/* Visual Funnel ETL Animation */}
-      <div className="relative h-16 bg-black/45 border border-gray-850 rounded flex items-center justify-between px-6 overflow-hidden mb-3">
+      <div className="relative h-16 bg-black/45 border border-night-line rounded flex items-center justify-between px-6 overflow-hidden mb-3">
         {/* Source Nodes */}
         <div className="flex flex-col gap-1 z-10">
-          <div className="px-1 py-0.5 rounded bg-gray-900 border border-gray-700 text-[7px] text-gray-400">Web sites</div>
-          <div className="px-1 py-0.5 rounded bg-gray-900 border border-gray-700 text-[7px] text-gray-400">SAP / ERP</div>
+          <div className="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[7px] text-slate-400">Web sites</div>
+          <div className="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[7px] text-slate-400">SAP / ERP</div>
         </div>
 
         {/* Funnel SVG Icon */}
-        <div className="w-10 h-10 flex items-center justify-center bg-gray-950 border border-[#6B38FB]/30 rounded-full relative z-10 shadow-lg">
-          <Database className="w-5 h-5 text-[#6B38FB] animate-pulse" />
+        <div className="w-10 h-10 flex items-center justify-center bg-night-900 border border-[#7C9CFF]/30 rounded-full relative z-10 shadow-lg">
+          <Database className="w-5 h-5 text-[#7C9CFF] animate-pulse" />
         </div>
 
         {/* Output */}
         <div className="flex flex-col items-center z-10">
-          <div className="px-1.5 py-0.5 rounded bg-[#6B38FB]/10 border border-[#6B38FB] text-[8px] text-white font-bold">SQL / DW</div>
+          <div className="px-1.5 py-0.5 rounded bg-[#7C9CFF]/10 border border-[#7C9CFF] text-xs text-white font-bold">SQL / DW</div>
         </div>
 
         {/* Running particles */}
         <motion.div 
-          className="absolute w-1.5 h-1.5 rounded-full bg-[#6B38FB] shadow-[0_0_6px_#6B38FB]"
+          className="absolute w-1.5 h-1.5 rounded-full bg-[#7C9CFF] shadow-[0_0_6px_#7C9CFF]"
           animate={{
             x: [30, 110, 210],
             y: [15, 30, 30],
@@ -381,7 +381,7 @@ const DataScrapingSimulator = () => {
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div 
-          className="absolute w-1 h-1 rounded-full bg-[#00FFC8] shadow-[0_0_6px_#00FFC8]"
+          className="absolute w-1 h-1 rounded-full bg-[#47E5C2] shadow-[0_0_6px_#47E5C2]"
           animate={{
             x: [30, 110, 210],
             y: [45, 30, 30],
@@ -392,23 +392,23 @@ const DataScrapingSimulator = () => {
       </div>
 
       {/* Structured metrics display */}
-      <div className="flex-1 bg-black/85 border border-gray-850 rounded p-3 flex flex-col justify-center gap-1.5 shadow-inner">
+      <div className="flex-1 bg-black/85 border border-night-line rounded p-3 flex flex-col justify-center gap-1.5 shadow-inner">
         <div>
-          <span className="text-[8px] text-gray-500 uppercase tracking-wider block">Registros Indexados</span>
-          <span className="text-lg md:text-xl font-bold font-['Orbitron'] text-white">
+          <span className="text-xs text-slate-400 uppercase tracking-wider block">Registros Indexados</span>
+          <span className="text-lg md:text-xl font-bold font-display text-white">
             {records.toLocaleString('es-CL')}
           </span>
         </div>
-        <div className="flex justify-between items-center text-[9px] border-t border-gray-850 pt-1.5 text-gray-400">
+        <div className="flex justify-between items-center text-xs border-t border-night-line pt-1.5 text-slate-400">
           <span>ETL Speed: <b className="text-white">{speed} filas/s</b></span>
-          <span className="text-[#00FFC8] font-bold">Base de Datos: ONLINE</span>
+          <span className="text-[#47E5C2] font-bold">Base de Datos: ONLINE</span>
         </div>
       </div>
 
       {/* Control bar */}
-      <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-850 text-[10px] text-gray-500 font-sans">
+      <div className="flex items-center justify-between mt-3 pt-2 border-t border-night-line text-xs text-slate-400 font-sans">
         <span>Infraestructura AWS/Redshift</span>
-        <span className="text-[#6B38FB] font-bold">Duplicados Depurados [OK]</span>
+        <span className="text-[#7C9CFF] font-bold">Duplicados Depurados [OK]</span>
       </div>
     </div>
   );
@@ -442,17 +442,17 @@ const ConsultingSimulator = () => {
   };
 
   return (
-    <div className="flex flex-col h-full justify-between p-3 text-white bg-gray-950/80 rounded-lg">
+    <div className="flex flex-col h-full justify-between p-3 text-white bg-night-900/80 rounded-lg">
       {/* Node Interactive Map */}
-      <div className="h-16 bg-black/60 border border-gray-850 rounded flex items-center justify-around px-2 relative mb-2.5">
+      <div className="h-16 bg-black/60 border border-night-line rounded flex items-center justify-around px-2 relative mb-2.5">
         {(['client', 'gateway', 'backend', 'db'] as const).map(node => (
           <button
             key={node}
             onClick={() => setSelectedNode(node)}
-            className={`w-9 h-9 rounded-lg flex items-center justify-center font-['Orbitron'] font-extrabold text-[9px] border transition select-none ${
+            className={`w-9 h-9 rounded-lg flex items-center justify-center font-display font-extrabold text-xs border transition select-none ${
               selectedNode === node 
-                ? 'bg-[#00FFC8] text-black border-[#00FFC8] shadow-lg shadow-[#00FFC8]/25' 
-                : 'bg-gray-900 text-gray-400 border-gray-800 hover:border-gray-700'
+                ? 'bg-[#47E5C2] text-black border-[#47E5C2] shadow-lg shadow-[#47E5C2]/25' 
+                : 'bg-slate-900 text-slate-400 border-night-line hover:border-slate-700'
             }`}
           >
             {node === 'client' && 'CLI'}
@@ -462,30 +462,30 @@ const ConsultingSimulator = () => {
           </button>
         ))}
         {/* Connection arrow labels */}
-        <div className="absolute inset-x-0 bottom-1 text-center text-[7px] text-gray-500 pointer-events-none uppercase tracking-wider">
+        <div className="absolute inset-x-0 bottom-1 text-center text-[7px] text-slate-400 pointer-events-none uppercase tracking-wider">
           Haz clic en un nodo para auditar
         </div>
       </div>
 
       {/* Node Description Details Card */}
-      <div className="flex-1 bg-black/85 border border-gray-850 rounded p-2.5 text-left">
-        <div className="flex justify-between items-center border-b border-gray-850 pb-1 mb-1.5">
-          <h4 className="text-[10px] font-bold font-['Orbitron'] text-[#00FFC8]">
+      <div className="flex-1 bg-black/85 border border-night-line rounded p-2.5 text-left">
+        <div className="flex justify-between items-center border-b border-night-line pb-1 mb-1.5">
+          <h4 className="text-xs font-bold font-display text-[#47E5C2]">
             {nodeInfo[selectedNode].title}
           </h4>
-          <span className="font-mono text-[8px] text-gray-500 bg-gray-900 border border-gray-800 px-1 rounded">
+          <span className="font-mono text-xs text-slate-400 bg-slate-900 border border-night-line px-1 rounded">
             {nodeInfo[selectedNode].latency}
           </span>
         </div>
-        <p className="text-[10px] leading-relaxed text-gray-300">
+        <p className="text-xs leading-relaxed text-slate-300">
           {nodeInfo[selectedNode].desc}
         </p>
       </div>
 
       {/* Status Bar */}
-      <div className="flex items-center justify-between mt-2 pt-1.5 text-[9px] text-gray-500 border-t border-gray-850">
+      <div className="flex items-center justify-between mt-2 pt-1.5 text-xs text-slate-400 border-t border-night-line">
         <span>DIAGRAMA DE ARQUITECTURA</span>
-        <span className="text-[#00FFC8] font-bold">DISPONIBILIDAD: 99.9%</span>
+        <span className="text-[#47E5C2] font-bold">SIMULACIÓN</span>
       </div>
     </div>
   );
@@ -506,13 +506,13 @@ const Services = () => {
         'RPA solutions for real-time monitoring',
         'Automation of SAP transactions and ERPs',
         'ETL report optimization with Power BI',
-        'Hardware maintenance automation (Fracttal)'
+        'Maintenance platform automation (CMMS)'
       ],
       es: [
         'Soluciones RPA para monitoreo en tiempo real',
         'Automatización de transacciones en SAP y ERPs',
         'Optimización de reportes ETL con Power BI',
-        'Automatización de mantenimiento (Fracttal)'
+        'Automatización de plataformas de mantenimiento (CMMS)'
       ]
     },
     webdev: {
@@ -584,19 +584,19 @@ const Services = () => {
           phase: 'Phase 1',
           title: 'Agile Discovery',
           desc: 'One-on-one diagnostic sessions to map workflows and define immediate Quick Wins.',
-          color: '#00FFC8'
+          color: '#47E5C2'
         },
         {
           phase: 'Phase 2',
           title: 'Design & Integration',
           desc: 'Modeling of interoperable systems with your primary systems (SAP, Excel, Web Portals).',
-          color: '#6B38FB'
+          color: '#7C9CFF'
         },
         {
           phase: 'Phase 3',
           title: 'Deployment',
           desc: 'Structured deployment and comprehensive testing ensuring full business operational continuity.',
-          color: '#FF2D55'
+          color: '#FF7A85'
         }
       ],
 
@@ -637,38 +637,38 @@ const Services = () => {
         {
           title: '1. Context & Challenge',
           desc: 'We understand your operation from end to end. We identify bottlenecks and redundant tasks that slow down your team\'s productivity to automate them.',
-          icon: <HelpCircle className="w-8 h-8 text-[#FF9500]" />,
-          color: '#FF9500'
+          icon: <HelpCircle className="w-8 h-8 text-[#FFC857]" />,
+          color: '#FFC857'
         },
         {
           title: '2. Open Source Solution',
           desc: 'Custom solutions 100% free of annual software licenses from third parties. The client is the exclusive owner of the code; the only recurring costs are the actual usage of cloud servers or AI APIs.',
-          icon: <Layers className="w-8 h-8 text-[#00FFC8]" />,
-          color: '#00FFC8'
+          icon: <Layers className="w-8 h-8 text-[#47E5C2]" />,
+          color: '#47E5C2'
         },
         {
           title: '4. Transparency & Assumptions',
           desc: 'Clear scope boundaries and access requirements from the start of development. No unexpected "exclusions" or extra charges due to missing software modules.',
-          icon: <ClipboardList className="w-8 h-8 text-[#6B38FB]" />,
-          color: '#6B38FB'
+          icon: <ClipboardList className="w-8 h-8 text-[#7C9CFF]" />,
+          color: '#7C9CFF'
         },
         {
           title: '5. Fair Continuous Support',
           desc: 'Monitoring, maintenance, and rapid recovery from incidents through flexible support pools and pay-per-use. Unused support hours roll over, with no abusive penalties.',
-          icon: <RefreshCw className="w-8 h-8 text-[#FF2D55]" />,
-          color: '#FF2D55'
+          icon: <RefreshCw className="w-8 h-8 text-[#FF7A85]" />,
+          color: '#FF7A85'
         },
         {
           title: '6. Milestone Investment',
           desc: 'Transparent budget segmented by milestones (Kick-off, Delivery, Production). $0 licensing costs. Cloud server costs billed at actual provider rates.',
-          icon: <Coins className="w-8 h-8 text-[#00FFC8]" />,
-          color: '#00FFC8'
+          icon: <Coins className="w-8 h-8 text-[#47E5C2]" />,
+          color: '#47E5C2'
         },
         {
           title: '7. Assured Guarantee',
           desc: '3 to 6-month technical guarantee. By delivering open and documented source code, your technical team can audit, modify, and scale it in the future independently.',
-          icon: <ShieldCheck className="w-8 h-8 text-[#FF9500]" />,
-          color: '#FF9500'
+          icon: <ShieldCheck className="w-8 h-8 text-[#FFC857]" />,
+          color: '#FFC857'
         }
       ]
     },
@@ -683,19 +683,19 @@ const Services = () => {
           phase: 'Fase 1',
           title: 'Mapeo Ágil (Discovery)',
           desc: 'Sesiones de diagnóstico uno a uno para levantar flujos y definir Quick Wins inmediatos.',
-          color: '#00FFC8'
+          color: '#47E5C2'
         },
         {
           phase: 'Fase 2',
           title: 'Diseño e Integración',
           desc: 'Modelado de sistemas interoperables con tus plataformas de cabecera (SAP, Excel, Portales web).',
-          color: '#6B38FB'
+          color: '#7C9CFF'
         },
         {
           phase: 'Fase 3',
           title: 'Puesta en Marcha',
           desc: 'Despliegue ordenado y pruebas exhaustivas garantizando continuidad operativa total.',
-          color: '#FF2D55'
+          color: '#FF7A85'
         }
       ],
 
@@ -736,38 +736,38 @@ const Services = () => {
         {
           title: '1. Contexto y Desafío',
           desc: 'Entendemos tu operación de punta a punta. Identificamos los cuellos de botella y las tareas redundantes que frenan la productividad de tu equipo para automatizarlas.',
-          icon: <HelpCircle className="w-8 h-8 text-[#FF9500]" />,
-          color: '#FF9500'
+          icon: <HelpCircle className="w-8 h-8 text-[#FFC857]" />,
+          color: '#FFC857'
         },
         {
           title: '2. Solución Open Source',
           desc: 'Soluciones a la medida 100% libres de licencias anuales de software de terceros. El cliente es dueño exclusivo del código; los únicos costos recurrentes son los consumos puros de servidores nube o APIs de IA.',
-          icon: <Layers className="w-8 h-8 text-[#00FFC8]" />,
-          color: '#00FFC8'
+          icon: <Layers className="w-8 h-8 text-[#47E5C2]" />,
+          color: '#47E5C2'
         },
         {
           title: '4. Transparencia y Supuestos',
           desc: 'Límites claros del alcance y requerimientos de accesos desde el inicio del desarrollo. No habrá "exclusiones" inesperadas ni cobros adicionales por carencia de módulos de software.',
-          icon: <ClipboardList className="w-8 h-8 text-[#6B38FB]" />,
-          color: '#6B38FB'
+          icon: <ClipboardList className="w-8 h-8 text-[#7C9CFF]" />,
+          color: '#7C9CFF'
         },
         {
           title: '5. Soporte Continuo Justo',
           desc: 'Monitoreo, mantenimiento y recuperación rápida de incidentes mediante bolsas de soporte flexibles y pago por consumo. Las horas de soporte sin utilizar se transfieren, sin penalizaciones.',
-          icon: <RefreshCw className="w-8 h-8 text-[#FF2D55]" />,
-          color: '#FF2D55'
+          icon: <RefreshCw className="w-8 h-8 text-[#FF7A85]" />,
+          color: '#FF7A85'
         },
         {
           title: '6. Inversión Comercial por Hitos',
           desc: 'Presupuesto transparente segmentado por hitos (Kick-off, Entrega, Producción). Licenciamiento a costo $0. Costos de servidores en la nube a valor real de consumo directo.',
-          icon: <Coins className="w-8 h-8 text-[#00FFC8]" />,
-          color: '#00FFC8'
+          icon: <Coins className="w-8 h-8 text-[#47E5C2]" />,
+          color: '#47E5C2'
         },
         {
           title: '7. Garantía Asegurada',
           desc: 'Garantía técnica de 3 a 6 meses. Al entregarse código fuente abierto y documentado, tu equipo técnico podrá auditarlo, modificarlo y escalarlo en el futuro de forma independiente.',
-          icon: <ShieldCheck className="w-8 h-8 text-[#FF9500]" />,
-          color: '#FF9500'
+          icon: <ShieldCheck className="w-8 h-8 text-[#FFC857]" />,
+          color: '#FFC857'
         }
       ]
     }
@@ -781,7 +781,7 @@ const Services = () => {
       id: 'automation',
       icon: <Cpu className="w-8 h-8" />,
       title: t('services.automation.title'),
-      color: '#00FFC8',
+      color: '#47E5C2',
       shortDesc: {
         en: 'Robotic Process Automation mapping real-time triggers to legacy platforms like SAP or custom APIs.',
         es: 'Modelado y diseño de robots RPA conectados en tiempo real a ERPs heredados (SAP) o plataformas locales.'
@@ -791,7 +791,7 @@ const Services = () => {
       id: 'backend',
       icon: <Server className="w-8 h-8" />,
       title: t('services.backend.title'),
-      color: '#FF2D55',
+      color: '#FF7A85',
       shortDesc: {
         en: 'Custom Intelligent Agents deploying open LLM models for cognitive corporate document routing.',
         es: 'Integración y tuning de modelos LLM (Gemini, Llama) para desplegar agentes autónomos y análisis cognitivo.'
@@ -801,7 +801,7 @@ const Services = () => {
       id: 'webdev',
       icon: <Globe className="w-8 h-8" />,
       title: t('services.webdev.title'),
-      color: '#FF9500',
+      color: '#FFC857',
       shortDesc: {
         en: 'High-performance React full stack dashboards with real-time reactive charting.',
         es: 'Desarrollo frontend React/TS y backend serverless con dashboards interactivos y telemetría de datos.'
@@ -811,7 +811,7 @@ const Services = () => {
       id: 'webscraping',
       icon: <Database className="w-8 h-8" />,
       title: t('services.webscraping.title'),
-      color: '#6B38FB',
+      color: '#7C9CFF',
       shortDesc: {
         en: 'Automated ETL processing streams parsing millions of raw files into secure target databases.',
         es: 'Pipelines masivos de web scraping y flujos ETL para procesar e indexar millones de registros sin fallas.'
@@ -821,7 +821,7 @@ const Services = () => {
       id: 'consulting',
       icon: <BookOpen className="w-8 h-8" />,
       title: t('services.consulting.title'),
-      color: '#00FFC8',
+      color: '#47E5C2',
       shortDesc: {
         en: 'Digital architecture reviews to transition workflows into cost-effective open source tools.',
         es: 'Auditoría y diseño de arquitecturas en la nube para migrar sistemas propietarios hacia código abierto.'
@@ -830,7 +830,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-[#151515] relative overflow-hidden">
+    <section id="services" className="py-20 bg-[#0E1626] relative overflow-hidden">
       {/* Visual Hex Background Overlay */}
       <div className="absolute inset-0 hex-pattern opacity-[0.02] pointer-events-none" />
 
@@ -844,15 +844,15 @@ const Services = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-['Orbitron'] font-bold text-white mb-4 uppercase tracking-wider">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 uppercase tracking-wider">
             {t('services.title')}
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto text-xs md:text-sm">
+          <p className="text-slate-400 max-w-xl mx-auto text-xs md:text-sm">
             {language === 'es' 
               ? 'Haz clic en cada servicio para ver su simulador de funcionamiento en tiempo real.'
               : 'Click on each service to interact with its live functional simulator.'}
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#00FFC8] to-[#6B38FB] mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#47E5C2] to-[#7C9CFF] mx-auto mt-4"></div>
         </motion.div>
         
         {/* Interactive Services Console Split Layout */}
@@ -869,8 +869,8 @@ const Services = () => {
                   onClick={() => setActiveServiceId(service.id)}
                   className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 relative overflow-hidden ${
                     isActive 
-                      ? 'bg-[#1e1e1e] shadow-lg border-opacity-100' 
-                      : 'bg-[#181818]/60 hover:bg-[#1e1e1e]/40 border-opacity-20 hover:border-opacity-40'
+                      ? 'bg-[#0E1626] shadow-lg border-opacity-100' 
+                      : 'bg-[#0E1626]/60 hover:bg-[#0E1626]/40 border-opacity-20 hover:border-opacity-40'
                   }`}
                   style={{ 
                     borderColor: service.color,
@@ -889,7 +889,7 @@ const Services = () => {
                       {service.icon}
                     </div>
                     <div>
-                      <h3 className="font-['Orbitron'] font-bold text-sm md:text-base text-white flex items-center">
+                      <h3 className="font-display font-bold text-sm md:text-base text-white flex items-center">
                         {service.title}
                         {isActive && (
                           <span className="ml-2 w-1.5 h-1.5 rounded-full bg-green-500 animate-ping" />
@@ -898,7 +898,7 @@ const Services = () => {
                     </div>
                   </div>
                   
-                  <p className="text-gray-400 text-xs leading-relaxed pl-12 pr-4">
+                  <p className="text-slate-400 text-xs leading-relaxed pl-12 pr-4">
                     {language === 'es' ? service.shortDesc.es : service.shortDesc.en}
                   </p>
 
@@ -920,10 +920,10 @@ const Services = () => {
 
           {/* Right Column: Console Mockup Panel (7 Columns span) */}
           <div className="lg:col-span-7 flex flex-col">
-            <div className="w-full bg-[#111111] border border-gray-800 rounded-xl overflow-hidden shadow-2xl flex flex-col h-full min-h-[340px]">
+            <div className="w-full bg-[#0A1020] border border-night-line rounded-xl overflow-hidden shadow-2xl flex flex-col h-full min-h-[340px]">
               
               {/* Window Header */}
-              <div className="bg-[#181818] px-4 py-3 border-b border-gray-850 flex items-center justify-between">
+              <div className="bg-[#0E1626] px-4 py-3 border-b border-night-line flex items-center justify-between">
                 {/* Simulated buttons */}
                 <div className="flex space-x-1.5">
                   <div className="w-3 h-3 rounded-full bg-[#FF5F56] shadow" />
@@ -931,13 +931,13 @@ const Services = () => {
                   <div className="w-3 h-3 rounded-full bg-[#27C93F] shadow" />
                 </div>
                 {/* Title */}
-                <span className="font-['Orbitron'] text-[10px] tracking-widest text-gray-500 font-bold uppercase">
+                <span className="font-display text-xs tracking-widest text-slate-400 font-bold uppercase">
                   {services.find(s => s.id === activeServiceId)?.title}
                 </span>
                 {/* Pulse */}
                 <div className="flex items-center space-x-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#00FFC8] animate-pulse" />
-                  <span className="text-[8px] font-['Orbitron'] text-[#00FFC8] font-bold">ONLINE</span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#47E5C2] animate-pulse" />
+                  <span className="text-xs font-display text-[#47E5C2] font-bold">ONLINE</span>
                 </div>
               </div>
 
@@ -973,13 +973,13 @@ const Services = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-['Orbitron'] font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
             {proposal.methodology_title}
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-xs md:text-sm mb-4">
+          <p className="text-slate-400 max-w-2xl mx-auto text-xs md:text-sm mb-4">
             {proposal.methodology_subtitle}
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#6B38FB] to-[#FF2D55] mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#7C9CFF] to-[#FF7A85] mx-auto"></div>
         </motion.div>
 
         {/* Horizontal Methodology layout with SVG Laser Connector */}
@@ -997,15 +997,15 @@ const Services = () => {
               />
               <defs>
                 <linearGradient id="methodology-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#00FFC8" />
-                  <stop offset="50%" stopColor="#6B38FB" />
-                  <stop offset="100%" stopColor="#FF2D55" />
+                  <stop offset="0%" stopColor="#47E5C2" />
+                  <stop offset="50%" stopColor="#7C9CFF" />
+                  <stop offset="100%" stopColor="#FF7A85" />
                 </linearGradient>
               </defs>
               {/* Laser animation overlay */}
               <motion.path 
                 d="M 166,75 C 333,20 333,130 500,75 C 666,20 666,130 833,75" 
-                stroke="#00FFC8" 
+                stroke="#47E5C2" 
                 strokeWidth="2.5"
                 strokeDasharray="40 1000"
                 strokeLinecap="round"
@@ -1019,7 +1019,7 @@ const Services = () => {
             {proposal.methodology.map((step, idx) => (
               <motion.div 
                 key={idx}
-                className="relative p-6 rounded-xl border border-gray-850 bg-[#181818]/80 hover:bg-[#1e1e1e] hover:border-gray-750 transition-all duration-300 shadow-lg"
+                className="relative p-6 rounded-xl border border-night-line bg-[#0E1626]/80 hover:bg-[#0E1626] hover:border-slate-750 transition-all duration-300 shadow-lg"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -1027,19 +1027,19 @@ const Services = () => {
                 whileHover={{ y: -5 }}
               >
                 <div 
-                  className="absolute top-4 right-6 font-['Orbitron'] font-extrabold text-3xl opacity-15 select-none"
+                  className="absolute top-4 right-6 font-display font-extrabold text-3xl opacity-15 select-none"
                   style={{ color: step.color }}
                 >
                   0{idx + 1}
                 </div>
                 <span 
-                  className="inline-block px-3 py-1 rounded-full text-[10px] font-['Orbitron'] font-bold mb-4 bg-black border"
+                  className="inline-block px-3 py-1 rounded-full text-xs font-display font-bold mb-4 bg-black border"
                   style={{ color: step.color, borderColor: `${step.color}25` }}
                 >
                   {step.phase}
                 </span>
-                <h3 className="text-base font-['Orbitron'] font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-gray-400 text-xs leading-relaxed">{step.desc}</p>
+                <h3 className="text-base font-display font-bold text-white mb-2">{step.title}</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">{step.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -1053,43 +1053,43 @@ const Services = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-['Orbitron'] font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
             {proposal.compare_title}
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-xs md:text-sm mb-4">
+          <p className="text-slate-400 max-w-2xl mx-auto text-xs md:text-sm mb-4">
             {proposal.compare_subtitle}
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#00FFC8] to-[#6B38FB] mx-auto"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-[#47E5C2] to-[#7C9CFF] mx-auto"></div>
         </motion.div>
 
         {/* Glassmorphic Comparison Matrix */}
         <div className="mb-24">
           {/* Desktop view */}
-          <div className="hidden md:block overflow-hidden rounded-xl border border-gray-850 bg-[#141414] shadow-2xl">
+          <div className="hidden md:block overflow-hidden rounded-xl border border-night-line bg-[#0A1020] shadow-2xl">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-gray-850 bg-gray-950 font-['Orbitron'] text-[10px] md:text-xs uppercase tracking-wider text-gray-400">
+                <tr className="border-b border-night-line bg-night-900 font-display text-xs md:text-xs uppercase tracking-wider text-slate-400">
                   <th className="p-5 font-bold w-1/4">{proposal.compare_headers[0]}</th>
-                  <th className="p-5 font-bold text-[#FF2D55] text-center w-3/8 bg-[#FF2D55]/5">{proposal.compare_headers[1]}</th>
-                  <th className="p-5 font-bold text-[#00FFC8] text-center w-3/8 bg-[#00FFC8]/5">{proposal.compare_headers[2]}</th>
+                  <th className="p-5 font-bold text-[#FF7A85] text-center w-3/8 bg-[#FF7A85]/5">{proposal.compare_headers[1]}</th>
+                  <th className="p-5 font-bold text-[#47E5C2] text-center w-3/8 bg-[#47E5C2]/5">{proposal.compare_headers[2]}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-900">
+              <tbody className="divide-y divide-slate-900">
                 {proposal.compare_rows.map((row, idx) => (
                   <tr key={idx} className="hover:bg-white/[0.01] transition-colors">
-                    <td className="p-5 text-xs font-semibold text-gray-300 font-['Orbitron'] border-r border-gray-900">{row.label}</td>
+                    <td className="p-5 text-xs font-semibold text-slate-300 font-display border-r border-slate-900">{row.label}</td>
                     
-                    <td className="p-5 text-xs text-gray-400 bg-red-950/[0.04] border-r border-gray-900">
+                    <td className="p-5 text-xs text-slate-400 bg-red-950/[0.04] border-r border-slate-900">
                       <div className="flex items-start gap-2">
-                        <XCircle className="w-4 h-4 mt-0.5 text-[#FF2D55] flex-shrink-0" />
+                        <XCircle className="w-4 h-4 mt-0.5 text-[#FF7A85] flex-shrink-0" />
                         <span>{row.trad}</span>
                       </div>
                     </td>
                     
-                    <td className="p-5 text-xs text-gray-200 font-semibold bg-green-950/[0.04]">
+                    <td className="p-5 text-xs text-slate-200 font-semibold bg-green-950/[0.04]">
                       <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 mt-0.5 text-[#00FFC8] flex-shrink-0" />
-                        <span className="text-[#00FFC8]">{row.our}</span>
+                        <Check className="w-4 h-4 mt-0.5 text-[#47E5C2] flex-shrink-0" />
+                        <span className="text-[#47E5C2]">{row.our}</span>
                       </div>
                     </td>
                   </tr>
@@ -1101,23 +1101,23 @@ const Services = () => {
           {/* Mobile view */}
           <div className="md:hidden space-y-6">
             {proposal.compare_rows.map((row, idx) => (
-              <div key={idx} className="p-5 rounded-xl border border-gray-850 bg-[#141414] shadow-lg">
-                <h4 className="font-['Orbitron'] font-bold text-xs text-white border-b border-gray-850 pb-2 mb-3 tracking-wide">
+              <div key={idx} className="p-5 rounded-xl border border-night-line bg-[#0A1020] shadow-lg">
+                <h4 className="font-display font-bold text-xs text-white border-b border-night-line pb-2 mb-3 tracking-wide">
                   {row.label}
                 </h4>
                 <div className="space-y-3">
                   <div className="flex items-start gap-2 text-xs">
-                    <XCircle className="w-4 h-4 mt-0.5 text-[#FF2D55] flex-shrink-0" />
+                    <XCircle className="w-4 h-4 mt-0.5 text-[#FF7A85] flex-shrink-0" />
                     <div>
-                      <span className="block font-semibold text-[#FF2D55]/70 text-[10px] tracking-wider uppercase mb-0.5">{proposal.compare_headers[1]}</span>
-                      <span className="text-gray-400 text-[11px]">{row.trad}</span>
+                      <span className="block font-semibold text-[#FF7A85]/70 text-xs tracking-wider uppercase mb-0.5">{proposal.compare_headers[1]}</span>
+                      <span className="text-slate-400 text-xs">{row.trad}</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2 text-xs">
-                    <Check className="w-4 h-4 mt-0.5 text-[#00FFC8] flex-shrink-0" />
+                    <Check className="w-4 h-4 mt-0.5 text-[#47E5C2] flex-shrink-0" />
                     <div>
-                      <span className="block font-semibold text-[#00FFC8]/70 text-[10px] tracking-wider uppercase mb-0.5">{proposal.compare_headers[2]}</span>
-                      <span className="text-[#00FFC8] font-bold text-[11px]">{row.our}</span>
+                      <span className="block font-semibold text-[#47E5C2]/70 text-xs tracking-wider uppercase mb-0.5">{proposal.compare_headers[2]}</span>
+                      <span className="text-[#47E5C2] font-bold text-xs">{row.our}</span>
                     </div>
                   </div>
                 </div>
@@ -1131,7 +1131,7 @@ const Services = () => {
           {proposal.blocks.map((block, idx) => (
             <motion.div 
               key={idx}
-              className="p-6 rounded-xl border border-gray-850 bg-[#181818]/60 hover:bg-[#1e1e1e]/80 hover:border-gray-700 transition-all duration-300 flex flex-col justify-between shadow"
+              className="p-6 rounded-xl border border-night-line bg-[#0E1626]/60 hover:bg-[#0E1626]/80 hover:border-slate-700 transition-all duration-300 flex flex-col justify-between shadow"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -1145,10 +1145,10 @@ const Services = () => {
                 >
                   {block.icon}
                 </div>
-                <h3 className="text-xs md:text-sm font-['Orbitron'] font-bold text-white mb-2.5 tracking-wider uppercase">
+                <h3 className="text-xs md:text-sm font-display font-bold text-white mb-2.5 tracking-wider uppercase">
                   {block.title}
                 </h3>
-                <p className="text-gray-400 text-xs leading-relaxed mb-4">
+                <p className="text-slate-400 text-xs leading-relaxed mb-4">
                   {block.desc}
                 </p>
               </div>
