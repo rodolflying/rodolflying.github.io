@@ -4,7 +4,7 @@ import { ShieldCheck, Wrench, Route, Wallet, Bot, Globe, Check, AlertTriangle, t
 import { useLanguage } from '@/hooks/useLanguage';
 import { areas, type AreaIcon } from '@/data/areas';
 import PixelCanvas from '@/components/pixel/PixelCanvas';
-import { AREA_SCENES, AREA_W, AREA_H } from '@/components/pixel/areaScenes';
+import { AREA_SCENE_DEFS } from '@/components/pixel/areaScenes';
 
 export const AREA_ICONS: Record<AreaIcon, LucideIcon> = {
   shield: ShieldCheck,
@@ -83,7 +83,7 @@ const AreasSection = () => {
                 className="spotlight rounded-2xl border border-night-line bg-night-800 p-6 md:p-8"
               >
                 <div className="rounded-xl overflow-hidden border border-night-line mb-6">
-                  <PixelCanvas scene={AREA_SCENES[area.id]} width={AREA_W} height={AREA_H} stillAt={5} label={area.pitch[language]} />
+                  <PixelCanvas key={area.id} scene={AREA_SCENE_DEFS[area.id].scene} width={AREA_SCENE_DEFS[area.id].w} height={AREA_SCENE_DEFS[area.id].h} stillAt={AREA_SCENE_DEFS[area.id].still} fps={AREA_SCENE_DEFS[area.id].fps} label={area.pitch[language]} />
                 </div>
                 <div className="flex items-start gap-4 mb-6">
                   <div

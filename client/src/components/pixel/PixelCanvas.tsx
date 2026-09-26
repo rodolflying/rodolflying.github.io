@@ -11,6 +11,8 @@ interface PixelCanvasProps<S> {
   state?: S;
   /** Time (s) rendered when the visitor prefers reduced motion. */
   stillAt?: number;
+  /** Cap the redraw rate (heavier scenes, or a deliberate low-fps pixel look). */
+  fps?: number;
   className?: string;
   label?: string;
 }
@@ -20,7 +22,7 @@ interface PixelCanvasProps<S> {
  * `image-rendering: pixelated`. Animates only while on screen and renders a single
  * still frame for prefers-reduced-motion.
  */
-function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, className = '', label }: PixelCanvasProps<S>) {
+function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, className = '', label }: PixelCanvasProps<S>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -36,11 +38,16 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, className = 
     let raf = 0;
     let visible = false;
     const start = performance.now();
+    const minGap = fps ? 1000 / fps : 0;
+    let last = -Infinity;
 
     const frame = (now: number) => {
-      const t = reduce ? stillAt : (now - start) / 1000;
-      g.clearRect(0, 0, width, height);
-      sceneRef.current(g, t, stateRef.current as S);
+      if (now - last >= minGap || reduce) {
+        last = now;
+        const t = reduce ? stillAt : (now - start) / 1000;
+        g.clearRect(0, 0, width, height);
+        sceneRef.current(g, t, stateRef.current as S);
+      }
       if (!reduce && visible) raf = requestAnimationFrame(frame);
     };
 
@@ -55,7 +62,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, className = 
       cancelAnimationFrame(raf);
       io.disconnect();
     };
-  }, [width, height, stillAt]);
+  }, [width, height, stillAt, fps]);
 
   return (
     <canvas

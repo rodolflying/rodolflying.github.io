@@ -1,5 +1,6 @@
 // One looping 160x90 pixel scene per service area: problem -> the star arrives -> solved.
 import type { PixelScene } from './PixelCanvas';
+import { financeHQScene, HQ_W, HQ_H } from './financeHQ';
 import {
   P, px, clamp, ease, phase, sky, floor, star, person, sweat, desk, monitor, paperStack, paper,
   check, database, bars, alertIcon, ring, STAR_W,
@@ -259,4 +260,10 @@ export const AREA_SCENES: Record<string, PixelScene> = {
   finanzas: financeScene,
   ia: aiScene,
   'datos-web': dataScene,
+};
+
+/** Scene + logical size per area. Finance uses the higher-detail "style frame" scene. */
+export const AREA_SCENE_DEFS: Record<string, { scene: PixelScene; w: number; h: number; still: number; fps?: number }> = {
+  ...Object.fromEntries(Object.entries(AREA_SCENES).map(([k, scene]) => [k, { scene, w: AREA_W, h: AREA_H, still: 5 }])),
+  finanzas: { scene: financeHQScene, w: HQ_W, h: HQ_H, still: 10, fps: 24 },
 };

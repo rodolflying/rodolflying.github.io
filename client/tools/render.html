@@ -26,21 +26,29 @@
 </div>
 <script type="module">
   import { AREA_SCENES } from '/src/components/pixel/areaScenes.ts';
+  import { financeHQScene, HQ_W, HQ_H, HQ_LOOP } from '/src/components/pixel/financeHQ.ts';
   import { areas } from '/src/data/areas.ts';
 
   const params = new URLSearchParams(location.search);
   const id = params.get('scene') || 'finanzas';
   const lang = params.get('lang') === 'en' ? 'en' : 'es';
-  const area = areas.find((a) => a.id === id);
+  const hq = id.endsWith('-hq');
+  const areaId = hq ? id.replace(/-hq$/, '') : id;
+  const area = areas.find((a) => a.id === areaId);
+  const def = hq ? { scene: financeHQScene, w: HQ_W, h: HQ_H, loop: HQ_LOOP } : { scene: AREA_SCENES[areaId], w: 160, h: 90, loop: 7 };
+  const cv = document.getElementById('c');
+  cv.width = def.w; cv.height = def.h;
+  const showCaption = !params.has('nocaption');
+  document.getElementById('caption').style.display = showCaption ? '' : 'none';
+  document.getElementById('brand').style.display = showCaption ? '' : 'none';
   document.getElementById('name').textContent = area.name[lang];
   document.getElementById('name').style.color = area.color;
   document.getElementById('pitch').textContent = area.pitch[lang];
-  const g = document.getElementById('c').getContext('2d');
+  const g = cv.getContext('2d', { willReadFrequently: true });
   g.imageSmoothingEnabled = false;
-  const scene = AREA_SCENES[id];
 
-  window.DURATION = 7;
-  window.renderFrame = (t) => { g.clearRect(0, 0, 160, 90); scene(g, t, undefined); };
+  window.DURATION = def.loop;
+  window.renderFrame = (t) => { g.clearRect(0, 0, def.w, def.h); def.scene(g, t, undefined); };
   if (!params.has('record')) {
     const t0 = performance.now();
     const loop = () => { window.renderFrame((performance.now() - t0) / 1000); requestAnimationFrame(loop); };
