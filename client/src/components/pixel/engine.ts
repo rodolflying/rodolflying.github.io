@@ -82,11 +82,25 @@ const DIGITS: Record<string, string[]> = {
   '3': ['###', '..#', '.##', '..#', '###'], '4': ['#.#', '#.#', '###', '..#', '..#'], '5': ['###', '#..', '###', '..#', '###'],
   '6': ['###', '#..', '###', '#.#', '###'], '7': ['###', '..#', '.#.', '.#.', '.#.'], '8': ['###', '#.#', '###', '#.#', '###'],
   '9': ['###', '#.#', '###', '..#', '###'], ':': ['...', '.#.', '...', '.#.', '...'],
+  '.': ['...', '...', '...', '...', '.#.'], '/': ['..#', '..#', '.#.', '#..', '#..'], '%': ['#.#', '..#', '.#.', '#..', '#.#'],
 };
 /** Tiny 3x5 digits (and ':'). */
 export function number(n: number | string, x: number, y: number, c: string) {
   String(n).split('').forEach((d, i) => { if (DIGITS[d]) sprite(DIGITS[d], { '#': c }, x + i * 4, y); });
 }
+/** The same digits scaled up (each pixel becomes `scale` x `scale`); '.' takes half a slot. */
+export function bigNumber(n: number | string, x: number, y: number, c: string, scale = 2) {
+  let cx = x;
+  for (const d of String(n)) {
+    const rows = DIGITS[d];
+    if (!rows) { cx += 2 * scale; continue; }
+    const narrow = d === '.';
+    rows.forEach((row, j) => row.split('').forEach((p, i) => { if (p === '#') rect(cx + (narrow ? i - 1 : i) * scale, y + j * scale, scale, scale, c); }));
+    cx += (narrow ? 2 : 4) * scale;
+  }
+}
+/** Thousands with a dot, Chilean style: 5039 -> "5.039". */
+export const thousands = (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
 /** Vertical gradient with ordered dithering between `steps` bands. */
 export function ditherGradient(area: Rect, colorAt: (y01: number) => RGB, steps = 10) {

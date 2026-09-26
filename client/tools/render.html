@@ -25,9 +25,7 @@
   <div id="caption"><h1 id="name"></h1><p id="pitch"></p></div>
 </div>
 <script type="module">
-  import { AREA_SCENES } from '/src/components/pixel/areaScenes.ts';
-  import { financeHQScene, HQ_W, HQ_H, HQ_LOOP } from '/src/components/pixel/financeHQ.ts';
-  import { maintenanceHQScene, MAINT_W, MAINT_H, MAINT_LOOP } from '/src/components/pixel/maintenanceHQ.ts';
+  import { AREA_SCENE_DEFS } from '/src/components/pixel/areaScenes.ts';
   import { areas } from '/src/data/areas.ts';
 
   import * as E from '/src/components/pixel/engine.ts';
@@ -79,8 +77,8 @@
   const hq = id.endsWith('-hq');
   const areaId = hq ? id.replace(/-hq$/, '') : id;
   const area = areas.find((a) => a.id === areaId);
-  const HQ = { finanzas: { scene: financeHQScene, w: HQ_W, h: HQ_H, loop: HQ_LOOP }, mantenimiento: { scene: maintenanceHQScene, w: MAINT_W, h: MAINT_H, loop: MAINT_LOOP } };
-  const def = hq ? HQ[areaId] : { scene: AREA_SCENES[areaId], w: 160, h: 90, loop: 7 };
+  // every area has a story scene now; "<area>-hq" is still accepted for older links
+  const def = AREA_SCENE_DEFS[areaId];
   const cv = document.getElementById('c');
   cv.width = def.w; cv.height = def.h;
   const showCaption = !params.has('nocaption');

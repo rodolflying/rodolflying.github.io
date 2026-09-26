@@ -1,5 +1,5 @@
 // Render the pixel-art area scenes to MP4 for social media.
-//   node scripts/render-video.mjs              -> all areas, Spanish
+//   node scripts/render-video.mjs              -> all areas (story scenes), Spanish
 //   node scripts/render-video.mjs finanzas en  -> one area, English
 // Needs Google Chrome and ffmpeg on the machine. Output: _media/redes/*.mp4 (gitignored).
 import { spawn, spawnSync } from 'node:child_process';
@@ -15,7 +15,7 @@ const AREAS = ['seguridad', 'mantenimiento', 'operaciones', 'finanzas', 'ia', 'd
 const FPS = 30;
 const [onlyArea, langArg] = process.argv.slice(2);
 const lang = langArg === 'en' ? 'en' : 'es';
-const targets = onlyArea ? [onlyArea] : AREAS;
+const targets = onlyArea ? [onlyArea.replace(/-hq$/, '')] : AREAS;
 const outDir = path.join(ROOT, '_media', 'redes');
 mkdirSync(outDir, { recursive: true });
 
@@ -49,7 +49,7 @@ try {
     const frames = path.join(outDir, `.frames-${area}`);
     rmSync(frames, { recursive: true, force: true });
     mkdirSync(frames, { recursive: true });
-    await send('Page.navigate', { url: `http://localhost:5199/tools/render.html?scene=${area}&lang=${lang}&record` });
+    await send('Page.navigate', { url: `http://localhost:5199/tools/render.html?scene=${area}-hq&lang=${lang}&record` });
     for (let i = 0; i < 60 && !(await evaluate('!!window.READY')); i++) await sleep(250);
     await evaluate('document.fonts.ready.then(() => true)');
     const total = Math.round((await evaluate('window.DURATION')) * FPS);

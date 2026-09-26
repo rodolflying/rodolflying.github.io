@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowRight } from 'lucide-react';
@@ -9,6 +10,10 @@ import { AREA_SCENE_DEFS } from '@/components/pixel/areaScenes';
 
 const AreasOverview = () => {
   const { t, language } = useLanguage();
+  // Six story scenes at once is a lot of work: with a mouse, a card plays its story while
+  // hovered or focused and shows its key frame otherwise. Touch screens play what is visible.
+  const [canHover] = useState(() => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+  const [active, setActive] = useState<string | null>(null);
 
   return (
     <section id="capacidades" className="py-20 bg-night">
@@ -32,10 +37,19 @@ const AreasOverview = () => {
               >
                 <Link
                   href={`/services#${area.id}`}
+                  onMouseEnter={() => setActive(area.id)}
+                  onMouseLeave={() => setActive((a) => (a === area.id ? null : a))}
+                  onFocus={() => setActive(area.id)}
+                  onBlur={() => setActive((a) => (a === area.id ? null : a))}
                   className="spotlight group h-full rounded-2xl border border-night-line bg-night-800 p-6 flex flex-col"
                 >
-                  <div className="rounded-xl overflow-hidden border border-night-line mb-5 -mx-1">
-                    <PixelCanvas scene={AREA_SCENE_DEFS[area.id].scene} width={AREA_SCENE_DEFS[area.id].w} height={AREA_SCENE_DEFS[area.id].h} stillAt={AREA_SCENE_DEFS[area.id].still} fps={AREA_SCENE_DEFS[area.id].fps} />
+                  <div className="relative rounded-xl overflow-hidden border border-night-line mb-5 -mx-1">
+                    <PixelCanvas scene={AREA_SCENE_DEFS[area.id].scene} width={AREA_SCENE_DEFS[area.id].w} height={AREA_SCENE_DEFS[area.id].h} stillAt={AREA_SCENE_DEFS[area.id].still} fps={AREA_SCENE_DEFS[area.id].fps} play={!canHover || active === area.id} />
+                    {canHover && active !== area.id && (
+                      <span className="absolute bottom-2 left-2 rounded-md bg-night/80 border border-night-line px-2 py-1 font-mono text-xs text-star" aria-hidden="true">
+                        ▶ {language === 'es' ? 'ver historia' : 'play story'}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-3 mb-4">
                     <div

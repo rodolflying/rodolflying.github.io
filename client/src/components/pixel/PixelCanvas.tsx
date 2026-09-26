@@ -13,16 +13,18 @@ interface PixelCanvasProps<S> {
   stillAt?: number;
   /** Cap the redraw rate (heavier scenes, or a deliberate low-fps pixel look). */
   fps?: number;
+  /** When false, draw the `stillAt` frame once and stay still (e.g. until hovered). */
+  play?: boolean;
   className?: string;
   label?: string;
 }
 
 /**
  * Crisp pixel-art canvas: draws a scene on a tiny canvas that CSS scales up with
- * `image-rendering: pixelated`. Animates only while on screen and renders a single
- * still frame for prefers-reduced-motion.
+ * `image-rendering: pixelated`. Animates only while on screen (and while `play`), and
+ * renders a single still frame for prefers-reduced-motion.
  */
-function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, className = '', label }: PixelCanvasProps<S>) {
+function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = true, className = '', label }: PixelCanvasProps<S>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -34,7 +36,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, classNa
     const g = canvas?.getContext('2d');
     if (!canvas || !g) return;
     g.imageSmoothingEnabled = false;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = !play || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0;
     let visible = false;
     const start = performance.now();
@@ -62,7 +64,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, classNa
       cancelAnimationFrame(raf);
       io.disconnect();
     };
-  }, [width, height, stillAt, fps]);
+  }, [width, height, stillAt, fps, play]);
 
   return (
     <canvas
