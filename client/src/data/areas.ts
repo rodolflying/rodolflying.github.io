@@ -14,6 +14,8 @@ export interface Area {
   icon: AreaIcon;
   color: string;
   name: Bilingual;
+  /** Short label for tabs and chips. */
+  short: Bilingual;
   pitch: Bilingual;
   solutions: Bilingual[];
   results: AreaResult[];
@@ -26,6 +28,7 @@ export const areas: Area[] = [
     icon: 'shield',
     color: '#FF8FA3',
     name: { es: 'Seguridad operacional', en: 'Operational safety' },
+    short: { es: 'Seguridad', en: 'Safety' },
     pitch: {
       es: 'Protocolos que se cumplen siempre, no solo cuando alguien alcanza a revisarlos.',
       en: 'Protocols that are followed every time, not only when someone has time to check.',
@@ -51,6 +54,7 @@ export const areas: Area[] = [
     icon: 'wrench',
     color: '#FFC857',
     name: { es: 'Mantenimiento y activos', en: 'Maintenance and assets' },
+    short: { es: 'Mantenimiento', en: 'Maintenance' },
     pitch: {
       es: 'Tus equipos avisan cuando fallan y la orden de trabajo se crea sola, de día o de noche.',
       en: 'Your equipment reports its own failures and the work order is created automatically, day or night.',
@@ -75,6 +79,7 @@ export const areas: Area[] = [
     icon: 'route',
     color: '#7DD3FC',
     name: { es: 'Operaciones y logística', en: 'Operations and logistics' },
+    short: { es: 'Operaciones', en: 'Operations' },
     pitch: {
       es: 'Indicadores de la operación completos y confiables, calculados todos los días.',
       en: 'Complete, reliable operational KPIs, calculated every day.',
@@ -100,6 +105,7 @@ export const areas: Area[] = [
     icon: 'wallet',
     color: '#47E5C2',
     name: { es: 'Presupuesto, compras y finanzas', en: 'Budget, procurement and finance' },
+    short: { es: 'Finanzas', en: 'Finance' },
     pitch: {
       es: 'Menos digitación en el ERP y el presupuesto real a la vista, sin armar planillas a fin de mes.',
       en: 'Less ERP data entry and the real budget in plain sight, without month-end spreadsheets.',
@@ -124,6 +130,7 @@ export const areas: Area[] = [
     icon: 'bot',
     color: '#7C9CFF',
     name: { es: 'Monitoreo con agentes de IA', en: 'AI-agent monitoring' },
+    short: { es: 'Agentes IA', en: 'AI agents' },
     pitch: {
       es: 'Agentes que leen, escuchan y clasifican por ti, con los datos dentro de tu empresa.',
       en: 'Agents that read, listen and classify for you, keeping the data inside your company.',
@@ -147,6 +154,7 @@ export const areas: Area[] = [
     icon: 'globe',
     color: '#C4F18A',
     name: { es: 'Datos, reportes y plataformas web', en: 'Data, reporting and web platforms' },
+    short: { es: 'Datos y web', en: 'Data & web' },
     pitch: {
       es: 'Datos de portales, redes y planillas, convertidos en reportes y plataformas propias.',
       en: 'Data from portals, social media and spreadsheets, turned into reports and your own platforms.',

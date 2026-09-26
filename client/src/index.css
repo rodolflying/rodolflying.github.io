@@ -228,3 +228,15 @@
 /* Gentle idle float for the tool icons in ConnectDotsSection (transform on an inner element) */
 @keyframes float-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 .float-slow { animation: float-slow 3.4s ease-in-out infinite; }
+
+/* Data pulse travelling along the "how it runs" flow wire */
+@keyframes ops-flow {
+  from { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  to { left: 100%; opacity: 0; }
+}
+.ops-pulse { animation: ops-flow 2.8s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .ops-pulse { animation: none; display: none; }
+}
