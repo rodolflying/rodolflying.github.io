@@ -1,6 +1,7 @@
 // One looping 160x90 pixel scene per service area: problem -> the star arrives -> solved.
 import type { PixelScene } from './PixelCanvas';
 import { financeHQScene, HQ_W, HQ_H } from './financeHQ';
+import { maintenanceHQScene, MAINT_W, MAINT_H } from './maintenanceHQ';
 import {
   P, px, clamp, ease, phase, sky, floor, star, person, sweat, desk, monitor, paperStack, paper,
   check, database, bars, alertIcon, ring, STAR_W,
@@ -266,4 +267,5 @@ export const AREA_SCENES: Record<string, PixelScene> = {
 export const AREA_SCENE_DEFS: Record<string, { scene: PixelScene; w: number; h: number; still: number; fps?: number }> = {
   ...Object.fromEntries(Object.entries(AREA_SCENES).map(([k, scene]) => [k, { scene, w: AREA_W, h: AREA_H, still: 5 }])),
   finanzas: { scene: financeHQScene, w: HQ_W, h: HQ_H, still: 10, fps: 24 },
+  mantenimiento: { scene: maintenanceHQScene, w: MAINT_W, h: MAINT_H, still: 12.4, fps: 24 },
 };

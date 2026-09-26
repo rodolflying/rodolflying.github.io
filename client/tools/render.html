@@ -27,15 +27,60 @@
 <script type="module">
   import { AREA_SCENES } from '/src/components/pixel/areaScenes.ts';
   import { financeHQScene, HQ_W, HQ_H, HQ_LOOP } from '/src/components/pixel/financeHQ.ts';
+  import { maintenanceHQScene, MAINT_W, MAINT_H, MAINT_LOOP } from '/src/components/pixel/maintenanceHQ.ts';
   import { areas } from '/src/data/areas.ts';
 
+  import * as E from '/src/components/pixel/engine.ts';
+  import * as R from '/src/components/pixel/rig.ts';
   const params = new URLSearchParams(location.search);
   const id = params.get('scene') || 'finanzas';
+  // Character lineup for reviewing the rig: /tools/render.html?scene=lineup
+  const lineupScene = (g, t) => {
+    E.setCtx(g);
+    E.rect(0, 0, 256, 144, '#1A2745');
+    E.rect(0, 110, 256, 34, '#553824');
+    const cast = [
+      [{ skin: 'light', hair: 'bun', outfit: 'office' }, 'stand', 'tired'],
+      [{ skin: 'medium', hair: 'short', outfit: 'vest', headwear: 'helmet', bag: true }, 'walk', 'focus'],
+      [{ skin: 'dark', hair: 'curly', outfit: 'operator', headwear: 'headset' }, 'phone', 'stressed'],
+      [{ skin: 'light', hair: 'short', outfit: 'blazer', glasses: true }, 'thumbsup', 'happy'],
+      [{ skin: 'medium', hair: 'ponytail', outfit: 'cardigan' }, 'wave', 'relieved'],
+      [{ skin: 'dark', hair: 'short', outfit: 'vest', headwear: 'helmet' }, 'repair', 'focus'],
+      [{ skin: 'light', hair: 'curly', outfit: 'office', hairColor: 'brown' }, 'point', 'surprised'],
+      [{ skin: 'medium', hair: 'bun', outfit: 'blazer', hairColor: 'black' }, 'stretch', 'happy'],
+    ];
+    cast.forEach(([look, pose, mood], i) => R.drawStanding(look, pose, mood, 6 + i * 31, 50, t, false));
+    E.rect(0, 0, 256, 1, '#000');
+  };
+  const seatedScene = (g, t) => {
+    E.setCtx(g);
+    E.rect(0, 0, 256, 144, '#1A2745');
+    E.rect(0, 110, 256, 34, '#553824');
+    const cast = [
+      [{ skin: 'light', hair: 'bun', outfit: 'office' }, 'type', 'tired'],
+      [{ skin: 'medium', hair: 'short', outfit: 'vest' }, 'sleep', 'sleep'],
+      [{ skin: 'dark', hair: 'curly', outfit: 'operator', headwear: 'headset' }, 'phone', 'stressed'],
+      [{ skin: 'light', hair: 'ponytail', outfit: 'cardigan' }, 'coffee', 'happy'],
+      [{ skin: 'medium', hair: 'short', outfit: 'blazer', glasses: true }, 'watch', 'focus'],
+    ];
+    cast.forEach(([look, pose, mood], i) => { R.drawChair(4 + i * 50, 58); R.drawSeated(look, pose, mood, 10 + i * 50, 56, t, { sip: 0.5 }); if (pose === 'sleep') R.zzz(34 + i * 50, 60, t); });
+  };
+  if (id === 'lineup' || id === 'seated') {
+    const cv0 = document.getElementById('c'); cv0.width = 256; cv0.height = 144;
+    document.getElementById('caption').style.display = 'none'; document.getElementById('brand').style.display = 'none';
+    const g0 = cv0.getContext('2d'); g0.imageSmoothingEnabled = false;
+    window.DURATION = 4;
+    window.renderFrame = (t) => (id === 'lineup' ? lineupScene : seatedScene)(g0, t);
+    window.renderFrame(0.3);
+    window.READY = true;
+    throw new Error('lineup mode');
+  }
   const lang = params.get('lang') === 'en' ? 'en' : 'es';
   const hq = id.endsWith('-hq');
   const areaId = hq ? id.replace(/-hq$/, '') : id;
   const area = areas.find((a) => a.id === areaId);
-  const def = hq ? { scene: financeHQScene, w: HQ_W, h: HQ_H, loop: HQ_LOOP } : { scene: AREA_SCENES[areaId], w: 160, h: 90, loop: 7 };
+  const HQ = { finanzas: { scene: financeHQScene, w: HQ_W, h: HQ_H, loop: HQ_LOOP }, mantenimiento: { scene: maintenanceHQScene, w: MAINT_W, h: MAINT_H, loop: MAINT_LOOP } };
+  const def = hq ? HQ[areaId] : { scene: AREA_SCENES[areaId], w: 160, h: 90, loop: 7 };
   const cv = document.getElementById('c');
   cv.width = def.w; cv.height = def.h;
   const showCaption = !params.has('nocaption');

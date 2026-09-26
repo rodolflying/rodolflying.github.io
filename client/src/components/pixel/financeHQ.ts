@@ -3,6 +3,8 @@
 // emissive layer, squash & stretch, expressive characters and a day/night story:
 // 21:30 overtime -> the star arrives and clicks -> next day 18:00, leaving on time.
 import type { PixelScene } from './PixelCanvas';
+import { setCtx as setEngineCtx } from './engine';
+import { drawSeated, drawStanding, drawChair, type Look, type Mood } from './rig';
 
 // The world is 320x180; a 256x144 camera (x5 = 1280x720, whole pixels) frames the action.
 const WORLD_W = 320;
@@ -312,112 +314,8 @@ function drawFlyingPapers(t: number) {
   });
 }
 
-// ---------------------------------------------------------------- characters
-// Seated analyst facing right (toward the monitor)
-const HEAD = [
-  '...HHHHH....',
-  '.HHHHHHHHH..',
-  'HHHhhhhhhHH.',
-  'HHhhhsssssH.',
-  'HHhhsssssss.',
-  'HHhhsssssss.',
-  'HHhhssssssS.',
-  '.HhhsssssSS.',
-  '.HHhsssssss.',
-  '..HhSsssss..',
-  '....SSsss...',
-  '.....sss....',
-];
-const HAIR_BUN = ['.HH.', 'HHHH', 'HhhH', '.HH.'];
-
-type Mood = 'tired' | 'blink' | 'surprised' | 'happy' | 'neutral';
-function drawHead(x: number, y: number, mood: Mood) {
-  const inkMap = { H: C.ink, h: C.ink, s: C.ink, S: C.ink };
-  for (const [ox, oy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) { sprite(HEAD, inkMap, x + ox, y + oy); sprite(HAIR_BUN, inkMap, x - 1 + ox, y - 2 + oy); }
-  sprite(HAIR_BUN, { H: C.hair0, h: C.hair2 }, x - 1, y - 2);
-  sprite(HEAD, { H: C.hair0, h: C.hair1, s: C.skin2, S: C.skin1 }, x, y);
-  dot(x + 11, y + 6, C.skin1); // nose
-  const ex = x + 8, ey = y + 5;
-  if (mood === 'blink') rect(ex, ey + 1, 2, 1, C.skin0);
-  else if (mood === 'tired') { rect(ex, ey, 2, 1, C.skin0); dot(ex + 1, ey + 1, C.ink); dot(ex, ey + 2, '#5E4AA0'); }
-  else if (mood === 'surprised') { rect(ex, ey - 1, 2, 3, C.paper3); dot(ex + 1, ey, C.ink); }
-  else if (mood === 'happy') { dot(ex, ey + 1, C.ink); dot(ex + 1, ey, C.ink); dot(ex + 2, ey + 1, C.ink); }
-  else { dot(ex + 1, ey, C.ink); dot(ex + 1, ey + 1, C.ink); }
-  // mouth
-  if (mood === 'happy') { rect(x + 8, y + 9, 3, 1, C.skin0); dot(x + 7, y + 8, C.skin0); }
-  else if (mood === 'surprised') rect(x + 9, y + 9, 2, 2, C.skin0);
-  else if (mood === 'tired') rect(x + 8, y + 9, 3, 1, C.skin0);
-  else rect(x + 9, y + 9, 2, 1, C.skin0);
-}
-
-function drawChair(x: number, y: number) {
-  rect(x, y, 4, 30, C.metal1);
-  rect(x, y, 1, 30, C.metal2);
-  rect(x + 2, y + 24, 20, 4, C.metal1);
-  rect(x + 11, y + 28, 2, 6, C.metal0);
-  rect(x + 4, y + 34, 16, 2, C.metal0);
-  dot(x + 4, y + 36, C.metal2); dot(x + 19, y + 36, C.metal2);
-}
-
-function drawSeated(t: number, x: number, y: number, pose: 'typing' | 'watch' | 'coffee', mood: Mood, slump = 0) {
-  drawChair(x - 8, y + 12);
-  const sy = y + slump;
-  // legs (thigh forward, shin down)
-  orect(x, y + 30, 22, 6, C.pants1); rect(x, y + 35, 22, 1, C.pants0);
-  orect(x + 18, y + 34, 6, 16, C.pants1); rect(x + 23, y + 34, 1, 16, C.pants0);
-  rect(x + 17, y + 50, 10, 3, C.ink);
-  // torso with shading
-  orect(x, sy + 14, 16, 18, C.shirt1);
-  rect(x + 1, sy + 14, 10, 17, C.shirt2);
-  rect(x + 2, sy + 15, 4, 8, C.shirt3);
-  rect(x + 15, sy + 14, 1, 18, C.shirt0);
-  // arms
-  if (pose === 'typing') {
-    const tap = Math.floor(t * 12) % 4;
-    const ay = sy + 20 + (tap === 1 ? 1 : 0);
-    orect(x + 10, ay, 16, 4, C.shirt1); rect(x + 10, ay, 16, 1, C.shirt2);
-    orect(x + 26, ay + (tap === 3 ? 1 : 0), 4, 3, C.skin2);
-  } else if (pose === 'coffee') {
-    const sip = seg(t, 9.6, 9.9) * (1 - seg(t, 10.3, 10.6));
-    rect(x + 10, sy + 20 - sip * 6, 10, 4, C.shirt1);
-    rect(x + 19, sy + 16 - sip * 8, 4, 8, C.shirt1);
-    rect(x + 19, sy + 12 - sip * 8, 4, 4, C.skin2);
-    rect(x + 22, sy + 11 - sip * 8, 5, 6, '#E8EEF8');
-  } else {
-    orect(x + 10, sy + 22, 12, 4, C.shirt1); orect(x + 22, sy + 22, 4, 3, C.skin2);
-  }
-  drawHead(x + 2, sy + 2, mood);
-}
-
-function drawStanding(t: number, x: number, y: number, pose: 'stand' | 'stretch' | 'walk' | 'wave') {
-  const step = pose === 'walk' ? Math.floor(t * 8) % 4 : 0;
-  const bob = pose === 'walk' && step % 2 ? -1 : 0;
-  // legs
-  const l1 = pose === 'walk' ? [0, 2, 0, -2][step] : 0;
-  orect(x + 3 + l1, y + 34, 4, 24, C.pants1);
-  orect(x + 9 - l1, y + 34, 4, 24, C.pants0);
-  rect(x + 2 + l1, y + 58, 6, 2, C.ink); rect(x + 8 - l1, y + 58, 6, 2, C.ink);
-  // torso
-  orect(x + 1, y + 16 + bob, 15, 19, C.shirt1);
-  rect(x + 2, y + 16 + bob, 10, 18, C.shirt2);
-  rect(x + 3, y + 17 + bob, 4, 8, C.shirt3);
-  // bag strap on the way out
-  if (pose === 'walk' || pose === 'wave') { for (let k = 0; k < 14; k++) dot(x + 4 + k * 0.7, y + 17 + k + bob, C.wood1); rect(x + 12, y + 29 + bob, 7, 7, C.wood2); }
-  // arms
-  if (pose === 'stretch') {
-    const k = Math.sin(seg(t, 11.4, 11.9) * Math.PI);
-    rect(x + 1, y + 4 - k * 4, 3, 13 + k * 4, C.shirt1); rect(x + 13, y + 4 - k * 4, 3, 13 + k * 4, C.shirt1);
-    rect(x + 1, y + 1 - k * 4, 3, 3, C.skin2); rect(x + 13, y + 1 - k * 4, 3, 3, C.skin2);
-  } else if (pose === 'wave') {
-    const w = Math.round(Math.sin(t * 16) * 1.5);
-    rect(x + 14, y + 6 + bob, 3, 12, C.shirt1); rect(x + 14 + w, y + 3 + bob, 3, 3, C.skin2);
-    rect(x, y + 18 + bob, 3, 12, C.shirt1);
-  } else {
-    const sw = pose === 'walk' ? [0, 1, 0, -1][step] : 0;
-    rect(x - sw, y + 18 + bob, 3, 13, C.shirt1); rect(x - sw, y + 31 + bob, 3, 2, C.skin2);
-  }
-  drawHead(x + 2, y + 4 + bob, pose === 'stretch' ? 'happy' : pose === 'wave' ? 'happy' : 'neutral');
-}
+// ---------------------------------------------------------------- characters (shared rig)
+const ANALYST: Look = { skin: 'light', hair: 'bun', outfit: 'office' };
 
 // The Star Apps mascot with shading, eyes, squash & stretch and the logo's little hand
 const STAR_N = [
@@ -642,7 +540,8 @@ export const financeHQScene: PixelScene = (g, time) => {
   drawRoom(t);
   drawDesk(t);
   drawStack(t);
-  // analyst
+  // analyst (shared character rig)
+  setEngineCtx(G);
   if (t < T.lapse[0] + 0.3) {
     const mood: Mood =
       t < T.night[1] ? ((t % 3.1) < 0.15 ? 'blink' : 'tired')
@@ -650,19 +549,22 @@ export const financeHQScene: PixelScene = (g, time) => {
           : t < T.click[1] + 0.3 ? 'surprised'
             : 'happy';
     const slump = t > 2.3 && t < 3.0 ? 1 : 0;
-    drawSeated(t, 132, 76, t < T.land[1] ? 'typing' : 'watch', mood, slump);
+    drawChair(124, 110, 128);
+    drawSeated(ANALYST, t < T.land[1] ? 'type' : 'watch', mood, 132, 76, t, { slump });
   } else if (t >= T.lapse[1] && t < 11.2) {
-    drawSeated(t, 132, 76, 'coffee', (t % 3.4) < 0.12 ? 'blink' : 'happy');
+    drawChair(124, 110, 128);
+    const sip = seg(t, 9.6, 9.9) * (1 - seg(t, 10.3, 10.6));
+    drawSeated(ANALYST, 'coffee', (t % 3.4) < 0.12 ? 'blink' : 'happy', 132, 76, t, { sip });
   } else if (t >= 11.2 && t < 11.9) {
-    drawChair(124, 88);
-    drawStanding(t, 130, 66, 'stretch');
+    drawChair(124, 110, 128);
+    drawStanding(ANALYST, 'stretch', 'happy', 130, 66, t);
   } else if (t >= 11.9 && t < 13.1) {
-    drawChair(124, 88);
+    drawChair(124, 110, 128);
     const k = seg(t, 12.1, 13.1);
     const x = 130 + ease(k) * 150;
-    drawStanding(t, x, 66, t < 12.1 ? 'wave' : 'walk');
+    drawStanding({ ...ANALYST, bag: true }, t < 12.1 ? 'wave' : 'walk', 'happy', x, 66, t);
   } else {
-    drawChair(124, 88);
+    drawChair(124, 110, 128);
   }
   drawFlyingPapers(t);
 
@@ -698,7 +600,7 @@ export const financeHQScene: PixelScene = (g, time) => {
   }
   if (click > 0 && click < 1) { ring(206, 79, click * 40, C.mint4); if (click > 0.15) ring(206, 79, click * 40 - 6, C.mint3); }
   // surprise mark above the analyst
-  if (t >= T.land[1] && t < T.click[1] + 0.35) { rect(141, 64, 2, 6, C.gold3); rect(141, 72, 2, 2, C.gold3); }
+  if (t >= T.land[1] && t < T.click[1] + 0.35) { rect(143, 66, 2, 6, C.gold3); rect(143, 74, 2, 2, C.gold3); }
   // music notes while the star works alone
   if (t >= 12.6 && t < 13.6) for (let i = 0; i < 2; i++) { const k = ((t * 0.9 + i * 0.5) % 1); const nx = perchX + 10 + i * 6, ny = 50 - k * 14; rect(nx, ny, 2, 2, C.mint4); rect(nx + 1, ny - 4, 1, 4, C.mint4); }
   // dust motes: visible only inside the light (screen glow at night, sun shafts in the afternoon)
