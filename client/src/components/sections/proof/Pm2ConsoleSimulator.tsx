@@ -36,7 +36,7 @@ export const Pm2ConsoleSimulator = () => {
     { id: 5, time: '02:14:15', proc: 'api-portal-bridge', level: 'info', text: 'Heartbeat recibido desde servidor On-Premise cliente (ping 12ms).' },
   ]);
 
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
 
   const processes: ProcessItem[] = [
     { id: 0, name: 'bot-sap-sync', mode: 'fork', status: 'online', cpu: '0.8%', mem: '44.2 MB', uptime: '48d 14h', restarts: 0 },
@@ -79,11 +79,11 @@ export const Pm2ConsoleSimulator = () => {
     return () => clearInterval(interval);
   }, [isStreaming]);
 
-  // Auto scroll terminal to bottom
+  // Keep the newest log line visible by scrolling only the terminal box.
+  // (scrollIntoView would scroll the whole page and yank the visitor back here.)
   useEffect(() => {
-    if (activeTab === 'logs') {
-      terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    const el = terminalRef.current;
+    if (activeTab === 'logs' && el) el.scrollTop = el.scrollHeight;
   }, [logs, activeTab]);
 
   return (
@@ -173,7 +173,7 @@ export const Pm2ConsoleSimulator = () => {
         </div>
 
         {/* Terminal Body */}
-        <div className="p-4 sm:p-5 font-mono text-xs overflow-x-auto min-h-[300px]">
+        <div ref={terminalRef} className="p-4 sm:p-5 font-mono text-xs overflow-x-auto overflow-y-auto h-[320px]">
           {activeTab === 'status' ? (
             /* Table View of pm2 status */
             <div className="space-y-4">
@@ -256,7 +256,6 @@ export const Pm2ConsoleSimulator = () => {
                   </span>
                 </div>
               ))}
-              <div ref={terminalEndRef} />
             </div>
           )}
         </div>

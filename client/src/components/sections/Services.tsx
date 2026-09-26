@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, useRef, ReactNode } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -32,6 +32,7 @@ interface ServiceItem {
 
 // 1. RPA & Automation Simulator
 const RpaSimulator = () => {
+  const logBoxRef = useRef<HTMLDivElement>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const [running, setRunning] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -66,6 +67,11 @@ const RpaSimulator = () => {
 
     return () => clearInterval(interval);
   }, [running]);
+
+  useEffect(() => {
+    const el = logBoxRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [logs]);
 
   return (
     <div className="flex flex-col h-full justify-between p-4 font-mono text-xs md:text-xs text-[#47E5C2] bg-night-900/80 rounded-lg">
@@ -109,8 +115,8 @@ const RpaSimulator = () => {
         </div>
       </div>
 
-      {/* Terminal log output */}
-      <div className="flex-1 bg-black/85 rounded p-3 border border-night-line overflow-y-auto max-h-[130px] space-y-1 text-left min-h-[110px] shadow-inner">
+      {/* Terminal log output: fills the panel so the whole run (up to "100% OK") stays visible */}
+      <div ref={logBoxRef} className="flex-1 bg-black/85 rounded p-3 border border-night-line overflow-y-auto space-y-1.5 text-left min-h-[220px] shadow-inner">
         {logs.map((log, i) => (
           <div 
             key={i} 
@@ -130,8 +136,8 @@ const RpaSimulator = () => {
       {/* Control bar */}
       <div className="flex items-center justify-between mt-3 pt-2 border-t border-night-line">
         <div className="flex items-center space-x-2">
-          <div className={`w-2 h-2 rounded-full ${running ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
-          <span className="text-xs text-slate-400 font-sans">{running ? `EJECUTANDO - ${progress}%` : 'COMPLETADO'}</span>
+          <div className={`w-2 h-2 rounded-full ${running ? 'bg-[#FFC857] animate-pulse' : 'bg-[#47E5C2]'}`} />
+          <span className={`text-xs font-sans ${running ? 'text-slate-300' : 'text-[#47E5C2] font-bold'}`}>{running ? `EJECUTANDO - ${progress}%` : 'COMPLETADO · 0 ERRORES'}</span>
         </div>
         <button 
           onClick={() => { setLogs([]); setRunning(true); setProgress(0); }}
@@ -274,7 +280,7 @@ const FullStackSimulator = () => {
         >
           {/* Mock App Header */}
           <div className="flex justify-between items-center border-b border-night-line pb-1 mb-1.5">
-            <span className="text-[7px] font-display font-bold text-[#FFC857]">STAR_DASH</span>
+            <span className="text-xs font-display font-bold text-[#FFC857]">STAR_DASH</span>
             <div className="w-1.5 h-1.5 rounded-full bg-[#FFC857]/70" />
           </div>
 
@@ -286,7 +292,7 @@ const FullStackSimulator = () => {
                 chartMetric === 'users' ? 'border-[#FFC857] bg-[#FFC857]/5' : 'border-night-line bg-slate-900/40'
               }`}
             >
-              <span className="text-[6px] text-slate-400 block">Clientes</span>
+              <span className="text-xs text-slate-400 block">Clientes</span>
               <span className="text-xs font-bold text-white">{users}</span>
             </button>
             <button 
@@ -295,7 +301,7 @@ const FullStackSimulator = () => {
                 chartMetric === 'revenue' ? 'border-[#FFC857] bg-[#FFC857]/5' : 'border-night-line bg-slate-900/40'
               }`}
             >
-              <span className="text-[6px] text-slate-400 block">Ventas</span>
+              <span className="text-xs text-slate-400 block">Ventas</span>
               <span className="text-xs font-bold text-white">$4.9K</span>
             </button>
           </div>
@@ -352,43 +358,33 @@ const DataScrapingSimulator = () => {
 
   return (
     <div className="flex flex-col h-full justify-between p-4 font-mono text-xs md:text-xs text-[#7C9CFF] bg-night-900/80 rounded-lg">
-      {/* Visual Funnel ETL Animation */}
-      <div className="relative h-16 bg-black/45 border border-night-line rounded flex items-center justify-between px-6 overflow-hidden mb-3">
-        {/* Source Nodes */}
-        <div className="flex flex-col gap-1 z-10">
-          <div className="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[7px] text-slate-400">Web sites</div>
-          <div className="px-1 py-0.5 rounded bg-slate-900 border border-slate-700 text-[7px] text-slate-400">SAP / ERP</div>
+      {/* Visual Funnel ETL Animation (positions in % so particles always reach the output) */}
+      <div className="relative h-20 bg-black/45 border border-night-line rounded flex items-center justify-between px-4 overflow-hidden mb-3">
+        <div className="flex flex-col gap-1.5 z-10">
+          <div className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300">Web sites</div>
+          <div className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300">SAP / ERP</div>
         </div>
 
-        {/* Funnel SVG Icon */}
-        <div className="w-10 h-10 flex items-center justify-center bg-night-900 border border-[#7C9CFF]/30 rounded-full relative z-10 shadow-lg">
+        <div className="w-11 h-11 flex items-center justify-center bg-night-900 border border-[#7C9CFF]/40 rounded-full relative z-10 shadow-lg">
           <Database className="w-5 h-5 text-[#7C9CFF] animate-pulse" />
         </div>
 
-        {/* Output */}
-        <div className="flex flex-col items-center z-10">
-          <div className="px-1.5 py-0.5 rounded bg-[#7C9CFF]/10 border border-[#7C9CFF] text-xs text-white font-bold">SQL / DW</div>
+        <div className="z-10">
+          <div className="px-2 py-0.5 rounded bg-[#7C9CFF]/10 border border-[#7C9CFF] text-xs text-white font-bold">SQL / DW</div>
         </div>
 
-        {/* Running particles */}
-        <motion.div 
-          className="absolute w-1.5 h-1.5 rounded-full bg-[#7C9CFF] shadow-[0_0_6px_#7C9CFF]"
-          animate={{
-            x: [30, 110, 210],
-            y: [15, 30, 30],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div 
-          className="absolute w-1 h-1 rounded-full bg-[#47E5C2] shadow-[0_0_6px_#47E5C2]"
-          animate={{
-            x: [30, 110, 210],
-            y: [45, 30, 30],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{ duration: 1.8, delay: 0.9, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        {[
+          { color: '#7C9CFF', top: ['38%', '50%', '50%'], delay: 0 },
+          { color: '#47E5C2', top: ['66%', '50%', '50%'], delay: 0.9 },
+        ].map((p) => (
+          <motion.div
+            key={p.color}
+            className="absolute w-1.5 h-1.5 -mt-[3px] rounded-full"
+            style={{ backgroundColor: p.color, boxShadow: `0 0 6px ${p.color}` }}
+            animate={{ left: ['18%', '50%', '82%'], top: p.top, opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 1.8, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        ))}
       </div>
 
       {/* Structured metrics display */}
@@ -462,7 +458,7 @@ const ConsultingSimulator = () => {
           </button>
         ))}
         {/* Connection arrow labels */}
-        <div className="absolute inset-x-0 bottom-1 text-center text-[7px] text-slate-400 pointer-events-none uppercase tracking-wider">
+        <div className="absolute inset-x-0 bottom-1 text-center text-xs text-slate-400 pointer-events-none uppercase tracking-wider">
           Haz clic en un nodo para auditar
         </div>
       </div>
