@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { callStep, buildStep, launchStep, STEP_W, STEP_H } from '@/components/pixel/moreScenes';
 
 const STEPS = ['diagnosis', 'build', 'support'] as const;
+const STEP_SCENES = { diagnosis: callStep, build: buildStep, support: launchStep };
 
 const ProcessSection = () => {
   const { t } = useLanguage();
@@ -10,8 +13,7 @@ const ProcessSection = () => {
   return (
     <section id="proceso" className="py-20 bg-[#070B14]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-xs font-display font-semibold text-[#FFC857] tracking-widest mb-3">{t('process.badge')}</p>
+        <div className="mb-12 max-w-3xl">
           <h2 className="text-2xl md:text-3xl font-display font-bold text-white">{t('process.title')}</h2>
         </div>
 
@@ -25,9 +27,10 @@ const ProcessSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
             >
-              <span className="font-display text-4xl font-bold text-[#FFC857]/30 absolute top-4 right-5" aria-hidden="true">
-                0{i + 1}
-              </span>
+              <div className="rounded-xl overflow-hidden border border-night-line mb-5">
+                <PixelCanvas scene={STEP_SCENES[step]} width={STEP_W} height={STEP_H} stillAt={3} />
+              </div>
+              <p className="font-display text-sm font-bold text-gold mb-1">0{i + 1}</p>
               <h3 className="text-white font-semibold text-lg mb-2">{t(`process.steps.${step}.title`)}</h3>
               <p className="text-slate-400 text-sm leading-relaxed">{t(`process.steps.${step}.text`)}</p>
             </motion.li>

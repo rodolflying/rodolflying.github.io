@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { ArrowRight, ChevronDown, Check } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import StarConstellation from '@/components/ui/StarConstellation';
 
@@ -17,7 +17,6 @@ const wordVariants = {
 const Hero = () => {
   const { t } = useLanguage();
   const words = t('hero.title').split(' ');
-  const trust = [t('hero.trust_1'), t('hero.trust_2'), t('hero.trust_3')];
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden starfield">
@@ -33,16 +32,6 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-7">
-            <motion.p
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-star/30 bg-star/10 text-star text-sm font-medium mb-6"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="w-2 h-2 rounded-full bg-star animate-pulse" />
-              {t('hero.badge')}
-            </motion.p>
-
             <h1 className="font-display font-bold text-white tracking-tight leading-[1.05] text-4xl sm:text-5xl lg:text-6xl mb-5">
               {words.map((word, i) => (
                 <motion.span
@@ -76,7 +65,7 @@ const Hero = () => {
             </motion.p>
 
             <motion.div
-              className="flex flex-wrap gap-4 items-center mb-8"
+              className="flex flex-wrap gap-4 items-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.05, duration: 0.6 }}
@@ -100,19 +89,6 @@ const Hero = () => {
               </a>
             </motion.div>
 
-            <motion.ul
-              className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.25, duration: 0.6 }}
-            >
-              {trust.map((item) => (
-                <li key={item} className="inline-flex items-center gap-2">
-                  <Check className="w-4 h-4 text-star" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </motion.ul>
           </div>
 
           <motion.div

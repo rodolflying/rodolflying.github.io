@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Star Apps · render de escenas pixel</title>
+<!-- Dev-only page (not part of the production build). Renders an area scene at 1280x720
+     for social videos: /tools/render.html?scene=finanzas&lang=es -->
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; background: #070B14; }
+  #stage { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #070B14; }
+  canvas { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; image-rendering: pixelated; }
+  #caption { font-variant-ligatures: none; font-feature-settings: "liga" 0; position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 40px; font-family: 'Pixelify Sans', monospace;
+    background: linear-gradient(transparent, rgba(7,11,20,0.92) 35%); color: #EEF2F8; }
+  #caption h1 { margin: 0 0 6px; font-size: 44px; font-weight: 700; }
+  #caption p { margin: 0; font-size: 24px; color: #B4C0D3; }
+  #brand { position: absolute; right: 40px; top: 28px; font-family: 'Pixelify Sans', monospace; font-size: 26px; font-weight: 700; color: #EEF2F8; letter-spacing: 2px; }
+  #brand span { color: #47E5C2; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="160" height="90"></canvas>
+  <div id="brand">STAR <span>APPS</span></div>
+  <div id="caption"><h1 id="name"></h1><p id="pitch"></p></div>
+</div>
+<script type="module">
+  import { AREA_SCENES } from '/src/components/pixel/areaScenes.ts';
+  import { areas } from '/src/data/areas.ts';
+
+  const params = new URLSearchParams(location.search);
+  const id = params.get('scene') || 'finanzas';
+  const lang = params.get('lang') === 'en' ? 'en' : 'es';
+  const area = areas.find((a) => a.id === id);
+  document.getElementById('name').textContent = area.name[lang];
+  document.getElementById('name').style.color = area.color;
+  document.getElementById('pitch').textContent = area.pitch[lang];
+  const g = document.getElementById('c').getContext('2d');
+  g.imageSmoothingEnabled = false;
+  const scene = AREA_SCENES[id];
+
+  window.DURATION = 7;
+  window.renderFrame = (t) => { g.clearRect(0, 0, 160, 90); scene(g, t, undefined); };
+  if (!params.has('record')) {
+    const t0 = performance.now();
+    const loop = () => { window.renderFrame((performance.now() - t0) / 1000); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  } else {
+    window.renderFrame(0);
+  }
+  window.READY = true;
+</script>
+</body>
+</html>

@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '@/hooks/useLanguage';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { roiScene, ROI_W, ROI_H, type RoiState } from '@/components/pixel/moreScenes';
 
 const COPY = {
   es: {
@@ -121,15 +123,9 @@ export const RoiCalculator = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-night-line/80 pb-6 mb-8">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#47E5C2]/10 border border-[#47E5C2]/30 mb-2">
-            <Calculator className="w-3.5 h-3.5 text-[#47E5C2]" />
-            <span className="text-xs font-mono text-[#47E5C2] font-bold tracking-wider">
-              {c.badge}
-            </span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold text-white">
             {c.title}
-          </h3>
+          </h2>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
             {c.subtitle}
           </p>
@@ -155,6 +151,17 @@ export const RoiCalculator = () => {
             CLP ($)
           </button>
         </div>
+      </div>
+
+      {/* The team, the clock and the savings pile react to the sliders */}
+      <div className="rounded-xl overflow-hidden border border-night-line mb-8 relative z-10">
+        <PixelCanvas<RoiState>
+          scene={roiScene}
+          width={ROI_W}
+          height={ROI_H}
+          state={{ hoursPerDay, teamSize, savingsRatio: Math.sqrt(results.annualHoursSaved / 7000) }}
+          stillAt={1}
+        />
       </div>
 
       <div className="grid lg:grid-cols-12 gap-8 items-center">

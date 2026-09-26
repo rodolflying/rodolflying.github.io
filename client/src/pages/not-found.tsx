@@ -1,6 +1,8 @@
 import { Link } from 'wouter';
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/hooks/useLanguage';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { lostScene, LOST_W, LOST_H } from '@/components/pixel/moreScenes';
 
 export default function NotFound() {
   const { t } = useLanguage();
@@ -9,7 +11,10 @@ export default function NotFound() {
     <Layout title={t('not_found.title')} noindex>
       <section className="min-h-[70vh] flex items-center justify-center pt-24 pb-16 bg-[#070B14]">
         <div className="container mx-auto px-4 text-center max-w-lg">
-          <p className="font-display text-6xl font-bold text-[#47E5C2] mb-4">404</p>
+          <div className="rounded-xl overflow-hidden border border-night-line mb-6">
+            <PixelCanvas scene={lostScene} width={LOST_W} height={LOST_H} stillAt={1} />
+          </div>
+          <p className="font-display text-5xl font-bold text-[#47E5C2] mb-4">404</p>
           <h1 className="text-2xl font-display font-bold text-white mb-4">{t('not_found.title')}</h1>
           <p className="text-slate-400 mb-8">{t('not_found.text')}</p>
           <div className="flex flex-wrap justify-center gap-4">

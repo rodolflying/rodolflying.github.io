@@ -4,6 +4,8 @@ import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { areas } from '@/data/areas';
 import { AREA_ICONS } from '@/components/sections/services/AreasSection';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { AREA_SCENES, AREA_W, AREA_H } from '@/components/pixel/areaScenes';
 
 const AreasOverview = () => {
   const { t, language } = useLanguage();
@@ -12,7 +14,6 @@ const AreasOverview = () => {
     <section id="capacidades" className="py-20 bg-night">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-sm font-semibold text-gold tracking-widest mb-3">{t('areas.badge')}</p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">{t('areas.title')}</h2>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">{t('areas.subtitle')}</p>
         </div>
@@ -33,6 +34,9 @@ const AreasOverview = () => {
                   href={`/services#${area.id}`}
                   className="spotlight group h-full rounded-2xl border border-night-line bg-night-800 p-6 flex flex-col"
                 >
+                  <div className="rounded-xl overflow-hidden border border-night-line mb-5 -mx-1">
+                    <PixelCanvas scene={AREA_SCENES[area.id]} width={AREA_W} height={AREA_H} stillAt={5} />
+                  </div>
                   <div className="flex items-center gap-3 mb-4">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center"

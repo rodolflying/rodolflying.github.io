@@ -38,7 +38,7 @@ export default {
     badge: 'Software, automation and AI · Made in Chile',
     title: 'We automate the processes your team does by hand.',
     title_highlight: 'Software you own, no platform licenses, with warranty and support.',
-    subtitle: 'For companies running on ERPs, Excel, email and web portals that want to automate without buying yet another platform. We design, deploy and support it; the code belongs to your company.',
+    subtitle: 'If someone at your company spends hours copying data between the ERP, spreadsheets, email and portals, we automate it with software we install on your servers and keep running. The code is registered to your company.',
     cta_diagnostic: 'Request a free diagnosis',
     cta_demo: 'See how it works',
     contact_btn: 'Contact Us',
@@ -54,7 +54,7 @@ export default {
     subtitle: 'We are a Chilean software engineering firm. We automate processes, integrate systems and build custom software that stays in your company’s hands.',
     who_title: 'Who we are',
     who_p1: 'Star Apps was founded in 2021 to solve a problem we see in almost every organization: teams losing hours on repetitive tasks, data scattered across spreadsheets and portals, and tools that lock the company into yearly licenses.',
-    who_p2: 'We work with open technologies (Python, TypeScript, SQL databases, cloud) and combine process engineering with development: first we understand how your team operates, then we automate what adds value and hand over the code, the documentation and ongoing support.',
+    who_p2: 'We work with Python, TypeScript, SQL and whatever cloud you already use. Before writing code we sit down with the people doing the work; only then do we automate, document and hand over the repository.',
     country: 'Chile',
     founder_title: 'Founder',
     founder_role: 'Founder · Industrial Engineer (UCN)',
@@ -223,6 +223,7 @@ export default {
     info_title: 'Contact Information',
     email_label: 'Email',
     phone_label: 'Phone',
+    send_another: 'Send another message',
     next_title: 'What happens next?',
     next: {
       step1: 'We reply within 2 business days at most.',
@@ -272,7 +273,7 @@ export default {
     before_title: 'Today: loose pieces',
     before_text: 'Data in Excel, the ERP, email, PDFs and portals. Someone on your team spends hours copying and pasting between them, every day.',
     after_title: 'With Star Apps: one system',
-    after_text: 'We connect every piece into an automated flow that runs on its own, alerts you when something breaks and frees your team for work that matters.',
+    after_text: 'We connect those pieces into a flow that runs on its own, alerts you on WhatsApp or email when something breaks, and gives your team back the hours it now spends copying data.',
   },
   services_page: {
     title: 'Services',
@@ -281,7 +282,7 @@ export default {
   areas: {
     badge: 'SERVICE AREAS',
     title: 'Automation for every area of your company',
-    subtitle: 'Solutions built and proven in real operations, with measured results. Pick an area to see what we build.',
+    subtitle: 'Each area shows something we have already built and what it measured in real operations. Pick one.',
     what_we_build: 'What we build',
     results_note: 'Results from projects led by our team in industrial and service operations. Client names are omitted for confidentiality.',
   },
@@ -365,6 +366,7 @@ export default {
         resolution: '36 business h',
       },
     },
+    compare_start: 'Start',
     compare_title: '5-year cumulative cost',
     compare_note: 'Reference portfolio of 14 automations: in-house development with support vs. an RPA platform with yearly license and monthly support.',
     compare_licensed: 'Licensed RPA platform',
@@ -393,7 +395,7 @@ export default {
   },
   process: {
     badge: 'HOW WE WORK',
-    title: 'From the first call to a running system',
+    title: 'How we work',
     steps: {
       diagnosis: { title: 'Free diagnosis', text: 'A 30-minute call to understand your process. We send you, in writing, what can be automated, how long it takes and what it costs.' },
       build: { title: 'Milestone-based development', text: 'We build in short deliveries your team can test. You pay per milestone, with a clear scope from day one.' },

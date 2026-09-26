@@ -4,6 +4,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens for the shadcn/ui primitives (previously injected by a Replit theme plugin).
+   HSL values of the Star Apps night-sky palette. */
+@layer base {
+  :root {
+    --background: 222 48% 5%;
+    --foreground: 216 42% 95%;
+    --card: 219 46% 10%;
+    --card-foreground: 216 42% 95%;
+    --popover: 219 46% 10%;
+    --popover-foreground: 216 42% 95%;
+    --primary: 166 75% 59%;
+    --primary-foreground: 222 48% 5%;
+    --secondary: 219 35% 16%;
+    --secondary-foreground: 216 42% 95%;
+    --muted: 219 35% 16%;
+    --muted-foreground: 217 22% 76%;
+    --accent: 219 35% 16%;
+    --accent-foreground: 216 42% 95%;
+    --destructive: 355 100% 74%;
+    --destructive-foreground: 222 48% 5%;
+    --border: 219 36% 18%;
+    --input: 219 36% 18%;
+    --ring: 166 75% 59%;
+    --radius: 0.5rem;
+    --chart-1: 166 75% 59%;
+    --chart-2: 41 100% 67%;
+    --chart-3: 228 100% 74%;
+    --chart-4: 355 100% 74%;
+    --chart-5: 199 93% 74%;
+    --sidebar-background: 219 46% 10%;
+    --sidebar-foreground: 216 42% 95%;
+    --sidebar-primary: 166 75% 59%;
+    --sidebar-primary-foreground: 222 48% 5%;
+    --sidebar-accent: 219 35% 16%;
+    --sidebar-accent-foreground: 216 42% 95%;
+    --sidebar-border: 219 36% 18%;
+    --sidebar-ring: 166 75% 59%;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

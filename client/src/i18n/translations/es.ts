@@ -38,7 +38,7 @@ export default {
     badge: 'Software, automatización e IA · Hecho en Chile',
     title: 'Automatizamos los procesos que tu equipo hace a mano.',
     title_highlight: 'Software propio, sin licencias de plataforma, con garantía y soporte.',
-    subtitle: 'Para empresas que operan con ERP, Excel, correo y portales web y quieren automatizar sin comprar otra plataforma. Diseñamos, desplegamos y acompañamos; el código queda a nombre de tu empresa.',
+    subtitle: 'Si en tu empresa alguien pasa horas copiando datos entre el ERP, planillas, correos y portales, lo automatizamos con software propio que instalamos en tus servidores y mantenemos funcionando. El código queda a nombre de tu empresa.',
     cta_diagnostic: 'Solicitar diagnóstico gratuito',
     cta_demo: 'Ver cómo funciona',
     contact_btn: 'Contactar',
@@ -54,7 +54,7 @@ export default {
     subtitle: 'Somos una firma chilena de ingeniería de software. Automatizamos procesos, integramos sistemas y construimos software a la medida que queda en manos de tu empresa.',
     who_title: 'Quiénes somos',
     who_p1: 'Star Apps nace en 2021 para resolver un problema que vemos en casi todas las organizaciones: equipos que pierden horas en tareas repetitivas, datos repartidos en planillas y portales, y soluciones que atan a la empresa a licencias anuales.',
-    who_p2: 'Trabajamos con tecnologías abiertas (Python, TypeScript, bases de datos SQL, nube) y combinamos ingeniería de procesos con desarrollo: primero entendemos cómo opera tu equipo, luego automatizamos lo que aporta valor y te entregamos el código, la documentación y el acompañamiento.',
+    who_p2: 'Trabajamos con Python, TypeScript, SQL y la nube que ya uses. Antes de escribir código nos sentamos con quienes hacen el trabajo; recién después automatizamos, documentamos y entregamos el repositorio.',
     country: 'Chile',
     founder_title: 'Fundador',
     founder_role: 'Fundador · Ingeniero Civil Industrial (UCN)',
@@ -223,6 +223,7 @@ export default {
     info_title: 'Información de Contacto',
     email_label: 'Correo',
     phone_label: 'Teléfono',
+    send_another: 'Enviar otro mensaje',
     next_title: '¿Qué pasa después?',
     next: {
       step1: 'Te respondemos en un máximo de 2 días hábiles.',
@@ -272,7 +273,7 @@ export default {
     before_title: 'Hoy: piezas sueltas',
     before_text: 'Datos en Excel, el ERP, el correo, PDFs y portales. Alguien de tu equipo pasa horas copiando y pegando entre ellos, todos los días.',
     after_title: 'Con Star Apps: un solo sistema',
-    after_text: 'Conectamos cada pieza en un flujo automático que corre solo, avisa cuando algo falla y deja a tu equipo libre para lo que sí importa.',
+    after_text: 'Conectamos esas piezas en un flujo que corre solo, avisa por WhatsApp o correo si algo falla y le devuelve a tu equipo las horas que hoy pierde copiando datos.',
   },
   services_page: {
     title: 'Servicios',
@@ -281,7 +282,7 @@ export default {
   areas: {
     badge: 'ÁREAS DE SERVICIO',
     title: 'Automatización para cada área de tu empresa',
-    subtitle: 'Soluciones construidas y probadas en operaciones reales, con resultados medidos. Elige un área para ver qué construimos.',
+    subtitle: 'Cada área muestra algo que ya construimos y lo que midió en operación real. Elige una.',
     what_we_build: 'Qué construimos',
     results_note: 'Resultados de proyectos liderados por nuestro equipo en operaciones industriales y de servicios. Omitimos nombres de clientes por confidencialidad.',
   },
@@ -365,6 +366,7 @@ export default {
         resolution: '36 h hábiles',
       },
     },
+    compare_start: 'Inicio',
     compare_title: 'Costo acumulado a 5 años',
     compare_note: 'Portafolio de referencia de 14 automatizaciones: desarrollo propio con soporte versus plataforma RPA con licencia anual y soporte mensual.',
     compare_licensed: 'Plataforma RPA con licencia',
@@ -393,7 +395,7 @@ export default {
   },
   process: {
     badge: 'CÓMO TRABAJAMOS',
-    title: 'De la conversación al sistema funcionando',
+    title: 'Así trabajamos',
     steps: {
       diagnosis: { title: 'Diagnóstico gratuito', text: 'Una llamada de 30 minutos para entender tu proceso. Te enviamos por escrito qué se puede automatizar, en cuánto tiempo y a qué costo.' },
       build: { title: 'Desarrollo por hitos', text: 'Construimos en entregas cortas que tu equipo prueba. Pagas por hito, con alcance claro desde el inicio.' },

@@ -57,16 +57,10 @@ const Home = () => {
       <ValueFrameworkSection />
       <ProcessSection />
 
-      {/* ROI estimate: the only interactive simulator kept on Home; the rest live in /services */}
+      {/* ROI estimate with the interactive pixel scene */}
       <section id="roi" className="py-20 bg-[#0A1020] border-t border-night-line">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <RoiCalculator />
-          <p className="text-center mt-8">
-            <Link href="/services" className="inline-flex items-center gap-2 text-[#47E5C2] font-semibold hover:underline">
-              {t('home.more_simulators')}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </p>
         </div>
       </section>
 

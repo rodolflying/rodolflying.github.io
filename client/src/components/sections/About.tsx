@@ -2,6 +2,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Linkedin, Code2, KeyRound, LifeBuoy, FileText, ArrowRight } from 'lucide-react';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { founderAvatar, AVATAR_W, AVATAR_H } from '@/components/pixel/moreScenes';
 
 const PRINCIPLES = [
   { key: 'ownership', icon: KeyRound, color: '#47E5C2' },
@@ -56,11 +58,8 @@ const About = () => {
               {t('about.founder_title')}
             </h2>
             <div className="flex items-center gap-4 mb-4">
-              <div
-                className="w-14 h-14 rounded-full bg-gradient-to-br from-[#47E5C2] to-[#7C9CFF] flex items-center justify-center font-display font-bold text-[#070B14] text-lg flex-shrink-0"
-                aria-hidden="true"
-              >
-                RS
+              <div className="w-16 h-16 rounded-xl overflow-hidden border border-night-line flex-shrink-0">
+                <PixelCanvas scene={founderAvatar} width={AVATAR_W} height={AVATAR_H} stillAt={0} label="Rodolfo Sepúlveda" />
               </div>
               <div>
                 <p className="font-display font-bold text-white">Rodolfo Sepúlveda</p>

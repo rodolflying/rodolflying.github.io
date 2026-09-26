@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ShieldCheck, Wrench, Route, Wallet, Bot, Globe, Check, AlertTriangle, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { areas, type AreaIcon } from '@/data/areas';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { AREA_SCENES, AREA_W, AREA_H } from '@/components/pixel/areaScenes';
 
 export const AREA_ICONS: Record<AreaIcon, LucideIcon> = {
   shield: ShieldCheck,
@@ -39,7 +41,6 @@ const AreasSection = () => {
     <section id="areas" className="py-20 bg-night scroll-mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-sm font-semibold text-gold tracking-widest mb-3">{t('areas.badge')}</p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">{t('areas.title')}</h2>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">{t('areas.subtitle')}</p>
         </div>
@@ -81,6 +82,9 @@ const AreasSection = () => {
                 transition={{ duration: 0.3 }}
                 className="spotlight rounded-2xl border border-night-line bg-night-800 p-6 md:p-8"
               >
+                <div className="rounded-xl overflow-hidden border border-night-line mb-6">
+                  <PixelCanvas scene={AREA_SCENES[area.id]} width={AREA_W} height={AREA_H} stillAt={5} label={area.pitch[language]} />
+                </div>
                 <div className="flex items-start gap-4 mb-6">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"

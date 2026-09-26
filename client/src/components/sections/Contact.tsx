@@ -10,7 +10,8 @@ import { ContactMessage } from '@/types';
 import { motion } from 'framer-motion';
 import { Mail, Phone, Linkedin, Github } from 'lucide-react';
 import { FaMedium } from 'react-icons/fa';
-import confetti from 'canvas-confetti';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { receivedScene, OK_W, OK_H } from '@/components/pixel/moreScenes';
 
 const makeContactSchema = (t: (key: string) => string) =>
   z.object({
@@ -38,6 +39,7 @@ const Contact = () => {
   const { language, t } = useLanguage();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const {
     register,
@@ -55,14 +57,7 @@ const Contact = () => {
       return response.json();
     },
     onSuccess: () => {
-      // Lanzar confeti!
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#007BFF', '#00F0FF', '#0F9D58']
-      });
-
+      setSent(true);
       toast({
         title: t('contact.success_title'),
         description: t('contact.success_message'),
@@ -122,6 +117,22 @@ const Contact = () => {
             <input id="honey" type="text" {...register('honey')} tabIndex={-1} autoComplete="off" />
           </div>
 
+          {sent ? (
+            <div className="text-center" role="status">
+              <div className="rounded-xl overflow-hidden border border-night-line mb-6">
+                <PixelCanvas scene={receivedScene} width={OK_W} height={OK_H} stillAt={1.4} />
+              </div>
+              <h4 className="font-display text-2xl font-bold text-white mb-2">{t('contact.success_title')}</h4>
+              <p className="text-slate-300 mb-6">{t('contact.success_message')}</p>
+              <button
+                type="button"
+                onClick={() => setSent(false)}
+                className="px-5 py-2.5 rounded-lg border border-star/50 text-star font-semibold hover:bg-star/10 transition-colors"
+              >
+                {t('contact.send_another')}
+              </button>
+            </div>
+          ) : (
           <form onSubmit={handleSubmit((data) => onSubmit(data as ContactMessage))} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
@@ -199,6 +210,7 @@ const Contact = () => {
                 {isSubmitting ? t('contact.sending') : t('contact.send_btn')}
               </button>
             </form>
+          )}
           </div>
           
           <div className="flex flex-col space-y-8">

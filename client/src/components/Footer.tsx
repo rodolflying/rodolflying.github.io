@@ -1,6 +1,6 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import { Link } from 'wouter';
-import { Mail, Phone, Linkedin, Github, Heart } from 'lucide-react';
+import { Mail, Phone, Linkedin, Github } from 'lucide-react';
 import { FaMedium } from 'react-icons/fa';
 import starAppsLogo from '@assets/START_APPS_LOGO-removebg-preview.png';
 
@@ -84,11 +84,6 @@ const Footer = () => {
 
         <div className="pt-6 border-t border-night-line flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-slate-400 text-xs">© {new Date().getFullYear()} Star Apps SpA · RUT 77.373.407-0. {t('footer.rights')}</p>
-          <p className="text-slate-400 text-xs flex items-center gap-1">
-            {t('footer.designed_with')}
-            <Heart className="w-3 h-3 text-[#FF7A85] inline" />
-            {t('footer.using_tech')}
-          </p>
         </div>
       </div>
     </footer>

@@ -42,3 +42,6 @@ _historico_md/
 
 # Local Claude/editor config
 .claude/
+
+# Rendered marketing videos (regenerate with scripts/render-video.mjs)
+_media/

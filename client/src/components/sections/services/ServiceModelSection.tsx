@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { Hammer, LifeBuoy, Server, Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import PixelCanvas from '@/components/pixel/PixelCanvas';
+import { coinsScene, COINS_W, COINS_H } from '@/components/pixel/moreScenes';
 
 const MODES = [
   { key: 'project', icon: Hammer, color: '#47E5C2' },
@@ -23,7 +25,6 @@ const ServiceModelSection = () => {
     <section id="modelo" className="py-20 bg-night">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 max-w-3xl mx-auto">
-          <p className="text-sm font-semibold text-gold tracking-widest mb-3">{t('model.badge')}</p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">{t('model.title')}</h2>
           <p className="text-slate-300 text-lg">{t('model.subtitle')}</p>
         </div>
@@ -90,28 +91,17 @@ const ServiceModelSection = () => {
           <div className="rounded-2xl border border-night-line bg-night-800 p-6 md:p-8 flex flex-col">
             <h3 className="font-display text-xl font-bold text-white mb-1">{t('model.compare_title')}</h3>
             <p className="text-sm text-slate-400 mb-8">{t('model.compare_note')}</p>
-            <div className="space-y-6 mb-8">
-              {[
-                { label: t('model.compare_licensed'), value: LICENSED_5Y, color: '#FF8FA3' },
-                { label: t('model.compare_own'), value: OWN_5Y, color: '#47E5C2' },
-              ].map((bar) => (
-                <div key={bar.label}>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-slate-200">{bar.label}</span>
-                    <span className="font-semibold text-white">{Math.round((bar.value / LICENSED_5Y) * 100)}%</span>
-                  </div>
-                  <div className="h-4 rounded-full bg-night-900 overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full"
-                      style={{ backgroundColor: bar.color }}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${(bar.value / LICENSED_5Y) * 100}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    />
-                  </div>
-                </div>
+            <div className="rounded-xl overflow-hidden border border-night-line mb-3">
+              <PixelCanvas scene={coinsScene} width={COINS_W} height={COINS_H} stillAt={8.5} label={t('model.compare_title')} />
+            </div>
+            <div className="grid grid-cols-6 text-center text-xs text-slate-400 mb-4">
+              {[t('model.compare_start'), '1', '2', '3', '4', '5'].map((y) => (
+                <span key={y}>{y}</span>
               ))}
+            </div>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm mb-6">
+              <span className="inline-flex items-center gap-2 text-slate-200"><span className="w-3 h-3 rounded-sm bg-[#FF7A85]" />{t('model.compare_licensed')}</span>
+              <span className="inline-flex items-center gap-2 text-slate-200"><span className="w-3 h-3 rounded-sm bg-star" />{t('model.compare_own')}</span>
             </div>
             <div className="mt-auto rounded-xl bg-star/10 border border-star/30 p-5">
               <p className="font-display text-4xl font-bold text-star">−{Math.round((1 - OWN_5Y / LICENSED_5Y) * 100)}%</p>

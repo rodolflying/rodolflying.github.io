@@ -16,10 +16,9 @@ const CasesSection = ({ featuredOnly = false }: CasesSectionProps) => {
   return (
     <section id="casos" className="py-20 bg-[#0A1020] border-y border-night-line">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-xs font-display font-semibold text-[#7C9CFF] tracking-widest mb-3">{t('cases.badge')}</p>
+        <div className="mb-12 max-w-3xl">
           <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-4">{t('cases.title')}</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">{t('cases.subtitle')}</p>
+          <p className="text-slate-300 text-lg">{t('cases.subtitle')}</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
