@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ShieldCheck, Wrench, Route, Wallet, Bot, Globe, Check, AlertTriangle, ArrowRight, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { areas, type AreaIcon } from '@/data/areas';
 import PixelCanvas from '@/components/pixel/PixelCanvas';
 import { AREA_SCENE_DEFS } from '@/components/pixel/areaScenes';
-import AreaOpsDialog from './AreaOpsDialog';
+
+// Loaded on first open: keeps the dialog, its data and the dialog library out of the main bundle.
+const AreaOpsDialog = lazy(() => import('./AreaOpsDialog'));
 
 export const AREA_ICONS: Record<AreaIcon, LucideIcon> = {
   shield: ShieldCheck,
@@ -24,6 +26,8 @@ const AreasSection = () => {
   const { t, language } = useLanguage();
   const [activeId, setActiveId] = useState(areas[0].id);
   const [opsOpen, setOpsOpen] = useState(false);
+  const [opsLoaded, setOpsLoaded] = useState(false);
+  const openOps = () => { setOpsLoaded(true); setOpsOpen(true); };
 
   // Deep links like /services#finanzas open that area.
   useEffect(() => {
@@ -97,7 +101,7 @@ const AreasSection = () => {
               <div className="lg:col-span-7">
                 <button
                   type="button"
-                  onClick={() => setOpsOpen(true)}
+                  onClick={openOps}
                   aria-label={`${t('areas.ops_cta')}: ${area.name[language]}`}
                   className="group relative block w-full rounded-xl overflow-hidden border border-night-line text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-star"
                 >
@@ -142,7 +146,7 @@ const AreasSection = () => {
 
                 <button
                   type="button"
-                  onClick={() => setOpsOpen(true)}
+                  onClick={openOps}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 font-semibold text-white transition-colors hover:bg-white/5 mb-5"
                   style={{ borderColor: area.color }}
                 >
@@ -177,7 +181,11 @@ const AreasSection = () => {
         </div>
       </div>
 
-      <AreaOpsDialog area={area} open={opsOpen} onOpenChange={setOpsOpen} />
+      {opsLoaded && (
+        <Suspense fallback={null}>
+          <AreaOpsDialog area={area} open={opsOpen} onOpenChange={setOpsOpen} />
+        </Suspense>
+      )}
     </section>
   );
 };
