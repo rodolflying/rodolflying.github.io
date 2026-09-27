@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ShieldCheck, Wrench, Route, Wallet, Bot, Globe, Check, AlertTriangle, ArrowRight, type LucideIcon } from 'lucide-react';
+import { ShieldCheck, Wrench, Route, Wallet, Bot, BrainCircuit, Globe, Check, AlertTriangle, ArrowRight, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { areas, type AreaIcon } from '@/data/areas';
 import PixelCanvas from '@/components/pixel/PixelCanvas';
@@ -15,6 +15,7 @@ export const AREA_ICONS: Record<AreaIcon, LucideIcon> = {
   route: Route,
   wallet: Wallet,
   bot: Bot,
+  brain: BrainCircuit,
   globe: Globe,
 };
 
@@ -95,7 +96,7 @@ const AreasSection = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
-              className="spotlight rounded-2xl border border-night-line bg-night-800 p-4 md:p-6 grid lg:grid-cols-12 gap-5 lg:gap-x-8 lg:gap-y-4 items-start"
+              className="spotlight rounded-2xl border border-night-line bg-night-800 p-4 md:p-6 grid lg:grid-cols-12 lg:grid-rows-[auto_1fr] gap-5 lg:gap-x-8 lg:gap-y-4 items-start"
             >
               {/* Scene: the result is clickable */}
               <div className="lg:col-span-7">

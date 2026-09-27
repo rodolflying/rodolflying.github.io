@@ -35,7 +35,7 @@ export default {
     trust_2: 'El código es tuyo',
     trust_3: 'Garantía y soporte',
     hint: 'Haz clic en la estrella: un clic y todo se conecta',
-    badge: 'Software, automatización e IA · Hecho en Chile',
+    badge: 'Software, automatización y ciencia de datos · Hecho en Chile',
     title: 'Automatizamos los procesos que tu equipo hace a mano.',
     title_highlight: 'Software propio, sin licencias de plataforma, con garantía y soporte.',
     subtitle: 'Si en tu empresa alguien pasa horas copiando datos entre el ERP, planillas, correos y portales, lo automatizamos con software propio que instalamos en tus servidores y mantenemos funcionando. El código queda a nombre de tu empresa.',
@@ -58,7 +58,7 @@ export default {
     country: 'Chile',
     founder_title: 'Fundador',
     founder_role: 'Fundador · Ingeniero Civil Industrial (UCN)',
-    founder_bio: 'Más de 8 años en datos, automatización e inteligencia artificial en medios de comunicación, educación, consultoría e industria. Ha liderado proyectos de RPA, pipelines de datos, análisis con NLP y plataformas web de punta a punta.',
+    founder_bio: 'Más de 8 años en datos, automatización e inteligencia artificial en medios de comunicación, educación, consultoría e industria. Ha liderado proyectos de RPA, pipelines de datos, análisis con NLP y plataformas web de punta a punta. En la industria y en tesis que ha acompañado aplica estadística inferencial, diseño de experimentos y modelos predictivos.',
     principles_title: 'Cómo trabajamos',
     principles: {
       ownership: { title: 'El código es tuyo', text: 'Entregamos el repositorio completo. Tu empresa puede auditarlo, modificarlo o continuarlo con otro equipo.' },
@@ -326,6 +326,13 @@ export default {
       title: 'Capacidad de decisión',
       text: 'Información en tiempo real, trazable y que no depende de una sola persona.',
       example: 'todos ven en qué estado va cada solicitud sin preguntar.',
+    },
+    proof_title: 'Medimos antes y demostramos después',
+    proof_subtitle: 'La ciencia de datos no es solo para los modelos. Cada proyecto se evalúa con el mismo rigor estadístico, para que el resultado se pueda defender en cualquier reunión.',
+    proof: {
+      baseline: { title: 'Línea base', text: 'Antes de tocar nada medimos cuánto tarda hoy el proceso, cuánto falla y cuánto cuesta, con datos reales y no con estimaciones.' },
+      pilot: { title: 'Piloto controlado', text: 'Probamos la solución en una parte del proceso y la comparamos con otra que sigue igual. Así aislamos el efecto de lo que cambiamos.' },
+      impact: { title: 'Impacto con su rango', text: 'Informamos el ahorro con su intervalo de confianza, no una cifra redonda que nadie puede defender.' },
     },
     avoided: {
       title: 'Costo evitado',

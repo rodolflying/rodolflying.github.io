@@ -35,7 +35,7 @@ export default {
     trust_2: 'You own the code',
     trust_3: 'Warranty and support',
     hint: 'Click the star: one click and everything connects',
-    badge: 'Software, automation and AI · Made in Chile',
+    badge: 'Software, automation and data science · Made in Chile',
     title: 'We automate the processes your team does by hand.',
     title_highlight: 'Software you own, no platform licenses, with warranty and support.',
     subtitle: 'If someone at your company spends hours copying data between the ERP, spreadsheets, email and portals, we automate it with software we install on your servers and keep running. The code is registered to your company.',
@@ -58,7 +58,7 @@ export default {
     country: 'Chile',
     founder_title: 'Founder',
     founder_role: 'Founder · Industrial Engineer (UCN)',
-    founder_bio: 'Over 8 years in data, automation and artificial intelligence across media, education, consulting and industry. Has led RPA projects, data pipelines, NLP analytics and end-to-end web platforms.',
+    founder_bio: 'Over 8 years in data, automation and artificial intelligence across media, education, consulting and industry. Has led RPA projects, data pipelines, NLP analytics and end-to-end web platforms. Applies inferential statistics, design of experiments and predictive models in industry projects and in supported theses.',
     principles_title: 'How we work',
     principles: {
       ownership: { title: 'You own the code', text: 'We hand over the full repository. Your company can audit it, change it or continue it with another team.' },
@@ -326,6 +326,13 @@ export default {
       title: 'Decision capability',
       text: 'Real-time, traceable information that does not depend on a single person.',
       example: 'everyone sees the status of every request without asking.',
+    },
+    proof_title: 'We measure before and prove after',
+    proof_subtitle: 'Data science is not only for models. Every project is evaluated with the same statistical rigor, so the result holds up in any meeting.',
+    proof: {
+      baseline: { title: 'Baseline', text: 'Before touching anything we measure how long the process takes today, how often it fails and what it costs, with real data rather than estimates.' },
+      pilot: { title: 'Controlled pilot', text: 'We test the solution on part of the process and compare it with a part that stays the same. That isolates the effect of what we changed.' },
+      impact: { title: 'Impact with its range', text: 'We report the saving with its confidence interval, not a round number nobody can defend.' },
     },
     avoided: {
       title: 'Avoided cost',

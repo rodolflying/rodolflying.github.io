@@ -2,7 +2,7 @@
 // employer, internal system or industry-identifying term is shown.
 import type { Bilingual } from './cases';
 
-export type AreaIcon = 'shield' | 'wrench' | 'route' | 'wallet' | 'bot' | 'globe';
+export type AreaIcon = 'shield' | 'wrench' | 'route' | 'wallet' | 'bot' | 'brain' | 'globe';
 
 export interface AreaResult {
   value: string;
@@ -127,26 +127,29 @@ export const areas: Area[] = [
   },
   {
     id: 'ia',
-    icon: 'bot',
+    icon: 'brain',
     color: '#7C9CFF',
-    name: { es: 'Monitoreo con agentes de IA', en: 'AI-agent monitoring' },
-    short: { es: 'Agentes IA', en: 'AI agents' },
+    name: { es: 'Modelos predictivos e IA', en: 'Predictive models and AI' },
+    short: { es: 'Predicción e IA', en: 'Prediction & AI' },
     pitch: {
-      es: 'Agentes que leen, escuchan y clasifican por ti, con los datos dentro de tu empresa.',
-      en: 'Agents that read, listen and classify for you, keeping the data inside your company.',
+      es: 'Modelos que anticipan fallas y comportamientos, funcionando en vivo, con el impacto demostrado con estadística.',
+      en: 'Models that anticipate failures and behavior, running live, with their impact proven with statistics.',
     },
     solutions: [
-      { es: 'Clasificación con IA de reportes que llegan por WhatsApp o correo, convertidos en tickets', en: 'AI classification of reports arriving by WhatsApp or email, turned into tickets' },
-      { es: 'Transcripción de audio con reconocimiento de voz local y detección de cumplimiento de protocolo', en: 'On-premise speech-to-text with protocol compliance detection' },
-      { es: 'Asistentes que responden sobre tus documentos internos (RAG)', en: 'Assistants that answer questions about your internal documents (RAG)' },
-      { es: 'Tableros de monitoreo que combinan reglas, IA y alertas en tiempo real', en: 'Monitoring dashboards combining rules, AI and real-time alerts' },
+      { es: 'Mantenimiento predictivo: modelos que leen la telemetría, anticipan la falla de un componente y agendan la detención antes de que ocurra', en: 'Predictive maintenance: models that read telemetry, anticipate a component failure and schedule the stop before it happens' },
+      { es: 'Visión por computador para inspección visual, conteo y detección de elementos de protección personal', en: 'Computer vision for visual inspection, counting and personal protective equipment detection' },
+      { es: 'Modelos supervisados y no supervisados: clasificación, segmentación y detección de anomalías', en: 'Supervised and unsupervised models: classification, segmentation and anomaly detection' },
+      { es: 'Pipelines en vivo que reentrenan el modelo y avisan cuando deja de acertar', en: 'Live pipelines that retrain the model and alert when it stops being accurate' },
+      { es: 'Estadística inferencial y diseño de experimentos: muestreo, pilotos controlados y ahorros con intervalo de confianza', en: 'Inferential statistics and design of experiments: sampling, controlled pilots and savings with confidence intervals' },
+      { es: 'Agentes y modelos de lenguaje que corren en tus servidores, cuando la tarea lo justifica', en: 'Agents and language models running on your own servers, when the task calls for it' },
     ],
     results: [
-      { value: '24/7', label: { es: 'vigilancia sin depender de turnos', en: 'watch without depending on shifts' } },
-      { value: '0', label: { es: 'datos sensibles enviados fuera cuando se usa IA local', en: 'sensitive data sent out when AI runs locally' } },
+      { value: '−20%', label: { es: 'de tiempo de espera en un rediseño validado con simulación', en: 'waiting time in a redesign validated with simulation' } },
+      { value: '~2 M', label: { es: 'registros de redes recolectados y clasificados con NLP', en: 'social media records collected and classified with NLP' } },
     ],
     risks: [
-      { es: 'Auditoría del 100% en vez de revisar solo tras un incidente', en: '100% auditing instead of reviewing only after an incident' },
+      { es: 'Detenciones planificadas en vez de emergencias', en: 'Planned stops instead of emergencies' },
+      { es: 'Decisiones respaldadas por datos, no por intuición', en: 'Decisions backed by data, not gut feeling' },
     ],
   },
   {
