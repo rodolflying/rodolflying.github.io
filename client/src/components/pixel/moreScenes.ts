@@ -86,55 +86,6 @@ export const roiScene: PixelScene<RoiState> = (g, t, s) => {
   star(g, 222, 2, t, 1, 0.6);
 };
 
-// ---------------------------------------------------------------- value framework icons (24x24)
-export const ICON_W = 24;
-export const ICON_H = 24;
-
-export const clockIcon: PixelScene = (g, t) => {
-  ring(g, 12, 12, 9, P.mint);
-  ring(g, 12, 12, 8, P.mint);
-  const a = t * 1.5;
-  for (let r = 0; r < 7; r++) px(g, 12 + Math.sin(a) * r, 12 - Math.cos(a) * r, 1, 1, P.white);
-  for (let r = 0; r < 4; r++) px(g, 12 + Math.sin(a / 12) * r, 12 - Math.cos(a / 12) * r, 1, 1, P.gold);
-  px(g, 11, 11, 2, 2, P.mint);
-};
-
-export const shieldIcon: PixelScene = (g, t) => {
-  const rows = [
-    '..cccccccc..', '.cccccccccc.', 'cccccccccccc', 'cccccccccccc', 'cccccccccccc', 'cccccccccccc',
-    '.cccccccccc.', '.cccccccccc.', '..cccccccc..', '...cccccc...', '....cccc....', '.....cc.....',
-  ];
-  const pulse = 0.5 + 0.5 * Math.sin(t * 3);
-  sprite(g, rows, { c: pulse > 0.5 ? P.coral : '#E0606B' }, 0, 0, 2);
-  check(g, 9, 9, P.white);
-  check(g, 9, 10, P.white);
-};
-
-export const radarIcon: PixelScene = (g, t) => {
-  ring(g, 12, 12, 10, P.sky);
-  ring(g, 12, 12, 6, P.dim);
-  const a = t * 2.2;
-  for (let k = 0; k < 5; k++) {
-    const aa = a - k * 0.12;
-    for (let r = 0; r < 10; r++) px(g, 12 + Math.cos(aa) * r, 12 + Math.sin(aa) * r, 1, 1, k === 0 ? P.sky : 'rgba(124,156,255,0.35)');
-  }
-  const blip = phase(t, 2.86);
-  if (blip < 0.4) px(g, 16, 7, 2, 2, P.gold);
-};
-
-export const scaleIcon: PixelScene = (g, t) => {
-  const tilt = Math.sin(t * 1.4) * 2 + 2; // licensed side heavier
-  px(g, 11, 4, 2, 16, P.slate);
-  px(g, 6, 20, 12, 2, P.slate);
-  // beam
-  for (let x = 0; x <= 20; x++) px(g, 2 + x, 5 + Math.round((tilt * (x - 10)) / 10), 1, 1, P.gold);
-  // pans
-  px(g, 0, 10 - tilt, 7, 2, P.coral);
-  for (let k = 0; k < 3; k++) px(g, 1, 7 - tilt - k * 2, 5, 2, P.coral);
-  px(g, 17, 10 + tilt, 7, 2, P.mint);
-  px(g, 18, 8 + tilt, 5, 2, P.mint);
-};
-
 // ---------------------------------------------------------------- process steps (96x54)
 export const STEP_W = 96;
 export const STEP_H = 54;

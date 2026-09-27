@@ -1,7 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
-import PixelCanvas from '@/components/pixel/PixelCanvas';
-import { clockIcon, shieldIcon, radarIcon, scaleIcon, ICON_W, ICON_H } from '@/components/pixel/moreScenes';
+import { EfficiencyIcon, RiskIcon, DecisionIcon, CostIcon } from './ValueIcons';
 
 const PROOF_STEPS = ['baseline', 'pilot', 'impact'] as const;
 
@@ -26,15 +25,16 @@ const ConfidenceCurve = () => {
 };
 
 const DIMENSIONS = [
-  { key: 'efficiency', icon: clockIcon, color: '#47E5C2' },
-  { key: 'risk', icon: shieldIcon, color: '#FF8FA3' },
-  { key: 'decision', icon: radarIcon, color: '#7C9CFF' },
-  { key: 'avoided', icon: scaleIcon, color: '#FFC857' },
+  { key: 'efficiency', Icon: EfficiencyIcon, color: '#47E5C2' },
+  { key: 'risk', Icon: RiskIcon, color: '#FF8FA3' },
+  { key: 'decision', Icon: DecisionIcon, color: '#7C9CFF' },
+  { key: 'avoided', Icon: CostIcon, color: '#FFC857' },
 ] as const;
 
 /** The 4-dimension value framework used in every diagnosis (one sheet per process). */
 const ValueFrameworkSection = () => {
   const { t } = useLanguage();
+  const reduce = useReducedMotion();
 
   return (
     <section id="valor" className="py-20 bg-night-900 border-y border-night-line">
@@ -45,17 +45,22 @@ const ValueFrameworkSection = () => {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {DIMENSIONS.map(({ key, icon, color }, i) => (
+          {DIMENSIONS.map(({ key, Icon, color }, i) => (
+            // the card's states ("show" on scroll, "hover") also drive its icon's animation
             <motion.article
               key={key}
               className="spotlight rounded-2xl border border-night-line bg-night-800 p-6 flex flex-col"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={reduce ? false : 'hidden'}
+              whileInView="show"
+              whileHover={reduce ? undefined : 'hover'}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.08, when: 'beforeChildren' } },
+              }}
             >
-              <div className="w-14 h-14 mb-4">
-                <PixelCanvas scene={icon} width={ICON_W} height={ICON_H} stillAt={1} />
+              <div className="mb-4">
+                <Icon color={color} />
               </div>
               <h3 className="font-display text-lg font-bold text-white mb-2">{t(`value.${key}.title`)}</h3>
               <p className="text-slate-300 leading-relaxed mb-4">{t(`value.${key}.text`)}</p>
