@@ -25,6 +25,17 @@ export const daylight = (k: number) => { const kk = wrap(k); return kk < 1 ? kk 
 
 /** City seen through a window: dithered sky, stars/moon or sun, two skyline layers with lit windows. */
 export function cityView(win: Rect, t: number, k: number) {
+  // everything seen through the window stays inside it (buildings, sun and glow never spill onto the frame)
+  const g0 = ctx();
+  g0.save();
+  g0.beginPath();
+  g0.rect(win.x, win.y, win.w, win.h);
+  g0.clip();
+  drawCity(win, t, k);
+  g0.restore();
+}
+
+function drawCity(win: Rect, t: number, k: number) {
   const d = daylight(k);
   ditherGradient(win, (y) => skyAt(k, y));
   if (d < 0.6) {

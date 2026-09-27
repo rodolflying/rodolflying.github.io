@@ -145,6 +145,11 @@ function drawWindowView(t: number) {
     }
   }
   G.putImageData(img, WIN.x, WIN.y);
+  // everything below stays inside the window (no buildings or sun glow over the frame)
+  G.save();
+  G.beginPath();
+  G.rect(WIN.x, WIN.y, WIN.w, WIN.h);
+  G.clip();
   // night stars / moon, or the evening sun
   if (d < 0.6) {
     for (let i = 0; i < 22; i++) {
@@ -182,6 +187,7 @@ function drawWindowView(t: number) {
       }
     }
   }
+  G.restore();
 }
 
 function drawRoom(t: number) {
