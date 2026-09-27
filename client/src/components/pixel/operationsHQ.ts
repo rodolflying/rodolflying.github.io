@@ -4,15 +4,16 @@
 // (plan vs actual per segment, delays in red) -> one dashboard, one number (5.039 trips)
 // -> both charts sync, thumbs up, meeting over.
 import type { PixelScene } from './PixelCanvas';
-import { C, type RGB, type Rect, type Light, clamp, ease, easeOutBack, seg, rnd, setCtx, rect, dot, orect, bigNumber, thousands, lightingPass, world } from './engine';
+import { C, type RGB, type Rect, type Light, clamp, ease, easeOutBack, seg, rnd, setCtx, rect, dot, orect, sprite, number, bigNumber, thousands, lightingPass, world } from './engine';
 import { drawSeated, drawStanding, drawChair, type Look, type Mood, type StandPose } from './rig';
-import { cityView, windowFrame, windowMullions, officeRoom, desk, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, plant } from './sets';
+import { cityView, windowFrame, windowMullions, officeRoom, desk, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, plant, HOLD, hitStop, hitStopFx, grade, moodBubble, resultStamp } from './sets';
 
 const WORLD_W = 320;
 const WORLD_H = 180;
 export const OPS_W = 256;
 export const OPS_H = 144;
-export const OPS_LOOP = 15;
+const STORY = 15;
+export const OPS_LOOP = STORY + HOLD;
 const TRIPS = 5039;
 
 const T = {
@@ -146,14 +147,16 @@ function chartCard(x: number, y: number, variant: 'up' | 'down', sync: number) {
   if (synced) rect(ox + 1, y + 2, 9, 1, C.mint1);
 }
 
-/** Speech bubble with a mini chart (or a check once everyone agrees). */
-function speech(x: number, y: number, kind: 'up' | 'down' | 'ok') {
-  orect(x, y, 13, 9, C.paper3);
-  dot(x + (kind === 'down' ? 10 : 2), y + 9, C.paper3); dot(x + (kind === 'down' ? 10 : 2), y + 10, C.ink);
-  if (kind === 'ok') { checkMark(x + 3, y + 2, C.mint1); return; }
-  const hs = kind === 'up' ? [2, 4, 6] : [6, 4, 2];
-  hs.forEach((h, i) => rect(x + 2 + i * 3, y + 8 - h, 2, h, kind === 'up' ? C.coral1 : C.gold1));
-  rect(x + 11, y + 1, 1, 4, C.ink); dot(x + 11, y + 6, C.ink);
+const ARROW_UP = ['..#..', '.###.', '#####', '..#..', '..#..', '..#..'];
+/** Speech bubble: one manager says "up", the other "down"; once they agree, both say the same number. */
+function speech(x: number, y: number, kind: 'up' | 'down' | 'num') {
+  const w = kind === 'num' ? 25 : 11;
+  orect(x, y, w, 10, C.paper3);
+  const tail = kind === 'down' ? w - 3 : 2;
+  dot(x + tail, y + 10, C.paper3); dot(x + tail, y + 11, C.ink);
+  if (kind === 'num') { number(thousands(TRIPS), x + 3, y + 3, C.mint1); return; }
+  const rows = kind === 'up' ? ARROW_UP : [...ARROW_UP].reverse();
+  sprite(rows, { '#': kind === 'up' ? C.coral1 : C.gold1 }, x + 3, y + 2);
 }
 
 function drawLamp(x: number) {
@@ -162,7 +165,8 @@ function drawLamp(x: number) {
 }
 
 export const operationsHQScene: PixelScene = (g, time) => {
-  const t = time % OPS_LOOP;
+  const raw = time % OPS_LOOP;
+  const t = hitStop(raw, T.click[0]);
   const { canvas, g: w } = world('operations', WORLD_W, WORLD_H);
   setCtx(w);
   const [cx, cy] = camera(t);
@@ -246,10 +250,13 @@ export const operationsHQScene: PixelScene = (g, time) => {
   clickBeat(t, T.click, [sb.x + 6, sb.bottom - 10], [TV.x + TV.w / 2 - 3, TV.y + 16]);
   if (argue && t > 0.5) {
     const bob = Math.round(Math.sin(t * 10));
-    if (speaker === 0) speech(A_X + 12, BOSS_Y - 13 + bob, 'up');
-    else speech(B_X - 1, BOSS_Y - 13 + bob, 'down');
+    if (speaker === 0) speech(A_X + 12, BOSS_Y - 14 + bob, 'up');
+    else speech(B_X, BOSS_Y - 14 + bob, 'down');
   }
-  if (t >= T.thumbs[0] && t < T.thumbs[1]) speech(A_X + 12, BOSS_Y - 13, 'ok');
+  if (t >= T.thumbs[0] && t < T.thumbs[1]) { speech(A_X - 2, BOSS_Y - 15, 'num'); speech(B_X + 2, BOSS_Y - 15, 'num'); }
+  // the planner: swamped while they argue, relieved once there is one number
+  if (t >= 0.5 && t < T.fly[0] + 0.3) moodBubble(80, 77, 'clock', t);
+  if (t >= T.thumbs[0] && t < T.thumbs[1]) moodBubble(80, 77, 'check', t);
   // sync sparks: from the screen to both charts
   if (syncK > 0 && syncK < 1) for (let i = 0; i < 5; i++) {
     const k = clamp(syncK * 1.4 - i * 0.08);
@@ -262,5 +269,9 @@ export const operationsHQScene: PixelScene = (g, time) => {
   // --- camera crop + transitions
   g.imageSmoothingEnabled = false;
   g.drawImage(canvas, cx, cy, OPS_W, OPS_H, 0, 0, OPS_W, OPS_H);
-  fades(g, t, OPS_LOOP, OPS_W, OPS_H);
+  grade(g, OPS_W, OPS_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
+  hitStopFx(g, raw, T.click[0], TV.x + TV.w / 2 - cx, TV.y + 19 - cy, OPS_W, OPS_H);
+  resultStamp(g, t, T.leave[0], STORY - 0.4, { value: thousands(TRIPS), icon: 'truck', color: '#7DD3FC' }, OPS_W);
+  setCtx(w);
+  fades(g, t, STORY, OPS_W, OPS_H);
 };

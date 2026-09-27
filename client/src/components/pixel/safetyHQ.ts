@@ -6,13 +6,14 @@
 import type { PixelScene } from './PixelCanvas';
 import { C, type RGB, type Rect, type Light, clamp, ease, easeOutBack, seg, setCtx, rect, dot, orect, number, lightingPass, world, ring } from './engine';
 import { drawSeated, drawStanding, drawChair, type Look } from './rig';
-import { cityView, windowFrame, windowMullions, desk, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, mug } from './sets';
+import { cityView, windowFrame, windowMullions, desk, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, mug, HOLD, hitStop, hitStopFx, grade, moodBubble, resultStamp } from './sets';
 
 const WORLD_W = 320;
 const WORLD_H = 180;
 export const SAFETY_W = 256;
 export const SAFETY_H = 144;
-export const SAFETY_LOOP = 15;
+const STORY = 15;
+export const SAFETY_LOOP = STORY + HOLD;
 
 const T = {
   alerts: [[1.0, 2.2], [2.6, 3.7]] as Array<[number, number]>,
@@ -145,7 +146,8 @@ function drawCabInset(g: CanvasRenderingContext2D, t: number) {
 }
 
 export const safetyHQScene: PixelScene = (g, time) => {
-  const t = time % SAFETY_LOOP;
+  const raw = time % SAFETY_LOOP;
+  const t = hitStop(raw, T.click[0]);
   const { canvas, g: w } = world('safety', WORLD_W, WORLD_H);
   setCtx(w);
   const [cx, cy] = camera(t);
@@ -207,11 +209,46 @@ export const safetyHQScene: PixelScene = (g, time) => {
   if (alerting) { const r = ((t * 30) % 20); ring(S_ALERT.x + 22, S_ALERT.y + 12, 26 + r, `rgba(255,122,133,${0.5 * (1 - r / 20)})`); }
   // "!" over the operator when the alert finally sticks
   if (t >= T.click[0] + 0.1 && t < T.click[0] + 0.8) { rect(122, 68, 2, 6, C.gold3); rect(122, 76, 2, 2, C.gold3); }
+  // lost alerts: a ghost of the card floats away and a tally under the screen counts them
+  for (const [, b] of T.alerts) {
+    const gk = seg(t, b, b + 0.6);
+    if (gk <= 0 || gk >= 1) continue;
+    const gy = S_ALERT.y + 5 - Math.round(gk * 10);
+    for (let x = 0; x < 34; x += 2) { dot(S_ALERT.x + 3 + x, gy, C.coral3); dot(S_ALERT.x + 3 + x, gy + 15, C.coral3); }
+    for (let y = 0; y < 16; y += 2) { dot(S_ALERT.x + 3, gy + y, C.coral3); dot(S_ALERT.x + 36, gy + y, C.coral3); }
+  }
+  const lost = T.alerts.filter(([, b]) => t >= b).length;
+  if (lost > 0 && t < T.ack) {
+    const tx = S_ALERT.x + 13, ty = 64;
+    orect(tx, ty, 19, 9, t < T.click[0] ? C.coral1 : C.metal1);
+    rect(tx + 3, ty + 2, 3, 4, C.paper3); rect(tx + 2, ty + 5, 5, 1, C.paper3); dot(tx + 4, ty + 6, C.paper3); // bell
+    rect(tx + 8, ty + 4, 2, 1, C.paper3); // minus: lost
+    number(lost, tx + 12, ty + 2, C.paper3);
+  }
+  // how the operator feels: swamped before the star, sure after the alert is handled
+  if (t >= 0.6 && t < T.fly[0] + 0.3) moodBubble(114, 76, 'clock', t);
+  if (t >= T.ack + 0.1 && t < T.inset[1]) moodBubble(114, 76, 'check', t);
 
   // --- camera + inset + transitions
   g.imageSmoothingEnabled = false;
   g.drawImage(canvas, cx, cy, SAFETY_W, SAFETY_H, 0, 0, SAFETY_W, SAFETY_H);
   drawCabInset(g, t);
+  // the alert travels from the console to the driver's cab
+  const inK = ease(seg(t, T.inset[0], T.inset[0] + 0.35));
+  if (inK >= 1 && t < T.inset[0] + 1.5) {
+    const ix = SAFETY_W - 104 + 16, iy = SAFETY_H - 62;
+    const sx = S_ALERT.x + 22 - cx, sy = S_ALERT.y + 26 - cy;
+    const n = 28, phase = Math.floor(t * 18);
+    for (let i = 0; i <= n; i++) {
+      if ((i + phase) % 4) continue;
+      const u = i / n;
+      g.fillStyle = C.mint4;
+      g.fillRect(Math.round(sx + (ix - sx) * u), Math.round(sy + (iy - sy) * u), 1, 1);
+    }
+  }
+  grade(g, SAFETY_W, SAFETY_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
+  hitStopFx(g, raw, T.click[0], S_ALERT.x + 23 - cx, S_ALERT.y + 13 - cy, SAFETY_W, SAFETY_H);
+  resultStamp(g, t, T.thumbs[0], STORY - 0.4, { value: '100%', icon: 'shield', color: '#FF8FA3' }, SAFETY_W);
   setCtx(w);
-  fades(g, t, SAFETY_LOOP, SAFETY_W, SAFETY_H, [[T.lapse[0], T.lapse[1]]]);
+  fades(g, t, STORY, SAFETY_W, SAFETY_H, [[T.lapse[0], T.lapse[1]]]);
 };

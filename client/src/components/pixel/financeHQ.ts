@@ -3,7 +3,8 @@
 // emissive layer, squash & stretch, expressive characters and a day/night story:
 // 21:30 overtime -> the star arrives and clicks -> next day 18:00, leaving on time.
 import type { PixelScene } from './PixelCanvas';
-import { setCtx as setEngineCtx } from './engine';
+import { setCtx as setEngineCtx, bigNumber, numberWidth } from './engine';
+import { HOLD, hitStop, hitStopFx, grade, moodBubble, resultStamp, checkMark } from './sets';
 import { drawSeated, drawStanding, drawChair, type Look, type Mood } from './rig';
 
 // The world is 320x180; a 256x144 camera (x5 = 1280x720, whole pixels) frames the action.
@@ -11,7 +12,8 @@ const WORLD_W = 320;
 const WORLD_H = 180;
 export const HQ_W = 256;
 export const HQ_H = 144;
-export const HQ_LOOP = 14;
+const STORY = 14;
+export const HQ_LOOP = STORY + HOLD;
 
 type RGB = [number, number, number];
 const hex = (h: string): RGB => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
@@ -494,7 +496,8 @@ export const financeHQScene: PixelScene = (g, time) => {
   if (!world) { world = document.createElement('canvas'); world.width = WORLD_W; world.height = WORLD_H; }
   G = world.getContext('2d', { willReadFrequently: true })!;
   G.imageSmoothingEnabled = false;
-  const t = time % HQ_LOOP;
+  const raw = time % HQ_LOOP;
+  const t = hitStop(raw, T.click[0]);
   const d = dayness(t);
   const after = t >= 5.95;
 
@@ -601,6 +604,21 @@ export const financeHQScene: PixelScene = (g, time) => {
   if (click > 0 && click < 1) { ring(206, 79, click * 40, C.mint4); if (click > 0.15) ring(206, 79, click * 40 - 6, C.mint3); }
   // surprise mark above the analyst
   if (t >= T.land[1] && t < T.click[1] + 0.35) { rect(143, 66, 2, 6, C.gold3); rect(143, 74, 2, 2, C.gold3); }
+  // pending documents: a big tag over the pile, red while it grows, mint as the star empties it
+  {
+    setEngineCtx(G);
+    const pending = t < T.process[0] ? 36 + paperStackHeight(t) : paperStackHeight(t);
+    const solved = t >= T.click[0] + 0.12;
+    const nw = numberWidth(pending, 2);
+    const tw = 8 + nw + (pending === 0 ? 10 : 0) + 4;
+    orect(214, 48, tw, 13, solved ? C.mint1 : C.coral1);
+    rect(216, 51, 4, 6, C.paper2); rect(217, 52, 2, 1, C.paper0); rect(217, 54, 2, 1, C.paper0); // a sheet
+    bigNumber(pending, 222, 50, C.paper3, 2);
+    if (pending === 0) checkMark(223 + nw, 52, C.paper3);
+  }
+  // how the analyst feels: overtime before the star, relaxed the next afternoon
+  if (t >= 0.5 && t < T.fly[1]) moodBubble(143, 77, 'clock', t);
+  if (t >= 9.6 && t < 11.0) moodBubble(143, 77, 'check', t);
   // music notes while the star works alone
   if (t >= 12.6 && t < 13.6) for (let i = 0; i < 2; i++) { const k = ((t * 0.9 + i * 0.5) % 1); const nx = perchX + 10 + i * 6, ny = 50 - k * 14; rect(nx, ny, 2, 2, C.mint4); rect(nx + 1, ny - 4, 1, 4, C.mint4); }
   // dust motes: visible only inside the light (screen glow at night, sun shafts in the afternoon)
@@ -616,6 +634,10 @@ export const financeHQScene: PixelScene = (g, time) => {
   const [cx0, cy0] = view;
   g.imageSmoothingEnabled = false;
   g.drawImage(world, cx0, cy0, HQ_W, HQ_H, 0, 0, HQ_W, HQ_H);
+  grade(g, HQ_W, HQ_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
+  hitStopFx(g, raw, T.click[0], 206 - cx0, 79 - cy0, HQ_W, HQ_H);
+  resultStamp(g, t, 11.2, 13.55, { value: '1,5', old: '21', icon: 'clock', color: '#47E5C2' }, HQ_W);
+  setEngineCtx(G);
 
   // --- transitions: time-lapse flicker and the fade back to night
   if (t >= T.lapse[0] && t < T.lapse[1]) {

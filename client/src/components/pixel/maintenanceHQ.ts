@@ -9,12 +9,14 @@ import {
   drawStar, drawHand, trail, type StarShape, type StarEyes,
 } from './engine';
 import { drawSeated, drawStanding, drawChair, zzz, type Look } from './rig';
+import { HOLD, hitStop, hitStopFx, grade, resultStamp } from './sets';
 
 const WORLD_W = 320;
 const WORLD_H = 180;
 export const MAINT_W = 256;
 export const MAINT_H = 144;
-export const MAINT_LOOP = 16;
+const STORY = 16;
+export const MAINT_LOOP = STORY + HOLD;
 
 const T = {
   convoy: [0, 4.0], fail: 1.9,
@@ -262,7 +264,8 @@ function cameraFor(t: number): [number, number] {
 }
 
 export const maintenanceHQScene: PixelScene = (g, time) => {
-  const t = time % MAINT_LOOP;
+  const raw = time % MAINT_LOOP;
+  const t = hitStop(raw, T.click[0]);
   const { canvas, g: w } = world('maintenance', WORLD_W, WORLD_H);
   currentG = w;
   setCtx(w);
@@ -372,6 +375,21 @@ export const maintenanceHQScene: PixelScene = (g, time) => {
     // headlight glints + depot window glow at night (emissive details)
     for (let i = 0; i < 3; i++) { const tx = -60 + t * 95 - i * 80; if (tx > -50 && tx < WORLD_W) { dot(tx + 43, 115, C.gold4); dot(tx + 44, 115, C.gold4); } }
     rect(225, 78, 7, 1, C.gold4);
+    // zoom-in callout on the antenna that just failed
+    const ftx = -60 + t * 95 - 80;
+    const ck = easeOutBack(seg(t, T.fail + 0.15, T.fail + 0.45)) * (1 - seg(t, T.fail + 1.6, T.fail + 1.9));
+    if (ck > 0.05 && ftx > -40 && ftx < WORLD_W) {
+      const bx = Math.round(ftx + 36), by = 84, r = Math.max(2, Math.round(11 * ck));
+      for (let y = by + r; y < 102; y += 2) dot(bx, y, C.paper2);
+      ctxCircle(bx, by, r + 1, C.ink);
+      ctxCircle(bx, by, r, C.paper3);
+      if (r >= 9) {
+        rect(bx - 1, by - 5, 2, 10, C.metal1);
+        rect(bx - 4, by - 7, 8, 2, C.metal2);
+        const blink = Math.floor(t * 5) % 2 === 0;
+        for (let k = -3; k <= 3; k++) { rect(bx + k, by + k, 2, 1, blink ? C.coral1 : C.coral2); rect(bx + k, by - k, 2, 1, blink ? C.coral1 : C.coral2); }
+      }
+    }
   }
   if (starX > -50) {
     if (shape === 'stretch' && interior && t < T.land[0]) trail(starX, starBottom - 6, 1);
@@ -403,6 +421,10 @@ export const maintenanceHQScene: PixelScene = (g, time) => {
   // --- camera crop + transitions
   g.imageSmoothingEnabled = false;
   g.drawImage(canvas, cx, cy, MAINT_W, MAINT_H, 0, 0, MAINT_W, MAINT_H);
+  grade(g, MAINT_W, MAINT_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
+  hitStopFx(g, raw, T.click[0], 213 - cx, 80 - cy, MAINT_W, MAINT_H);
+  resultStamp(g, t, T.thumbs[0], STORY - 0.7, { value: '251', icon: 'wrench', color: '#FFC857' }, MAINT_W);
+  setCtx(w);
   const fades: Array<[number, number]> = [[T.intro[0] - 0.3, T.intro[0] + 0.1], [T.lapse[1] - 0.15, T.lapse[1] + 0.25], [15.4, 16.2], [-0.4, 0.3]];
   for (const [a, b] of fades) {
     if (t >= a && t < b) {

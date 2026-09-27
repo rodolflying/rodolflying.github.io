@@ -6,13 +6,14 @@
 import type { PixelScene } from './PixelCanvas';
 import { C, type RGB, type Rect, type Light, clamp, ease, easeOutBack, mix, seg, setCtx, rect, dot, orect, number, bigNumber, thousands, lightingPass, world } from './engine';
 import { drawSeated, drawStanding, drawChair, zzz, type Look, type Mood, type StandPose } from './rig';
-import { cityView, daylight, windowFrame, windowMullions, officeRoom, desk, monitor, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, mug, plant } from './sets';
+import { cityView, daylight, windowFrame, windowMullions, officeRoom, desk, monitor, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, mug, plant, wallClock, HOLD, hitStop, hitStopFx, grade, moodBubble, resultStamp } from './sets';
 
 const WORLD_W = 320;
 const WORLD_H = 180;
 export const DATA_W = 256;
 export const DATA_H = 144;
-export const DATA_LOOP = 15;
+const STORY = 15;
+export const DATA_LOOP = STORY + HOLD;
 const TOTAL = 1500;
 
 const T = {
@@ -32,8 +33,8 @@ const PILE = { x: 206, bottom: 99, sheets: 22 };
 const TILES = [0, 1, 2, 3, 4, 5].map((i) => ({ x: 130 + (i % 3) * 50, y: 10 + Math.floor(i / 3) * 20, w: 44, h: 15 }));
 const FIRST_DAY = 16; // Wednesday; the loop ends on Friday 18
 
-/** Time of day: Wednesday noon -> Friday evening during the lapse, then Friday evening. */
-const tod = (t: number) => 2 + 9 * ease(seg(t, T.lapse[0], T.lapse[1]));
+/** Time of day: Wednesday noon -> Friday 16:00 during the lapse (6 hours per unit). */
+const tod = (t: number) => 2 + (8 + 2 / 3) * ease(seg(t, T.lapse[0], T.lapse[1]));
 /** Calendar day shown (a page falls at each midnight; the admin tears Friday off at the end). */
 const dayAt = (t: number) => FIRST_DAY + Math.floor(tod(t) / 4) + (t >= T.tear[0] + 0.25 ? 1 : 0);
 
@@ -177,7 +178,8 @@ function drawLamp(on: boolean) {
 }
 
 export const dataHQScene: PixelScene = (g, time) => {
-  const t = time % DATA_LOOP;
+  const raw = time % DATA_LOOP;
+  const t = hitStop(raw, T.click[0]);
   const { canvas, g: w } = world('data', WORLD_W, WORLD_H);
   setCtx(w);
   const [cx, cy] = camera(t);
@@ -191,6 +193,7 @@ export const dataHQScene: PixelScene = (g, time) => {
   windowFrame(WIN);
   plant(38, 51, t, t < T.click[0] ? 0.5 : 1);
   drawCalendar(t);
+  wallClock(232, 30, (k * 6) % 12); // spins with the days, stops at 16:00 on Friday
   // binders shelf
   rect(246, 64, 44, 2, C.wood2);
   ['#3E4FA6', C.coral1, C.mint1, C.gold1, '#6A3EA0', C.blue1].forEach((c, i) => rect(248 + i * 7, 48 + (i % 2), 6, 16 - (i % 2), c));
@@ -252,9 +255,15 @@ export const dataHQScene: PixelScene = (g, time) => {
   drawStarBeat(sb);
   clickBeat(t, T.click, [sb.x + 6, sb.bottom - 10], [scr.x + scr.w / 2 - 3, scr.y + 10]);
   if (t >= T.click[0] + 0.1 && t < T.click[0] + 0.8) { rect(134, 68, 2, 6, C.gold3); rect(134, 76, 2, 2, C.gold3); }
+  if (t >= 0.5 && t < T.fly[0] && !night) moodBubble(131, 77, 'papers', t);
+  if (t >= 9.3 && t < T.standUp) moodBubble(131, 77, 'check', t);
 
   // --- camera crop + transitions
   g.imageSmoothingEnabled = false;
   g.drawImage(canvas, cx, cy, DATA_W, DATA_H, 0, 0, DATA_W, DATA_H);
-  fades(g, t, DATA_LOOP, DATA_W, DATA_H);
+  grade(g, DATA_W, DATA_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
+  hitStopFx(g, raw, T.click[0], scr.x + scr.w / 2 - cx, scr.y + 13 - cy, DATA_W, DATA_H);
+  resultStamp(g, t, 10.2, STORY - 0.4, { value: '1.500', icon: 'doc', color: '#C4F18A' }, DATA_W);
+  setCtx(w);
+  fades(g, t, STORY, DATA_W, DATA_H);
 };

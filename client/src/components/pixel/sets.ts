@@ -1,7 +1,7 @@
 // Reusable set pieces and story beats for the high-detail scenes.
 import {
   C, type RGB, type Rect, hex, css, mix, clamp, ease, seg, rnd, rect, dot, orect, sprite, ring,
-  ditherGradient, drawStar, drawHand, trail, ctx, type StarShape, type StarEyes,
+  ditherGradient, drawStar, drawHand, trail, ctx, setCtx, easeOutBack, bigNumber, numberWidth, type StarShape, type StarEyes,
 } from './engine';
 
 // ---------------------------------------------------------------- sky
@@ -191,4 +191,124 @@ export function fades(g: CanvasRenderingContext2D, t: number, loop: number, w: n
   if (t < 0.35) put(1 - t / 0.35);
   if (t > loop - 0.6) put(seg(t, loop - 0.6, loop) * 0.95);
   for (const [a, b] of cuts) if (t >= a && t < b) put(Math.sin(seg(t, a, b) * Math.PI));
+}
+
+// ---------------------------------------------------------------- clarity kit (shared by every story)
+/** How long the story freezes when the star's hand touches the screen. */
+export const HOLD = 0.45;
+const touchAt = (click: number) => click + 0.12;
+
+/** Hit-stop: story time freezes for `hold` seconds at the touch, then resumes. Feed it the raw loop time. */
+export function hitStop(raw: number, click: number, hold = HOLD) {
+  const at = touchAt(click);
+  return raw < at ? raw : raw < at + hold ? at : raw - hold;
+}
+
+/** During the freeze: dim everything but the touched point, a short flash and a burst of rays (screen coords). */
+export function hitStopFx(g: CanvasRenderingContext2D, raw: number, click: number, x: number, y: number, w: number, h: number, hold = HOLD) {
+  const k = (raw - touchAt(click)) / hold;
+  if (k < 0 || k >= 1) return;
+  const a = Math.sin(k * Math.PI);
+  g.save();
+  g.fillStyle = `rgba(5,7,15,${0.55 * a})`;
+  g.beginPath();
+  g.rect(0, 0, w, h);
+  g.arc(x, y, 24, 0, Math.PI * 2, true);
+  g.fill('evenodd');
+  if (k < 0.15) { g.fillStyle = 'rgba(255,255,255,0.22)'; g.fillRect(0, 0, w, h); }
+  g.restore();
+  const prev = ctx();
+  setCtx(g);
+  for (let i = 0; i < 8; i++) {
+    const ang = (i / 8) * Math.PI * 2 + 0.2;
+    const r0 = 6 + k * 8;
+    for (let r = r0; r < r0 + 4; r++) dot(x + Math.cos(ang) * r, y + Math.sin(ang) * r, i % 2 ? C.gold4 : C.paper3);
+  }
+  setCtx(prev);
+}
+
+/** Color grade on the final frame: k = 0 cold and washed out (the problem), k = 1 warm (solved). */
+export function grade(g: CanvasRenderingContext2D, w: number, h: number, k: number) {
+  const cold = 1 - clamp(k);
+  g.save();
+  if (cold > 0.01) {
+    g.globalCompositeOperation = 'saturation';
+    g.globalAlpha = 0.45 * cold;
+    g.fillStyle = '#808080';
+    g.fillRect(0, 0, w, h);
+    g.globalCompositeOperation = 'multiply';
+    g.globalAlpha = 0.16 * cold;
+    g.fillStyle = '#7C9CE8';
+    g.fillRect(0, 0, w, h);
+  }
+  if (k > 0.01) {
+    g.globalCompositeOperation = 'soft-light';
+    g.globalAlpha = 0.22 * clamp(k);
+    g.fillStyle = '#FFD9A0';
+    g.fillRect(0, 0, w, h);
+  }
+  g.restore();
+}
+
+export type MoodIcon = 'clock' | 'papers' | 'alert' | 'check';
+const MOOD_SPRITES: Record<Exclude<MoodIcon, 'check'>, string[]> = {
+  clock: ['.###.', '#.#.#', '#.##.', '#...#', '.###.'],
+  papers: ['.#####.', '#.....#', '#####.#', '#.....#', '#######'],
+  alert: ['.#.', '.#.', '.#.', '...', '.#.'],
+};
+/** Small icon bubble over a character's head; (x, y) = where the tail points. World coords, drawn unlit. */
+export function moodBubble(x: number, y: number, kind: MoodIcon, t: number) {
+  const bob = Math.round(Math.sin(t * 5) * 0.8);
+  const bx = Math.round(x - 6), by = Math.round(y - 13 + bob);
+  const bg = kind === 'check' ? C.mint2 : C.coral1;
+  orect(bx, by, 13, 10, bg);
+  dot(bx + 5, by + 10, bg); dot(bx + 6, by + 10, bg); dot(bx + 6, by + 11, bg); dot(bx + 5, by + 11, C.ink); dot(bx + 7, by + 11, C.ink);
+  if (kind === 'check') { checkMark(bx + 3, by + 3, C.paper3); return; }
+  const rows = MOOD_SPRITES[kind];
+  sprite(rows, { '#': C.paper3 }, bx + Math.round((13 - rows[0].length) / 2), by + 3);
+  if (kind === 'clock') { dot(bx + 10, by + 2, C.blue3); dot(bx + 10, by + 3, C.blue3); dot(bx + 11, by + 3, C.blue3); } // sweat drop
+}
+
+export type StampIcon = 'check' | 'wrench' | 'truck' | 'clock' | 'doc' | 'shield';
+const STAMP_ICONS: Record<Exclude<StampIcon, 'check'>, [string[], string]> = {
+  wrench: [['.....##..', '....#..#.', '.....#.#.', '....#.#..', '...#.#...', '..#.#....', '.#.#.....', '#.#......', '.#.......'], C.gold3],
+  truck: [['.........', '#####....', '#...#....', '#...####.', '#...#..#.', '########.', '.##...##.', '.##...##.', '.........'], C.gold3],
+  clock: [['..#####..', '.#.....#.', '#...#...#', '#...#...#', '#...###.#', '#.......#', '.#.....#.', '..#####..', '.........'], C.paper2],
+  doc: [['.#####...', '.#...##..', '.#.....#.', '.#.###.#.', '.#.....#.', '.#.###.#.', '.#.....#.', '.#######.', '.........'], C.paper2],
+  shield: [['.#######.', '.#######.', '.###.###.', '.##...##.', '.##...##.', '..#...#..', '...#.#...', '....#....', '.........'], C.mint3],
+};
+
+export interface Stamp { value: string; old?: string; icon: StampIcon; color: string }
+/**
+ * The payoff: the area's figure drops in at the top of the frame between `from` and `to`
+ * (screen coords, drawn on the final canvas). An optional old value appears struck through.
+ */
+export function resultStamp(g: CanvasRenderingContext2D, t: number, from: number, to: number, s: Stamp, viewW: number) {
+  if (t < from || t >= to) return;
+  const k = easeOutBack(seg(t, from, from + 0.45));
+  const out = ease(seg(t, to - 0.35, to));
+  const newW = numberWidth(s.value, 3);
+  const oldW = s.old ? numberWidth(s.old, 2) : 0;
+  const w = 8 + 12 + (s.old ? oldW + 12 : 0) + newW + 8;
+  const h = 25;
+  const x = Math.round((viewW - w) / 2);
+  const y = Math.round(-h - 2 + (h + 8) * k - (h + 12) * out);
+  const prev = ctx();
+  setCtx(g);
+  rect(x - 2, y - 2, w + 4, h + 4, C.ink);
+  rect(x - 1, y - 1, w + 2, h + 2, s.color);
+  rect(x, y, w, h, '#0B1220');
+  if (s.icon === 'check') checkMark(x + 8, y + 10, C.mint3);
+  else { const [rows, c] = STAMP_ICONS[s.icon]; sprite(rows, { '#': c }, x + 7, y + 8); }
+  let cx = x + 8 + 12;
+  if (s.old) {
+    bigNumber(s.old, cx, y + 8, C.coral2, 2);
+    rect(cx - 1, y + 12, oldW + 2, 1, C.coral3);
+    rect(cx + oldW + 3, y + 12, 5, 1, C.paper1); dot(cx + oldW + 7, y + 11, C.paper1); dot(cx + oldW + 7, y + 13, C.paper1);
+    cx += oldW + 12;
+  }
+  bigNumber(s.value, cx, y + 5, C.mint3, 3);
+  // twinkles around the frame
+  for (let i = 0; i < 4; i++) if (Math.sin(t * 6 + i * 1.7) > 0.3) dot(x + (i % 2 ? w + 3 : -4), y + 4 + i * 5, i % 2 ? C.gold4 : C.mint4);
+  setCtx(prev);
 }

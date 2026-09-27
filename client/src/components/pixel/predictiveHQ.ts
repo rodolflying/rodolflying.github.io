@@ -6,13 +6,14 @@
 import type { PixelScene } from './PixelCanvas';
 import { C, type Rect, type Light, clamp, ease, seg, rnd, setCtx, rect, dot, orect, bigNumber, lightingPass, world } from './engine';
 import { drawSeated, drawStanding, drawChair, type Look, type Mood, type StandPose } from './rig';
-import { desk, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, mug } from './sets';
+import { desk, screenBase, scanlines, starBeat, drawStarBeat, clickBeat, fades, checkMark, mug, HOLD, hitStop, hitStopFx, grade, moodBubble, resultStamp } from './sets';
 
 const WORLD_W = 320;
 const WORLD_H = 180;
 export const PRED_W = 256;
 export const PRED_H = 144;
-export const PRED_LOOP = 15;
+const STORY = 15;
+export const PRED_LOOP = STORY + HOLD;
 
 const T = {
   fly: [3.6, 4.4] as [number, number], click: [4.6, 4.95] as [number, number],
@@ -116,6 +117,12 @@ function drawScreen(t: number) {
   for (let x = 0; x < CH.w; x += 3) dot(CH.x + x, chartY(LIMIT), C.coral1);
   const nowX = CH.x + Math.round(NOW * CH.w);
   for (let y = CH.y; y < CH.y + CH.h; y += 2) dot(nowX, y, '#2A4A5A');
+  // danger sign at the end of the limit line, and a pin on "today"
+  const ly = chartY(LIMIT);
+  const dx = CH.x + CH.w - 6;
+  rect(dx + 2, ly - 7, 1, 1, C.coral2); rect(dx + 1, ly - 6, 3, 1, C.coral2); rect(dx + 1, ly - 5, 3, 1, C.coral2); rect(dx, ly - 4, 5, 1, C.coral2); rect(dx, ly - 3, 5, 1, C.coral2);
+  dot(dx + 2, ly - 6, '#08121C'); dot(dx + 2, ly - 4, '#08121C');
+  rect(nowX - 1, CH.y - 3, 3, 3, C.paper2); dot(nowX, CH.y, C.paper2);
   // measured history (after the swap: a flat, healthy line)
   for (let i = 0; i <= Math.round(NOW * CH.w); i++) {
     const fx = i / CH.w;
@@ -138,6 +145,8 @@ function drawScreen(t: number) {
       const cx = CH.x + Math.round(CROSS * CH.w), cy = chartY(LIMIT);
       const on = Math.floor(t * 4) % 2 === 0 || t >= T.order[1];
       if (on) for (let k = -2; k <= 2; k++) { dot(cx + k, cy + k, C.coral3); dot(cx + k, cy - k, C.coral3); }
+      // "this is the day it would fail"
+      rect(cx - 3, cy - 12, 7, 6, C.paper2); rect(cx - 3, cy - 12, 7, 2, C.coral1); dot(cx - 1, cy - 9, C.ink); dot(cx + 1, cy - 9, C.ink); dot(cx - 1, cy - 7, C.ink);
     }
   }
   // the planned stop, set before the predicted failure
@@ -179,8 +188,11 @@ function vibrationMarks(t: number) {
   if (!running(t) || w < 0.35) return;
   for (let k = 0; k < 3; k++) {
     if (rnd(k + Math.floor(t * 6)) > w) continue;
-    const r = 3 + k * 3 + ((t * 12) % 3);
-    for (let a = -0.7; a <= 0.7; a += 0.35) dot(98 + Math.cos(a - Math.PI / 2) * r, 86 + Math.sin(a - Math.PI / 2) * r, 'rgba(255,200,120,0.85)');
+    const r = 4 + k * 4 + ((t * 12) % 4);
+    for (let a = -0.8; a <= 0.8; a += 0.2) {
+      const x = 98 + Math.cos(a - Math.PI / 2) * r, y = 86 + Math.sin(a - Math.PI / 2) * r;
+      rect(x, y, 2, 1, `rgba(255,${210 - k * 30},120,${0.95 - k * 0.2})`);
+    }
   }
 }
 
@@ -195,7 +207,8 @@ function flyingOrder(t: number) {
 }
 
 export const predictiveHQScene: PixelScene = (g, time) => {
-  const t = time % PRED_LOOP;
+  const raw = time % PRED_LOOP;
+  const t = hitStop(raw, T.click[0]);
   const { canvas, g: w } = world('predictive', WORLD_W, WORLD_H);
   setCtx(w);
   const [cx, cy] = camera(t);
@@ -257,9 +270,14 @@ export const predictiveHQScene: PixelScene = (g, time) => {
   drawStarBeat(sb);
   clickBeat(t, T.click, [sb.x + 6, sb.bottom - 10], [SCREEN.x + SCREEN.w / 2 - 3, SCREEN.y + 16]);
   if (t >= T.click[0] + 0.1 && t < T.click[0] + 0.8) { rect(208, 68, 2, 6, C.gold3); rect(208, 76, 2, 2, C.gold3); }
+  if (repaired(t) && t < T.thumbs[1] + 0.2) moodBubble(207, 77, 'check', t);
 
   // --- camera crop + transitions
   g.imageSmoothingEnabled = false;
   g.drawImage(canvas, cx, cy, PRED_W, PRED_H, 0, 0, PRED_W, PRED_H);
-  fades(g, t, PRED_LOOP, PRED_W, PRED_H, [[T.lapse[0], T.lapse[1]]]);
+  grade(g, PRED_W, PRED_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
+  hitStopFx(g, raw, T.click[0], SCREEN.x + SCREEN.w / 2 - cx, SCREEN.y + 19 - cy, PRED_W, PRED_H);
+  resultStamp(g, t, T.thumbs[0], STORY - 0.4, { value: '3%', old: '82%', icon: 'check', color: '#7C9CFF' }, PRED_W);
+  setCtx(w);
+  fades(g, t, STORY, PRED_W, PRED_H, [[T.lapse[0], T.lapse[1]]]);
 };

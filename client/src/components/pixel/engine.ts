@@ -82,7 +82,7 @@ const DIGITS: Record<string, string[]> = {
   '3': ['###', '..#', '.##', '..#', '###'], '4': ['#.#', '#.#', '###', '..#', '..#'], '5': ['###', '#..', '###', '..#', '###'],
   '6': ['###', '#..', '###', '#.#', '###'], '7': ['###', '..#', '.#.', '.#.', '.#.'], '8': ['###', '#.#', '###', '#.#', '###'],
   '9': ['###', '#.#', '###', '..#', '###'], ':': ['...', '.#.', '...', '.#.', '...'],
-  '.': ['...', '...', '...', '...', '.#.'], '/': ['..#', '..#', '.#.', '#..', '#..'], '%': ['#.#', '..#', '.#.', '#..', '#.#'],
+  '.': ['...', '...', '...', '...', '.#.'], '/': ['..#', '..#', '.#.', '#..', '#..'], '%': ['#.#', '..#', '.#.', '#..', '#.#'], ',': ['...', '...', '...', '.#.', '#..'],
 };
 /** Tiny 3x5 digits (and ':'). */
 export function number(n: number | string, x: number, y: number, c: string) {
@@ -94,10 +94,16 @@ export function bigNumber(n: number | string, x: number, y: number, c: string, s
   for (const d of String(n)) {
     const rows = DIGITS[d];
     if (!rows) { cx += 2 * scale; continue; }
-    const narrow = d === '.';
+    const narrow = d === '.' || d === ',';
     rows.forEach((row, j) => row.split('').forEach((p, i) => { if (p === '#') rect(cx + (narrow ? i - 1 : i) * scale, y + j * scale, scale, scale, c); }));
     cx += (narrow ? 2 : 4) * scale;
   }
+}
+/** Width in pixels of `bigNumber(n, ..., scale)`. */
+export function numberWidth(n: number | string, scale = 2) {
+  let w = 0;
+  for (const d of String(n)) w += (d === '.' || d === ',' ? 2 : 4) * scale;
+  return w - scale;
 }
 /** Thousands with a dot, Chilean style: 5039 -> "5.039". */
 export const thousands = (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
