@@ -1,19 +1,34 @@
-// "How it runs" for each service area: the same story as the pixel scene, told as the
-// real pipeline (steps, processes, logs). Illustrative data: names, amounts and assets
-// are fictitious and nothing identifies an employer, vendor or location.
+// "How it runs" for each service area: a generic process any company can recognize,
+// each step as a simple in -> does -> out diagram, with the real case as an example and
+// its technical detail on demand. Illustrative data: names, amounts and assets are
+// fictitious and nothing identifies an employer, vendor or location.
 import type { Bilingual } from './cases';
 
 export type OpsIcon =
   | 'radar' | 'bell' | 'monitor' | 'tablet' | 'book' | 'database' | 'cpu' | 'chart' | 'message'
   | 'mic' | 'brain' | 'wrench' | 'file' | 'mail' | 'globe' | 'satellite' | 'check' | 'send'
-  | 'layers' | 'shield' | 'router' | 'calculator' | 'wallet' | 'scan' | 'dashboard' | 'news';
+  | 'layers' | 'shield' | 'router' | 'calculator' | 'wallet' | 'scan' | 'dashboard' | 'news'
+  | 'eye' | 'pin' | 'alert' | 'listcheck' | 'alarm' | 'hourglass' | 'usercheck' | 'phone'
+  | 'checkcircle' | 'list' | 'report' | 'users' | 'inbox';
+
+/** One box of the step diagram: an icon and a short phrase. */
+export interface OpsNode {
+  icon: OpsIcon;
+  text: Bilingual;
+}
 
 export interface OpsStep {
-  icon: OpsIcon;
+  /** Generic verb for the step (applies to any company). */
+  name: Bilingual;
+  input: OpsNode;
+  action: OpsNode;
+  output: OpsNode;
+  /** How the step copes when something fails, in one line. */
+  fail: Bilingual;
+  /** The business benefit, in plain words. */
+  why: Bilingual;
+  /** Technical detail from the real example: the component behind the step. */
   title: Bilingual;
-  tag: Bilingual;
-  summary: Bilingual;
-  resilience: Bilingual;
   tech: string;
   every: Bilingual;
   /** Sample of the data this step hands to the next one (JSON), per language when it holds text. */
@@ -33,7 +48,11 @@ export interface OpsLog {
 }
 
 export interface AreaOps {
-  intro: Bilingual;
+  /** Generic process shown to visitors, e.g. "How a critical alert runs". */
+  process: Bilingual;
+  appliesTo: Bilingual;
+  /** The real case behind it, shown as an example. */
+  example: Bilingual;
   /** Time shown on the first console line; later lines advance from it. */
   clock: string;
   steps: OpsStep[];
@@ -45,88 +64,67 @@ const json = (o: unknown) => JSON.stringify(o, null, 2);
 
 export const areaOps: Record<string, AreaOps> = {
   seguridad: {
-    intro: {
-      es: 'Una alerta de fatiga a las 02:10: del sensor en cabina a la bitácora, sin que nadie tenga que acordarse de nada.',
-      en: 'A fatigue alert at 02:10: from the in-cab sensor to the log, without anyone having to remember a thing.',
-    },
+    process: { es: 'Así opera una alerta crítica', en: 'How a critical alert runs' },
+    appliesTo: { es: 'Sirve para fatiga, gases, exceso de velocidad o cualquier evento que no puede esperar.', en: 'Works for fatigue, gas, speeding or any event that can\'t wait.' },
+    example: { es: 'una alerta de fatiga en un camión a las 02:10', en: 'a fatigue alert on a truck at 02:10' },
     clock: '02:10:02',
     steps: [
       {
-        icon: 'radar',
+        name: { es: 'Detectar', en: 'Detect' },
+        input: { icon: 'radar', text: { es: 'Un evento desde un sensor, sistema o formulario', en: 'An event from a sensor, system or form' } },
+        action: { icon: 'eye', text: { es: 'Lo capta al instante, sin que nadie esté mirando', en: 'Catches it instantly, with nobody watching' } },
+        output: { icon: 'pin', text: { es: 'El evento con qué, dónde y cuándo', en: 'The event with what, where and when' } },
+        fail: { es: 'Si la fuente no responde, consulta un respaldo.', en: 'If the source doesn\'t answer, it checks a backup.' },
+        why: { es: 'Ninguna alerta depende de que alguien esté mirando la pantalla en ese minuto.', en: 'No alert depends on someone watching the screen at that minute.' },
         title: { es: 'Sensor de fatiga en cabina', en: 'In-cab fatigue sensor' },
-        tag: { es: 'ORIGEN', en: 'SOURCE' },
-        summary: {
-          es: 'El sistema de detección del vehículo emite el evento con equipo, conductor, hora y nivel de riesgo.',
-          en: "The vehicle's detection system emits the event with asset, driver, time and risk level.",
-        },
-        resilience: {
-          es: 'Si la API del proveedor no responde, el bot reintenta y consulta su portal como respaldo.',
-          en: "If the vendor API does not answer, the bot retries and falls back to the vendor's portal.",
-        },
         tech: 'API / webhook',
         every: { es: 'Tiempo real', en: 'Real time' },
         payload: json({ event: 'FATIGUE_HIGH', unit: 'TRUCK-12', driver: 'OP-0448', risk: 'high', ts: '02:10:02' }),
       },
       {
-        icon: 'bell',
+        name: { es: 'Clasificar', en: 'Classify' },
+        input: { icon: 'alert', text: { es: 'El evento detectado', en: 'The detected event' } },
+        action: { icon: 'listcheck', text: { es: 'Aplica tu protocolo: gravedad y responsable', en: 'Applies your protocol: severity and owner' } },
+        output: { icon: 'alarm', text: { es: 'Una alerta con prioridad y plazo', en: 'An alert with priority and deadline' } },
+        fail: { es: 'Si no calza con ninguna regla, pasa a revisión humana.', en: 'If it matches no rule, it goes to human review.' },
+        why: { es: 'La misma regla para todos los turnos, escrita una vez y aplicada siempre.', en: 'The same rule for every shift, written once and always applied.' },
         title: { es: 'Motor de alertas', en: 'Alert engine' },
-        tag: { es: 'PROTOCOLO', en: 'PROTOCOL' },
-        summary: {
-          es: 'Clasifica la severidad, aplica el protocolo (quién y en cuánto tiempo) y deja la alerta fija con temporizador hasta que alguien la atienda.',
-          en: 'Rates severity, applies the protocol (who and how fast) and pins the alert with a timer until someone handles it.',
-        },
-        resilience: {
-          es: 'Ninguna alerta se cierra sola: si nadie la reconoce en 2 minutos, escala al siguiente nivel.',
-          en: 'No alert closes itself: if nobody acknowledges it within 2 minutes, it escalates to the next level.',
-        },
         tech: 'Python',
         every: { es: 'Continuo', en: 'Continuous' },
         payload: json({ alert_id: 'AL-2291', protocol: 'fatigue_level_2', ack_deadline_s: 120, escalation: ['operator', 'supervisor'] }),
       },
       {
-        icon: 'monitor',
+        name: { es: 'Avisar', en: 'Notify' },
+        input: { icon: 'bell', text: { es: 'La alerta con su plazo', en: 'The alert and its deadline' } },
+        action: { icon: 'hourglass', text: { es: 'Avisa al responsable y cuenta el tiempo', en: 'Notifies the owner and counts the time' } },
+        output: { icon: 'usercheck', text: { es: 'Alguien se hace cargo', en: 'Someone takes charge' } },
+        fail: { es: 'Si nadie responde a tiempo, sube al supervisor.', en: 'If nobody answers in time, it goes up to the supervisor.' },
+        why: { es: 'El sistema insiste hasta que una persona se hace cargo. No se pierde entre turnos.', en: 'The system insists until a person takes charge. Nothing is lost between shifts.' },
         title: { es: 'Consola de control', en: 'Control console' },
-        tag: { es: 'OPERADOR', en: 'OPERATOR' },
-        summary: {
-          es: 'El operador ve la alerta con sonido y cuenta regresiva. Al reconocerla, registra el contacto con el conductor.',
-          en: 'The operator sees the alert with sound and a countdown. On acknowledging it, they record the contact with the driver.',
-        },
-        resilience: {
-          es: 'Si la consola se cae, la alerta llega igual por Telegram al supervisor de turno.',
-          en: 'If the console goes down, the alert still reaches the shift supervisor on Telegram.',
-        },
         tech: 'Dashboard web',
         every: { es: 'Tiempo real', en: 'Real time' },
         payload: json({ alert_id: 'AL-2291', ack_by: 'night_shift_operator', ack_after_s: 38, action: 'radio_contact' }),
       },
       {
-        icon: 'tablet',
+        name: { es: 'Confirmar', en: 'Confirm' },
+        input: { icon: 'message', text: { es: 'La instrucción para terreno', en: 'The instruction for the field' } },
+        action: { icon: 'phone', text: { es: 'Llega a quien está en terreno y pide confirmación', en: 'Reaches whoever is in the field and asks for confirmation' } },
+        output: { icon: 'checkcircle', text: { es: 'La acción confirmada', en: 'The action, confirmed' } },
+        fail: { es: 'Sin confirmación, se repite por otro canal.', en: 'Without confirmation, it repeats through another channel.' },
+        why: { es: 'Sabes que la instrucción llegó y se cumplió, no solo que se envió.', en: 'You know the instruction arrived and was followed, not just that it was sent.' },
         title: { es: 'Aviso al conductor', en: 'Driver notice' },
-        tag: { es: 'TERRENO', en: 'FIELD' },
-        summary: {
-          es: 'El conductor recibe la instrucción en su tablet: pausa activa en el próximo punto seguro.',
-          en: 'The driver gets the instruction on the tablet: an active break at the next safe stop.',
-        },
-        resilience: {
-          es: 'Si la tablet no confirma la lectura, se repite por radio y queda marcada para seguimiento.',
-          en: 'If the tablet does not confirm reading, it is repeated by radio and flagged for follow-up.',
-        },
         tech: 'App móvil',
         every: { es: 'Por alerta', en: 'Per alert' },
         payload: json({ unit: 'TRUCK-12', instruction: 'active_break_15_min', read_confirmed: true, stop_at: 'km 84' }),
       },
       {
-        icon: 'book',
+        name: { es: 'Registrar', en: 'Record' },
+        input: { icon: 'list', text: { es: 'Todo lo anterior', en: 'Everything above' } },
+        action: { icon: 'book', text: { es: 'Guarda cada paso con hora y responsable', en: 'Stores every step with time and owner' } },
+        output: { icon: 'report', text: { es: 'Reporte periódico y evidencia lista', en: 'Regular report and ready evidence' } },
+        fail: { es: 'Los registros no se pueden editar.', en: 'Records cannot be edited.' },
+        why: { es: 'Ante una fiscalización, la evidencia ya está armada.', en: 'When an inspection comes, the evidence is already there.' },
         title: { es: 'Bitácora y resumen', en: 'Log and summary' },
-        tag: { es: 'EVIDENCIA', en: 'EVIDENCE' },
-        summary: {
-          es: 'Cada paso queda en la bitácora sin tipear nada, y cada lunes llega el resumen con el 100% de las alertas y su control.',
-          en: 'Every step lands in the log with no typing, and every Monday the summary arrives with 100% of alerts and their controls.',
-        },
-        resilience: {
-          es: 'Registros con hora y responsable que no se editan: listos para una fiscalización.',
-          en: 'Timestamped records with an owner that cannot be edited: ready for an inspection.',
-        },
         tech: 'PostgreSQL · Power BI',
         every: { es: 'Por alerta · lunes 07:00', en: 'Per alert · Mondays 07:00' },
         payload: json({ week: '2026-W39', alerts: 214, verified: 214, avg_ack_s: 41, pending: 0 }),
@@ -149,88 +147,67 @@ export const areaOps: Record<string, AreaOps> = {
   },
 
   mantenimiento: {
-    intro: {
-      es: 'Una antena que falla de madrugada: la orden de trabajo ya está creada cuando llega el turno de día.',
-      en: 'An antenna fails before dawn: the work order already exists when the day shift arrives.',
-    },
+    process: { es: 'Así se atiende una falla sin que nadie la reporte', en: 'How a failure gets handled without anyone reporting it' },
+    appliesTo: { es: 'Sirve para flotas, equipos de red, bombas, generadores o cualquier activo que informe su estado.', en: 'Works for fleets, network gear, pumps, generators or any asset that reports its status.' },
+    example: { es: 'una antena que falla de madrugada', en: 'an antenna failing before dawn' },
     clock: '02:40:10',
     steps: [
       {
-        icon: 'satellite',
+        name: { es: 'Monitorear', en: 'Monitor' },
+        input: { icon: 'satellite', text: { es: 'El estado de cada equipo: GPS, sensores, PLC', en: 'Every asset status: GPS, sensors, PLCs' } },
+        action: { icon: 'radar', text: { es: 'Revisa toda la flota cada pocos minutos', en: 'Checks the whole fleet every few minutes' } },
+        output: { icon: 'alert', text: { es: 'La falla detectada, con equipo y hora', en: 'The detected fault, with asset and time' } },
+        fail: { es: 'Reintenta antes de declarar una falla, para no crear falsas alarmas.', en: 'It retries before declaring a fault, to avoid false alarms.' },
+        why: { es: 'Las fallas aparecen aunque ocurran de noche o en fin de semana.', en: 'Failures show up even at night or on weekends.' },
         title: { es: 'Telemetría de equipos', en: 'Asset telemetry' },
-        tag: { es: 'ORIGEN', en: 'SOURCE' },
-        summary: {
-          es: 'Cada 30 minutos consulta el estado de GPS, módems satelitales y PLC de toda la flota.',
-          en: 'Every 30 minutes it checks the GPS, satellite modems and PLCs of the whole fleet.',
-        },
-        resilience: {
-          es: 'Un equipo que no responde se reintenta antes de declararlo caído, para no crear falsas alarmas.',
-          en: 'An unresponsive asset is retried before being declared down, to avoid false alarms.',
-        },
         tech: 'Python',
         every: { es: 'Cada 30 min', en: 'Every 30 min' },
         payload: json({ asset: 'REPEATER-07', gps: 'ok', sat_modem: 'no_signal', last_seen_min: 42 }),
       },
       {
-        icon: 'scan',
+        name: { es: 'Diagnosticar', en: 'Diagnose' },
+        input: { icon: 'alert', text: { es: 'La falla detectada', en: 'The detected fault' } },
+        action: { icon: 'scan', text: { es: 'La cruza con el historial y el plan de tareas', en: 'Checks it against history and the task plan' } },
+        output: { icon: 'listcheck', text: { es: 'Qué hacer y con qué prioridad', en: 'What to do and how urgently' } },
+        fail: { es: 'Nunca crea dos órdenes para la misma falla.', en: 'It never creates two orders for the same fault.' },
+        why: { es: 'Sin órdenes duplicadas ni olvidadas.', en: 'No duplicated or forgotten orders.' },
         title: { es: 'Diagnóstico', en: 'Diagnosis' },
-        tag: { es: 'REGLAS', en: 'RULES' },
-        summary: {
-          es: 'Cruza la falla con el historial: si es nueva, si ya hay una orden abierta y qué plan de tareas corresponde.',
-          en: 'Checks the fault against history: whether it is new, whether an order is already open and which task plan applies.',
-        },
-        resilience: {
-          es: 'Nunca crea dos órdenes para la misma falla.',
-          en: 'It never creates two orders for the same fault.',
-        },
         tech: 'Python · PostgreSQL',
         every: { es: 'Por falla', en: 'Per fault' },
         payload: json({ fault: 'antenna_no_signal', open_work_order: false, task_plan: 'TP-ANT-02', priority: 'high' }),
       },
       {
-        icon: 'wrench',
+        name: { es: 'Crear la orden', en: 'Create the order' },
+        input: { icon: 'listcheck', text: { es: 'El diagnóstico', en: 'The diagnosis' } },
+        action: { icon: 'wrench', text: { es: 'Crea la orden en tu sistema de mantenimiento', en: 'Creates the order in your maintenance system' } },
+        output: { icon: 'file', text: { es: 'Orden con tareas, equipo y ubicación', en: 'An order with tasks, asset and location' } },
+        fail: { es: 'Si el sistema no responde, la orden queda en cola.', en: 'If the system doesn\'t answer, the order waits in a queue.' },
+        why: { es: 'La orden existe antes de que alguien llegue a la oficina.', en: 'The order exists before anyone reaches the office.' },
         title: { es: 'Orden de trabajo', en: 'Work order' },
-        tag: { es: 'CMMS', en: 'CMMS' },
-        summary: {
-          es: 'Crea la orden en tu sistema de mantenimiento con plan de tareas, equipo y ubicación.',
-          en: 'Creates the order in your maintenance system with the task plan, asset and location.',
-        },
-        resilience: {
-          es: 'Si el sistema no responde, la orden queda en cola y se reintenta. El aviso al técnico sale igual.',
-          en: 'If the system does not answer, the order is queued and retried. The technician is notified anyway.',
-        },
         tech: 'API REST',
         every: { es: 'Por falla nueva', en: 'Per new fault' },
         payload: json({ work_order: 'WO-5812', asset: 'REPEATER-07', tasks: 4, created_at: '02:41' }),
       },
       {
-        icon: 'send',
+        name: { es: 'Asignar', en: 'Assign' },
+        input: { icon: 'file', text: { es: 'La orden de trabajo', en: 'The work order' } },
+        action: { icon: 'send', text: { es: 'Avisa al técnico por Telegram o WhatsApp', en: 'Notifies the technician on Telegram or WhatsApp' } },
+        output: { icon: 'usercheck', text: { es: 'Técnico con ubicación y hora de llegada', en: 'A technician with location and arrival time' } },
+        fail: { es: 'Si nadie confirma, avisa al supervisor.', en: 'If nobody confirms, the supervisor is notified.' },
+        why: { es: 'El técnico sale con toda la información, sin llamadas de por medio.', en: 'The technician heads out with everything, no phone calls needed.' },
         title: { es: 'Aviso al técnico', en: 'Technician notice' },
-        tag: { es: 'TERRENO', en: 'FIELD' },
-        summary: {
-          es: 'El mantenedor recibe la orden por Telegram con ubicación y hora estimada de llegada del equipo.',
-          en: 'The technician gets the order on Telegram with the location and estimated arrival of the asset.',
-        },
-        resilience: {
-          es: 'Si nadie confirma en 30 minutos, avisa al supervisor.',
-          en: 'If nobody confirms within 30 minutes, the supervisor is notified.',
-        },
         tech: 'Telegram · WhatsApp',
         every: { es: 'Por orden', en: 'Per order' },
         payload: json({ to: 'day_shift_technician', work_order: 'WO-5812', location: 'tower 7 · north sector', eta: '07:30' }),
       },
       {
-        icon: 'check',
+        name: { es: 'Verificar', en: 'Verify' },
+        input: { icon: 'wrench', text: { es: 'El equipo reparado', en: 'The repaired asset' } },
+        action: { icon: 'radar', text: { es: 'Confirma que el equipo vuelve a reportar', en: 'Confirms the asset reports again' } },
+        output: { icon: 'report', text: { es: 'Orden cerrada e indicadores al día', en: 'Order closed and KPIs up to date' } },
+        fail: { es: 'Si la falla vuelve, reabre la orden.', en: 'If the fault returns, it reopens the order.' },
+        why: { es: 'Sabes que quedó resuelto, no solo que alguien fue.', en: 'You know it was fixed, not just that someone went.' },
         title: { es: 'Cierre verificado', en: 'Verified close' },
-        tag: { es: 'INDICADORES', en: 'KPIS' },
-        summary: {
-          es: 'Cuando el equipo vuelve a reportar, la orden se marca verificada y entra a los indicadores.',
-          en: 'When the asset reports again, the order is marked verified and feeds the KPIs.',
-        },
-        resilience: {
-          es: 'Si la falla vuelve dentro de 24 horas, reabre la orden en vez de crear otra.',
-          en: 'If the fault returns within 24 hours, it reopens the order instead of creating another.',
-        },
         tech: 'Power BI',
         every: { es: 'Por orden', en: 'Per order' },
         payload: json({ work_order: 'WO-5812', status: 'verified', downtime_min: 312, repeat_24h: false }),
@@ -253,88 +230,67 @@ export const areaOps: Record<string, AreaOps> = {
   },
 
   operaciones: {
-    intro: {
-      es: 'De los registradores a bordo a un solo tablero: todas las reuniones miran el mismo número.',
-      en: 'From on-board recorders to a single dashboard: every meeting looks at the same number.',
-    },
+    process: { es: 'Así se arma un indicador confiable', en: 'How a reliable KPI gets built' },
+    appliesTo: { es: 'Sirve para tiempos de ciclo, productividad, consumo o cualquier número que hoy se arma a mano.', en: 'Works for cycle times, productivity, consumption or any figure built by hand today.' },
+    example: { es: '5.039 viajes con plan versus real por tramo', en: '5,039 trips with plan vs. actual per segment' },
     clock: '05:30:00',
     steps: [
       {
-        icon: 'router',
+        name: { es: 'Recolectar', en: 'Collect' },
+        input: { icon: 'router', text: { es: 'Archivos, GPS y registros de cada equipo', en: 'Files, GPS and logs from every asset' } },
+        action: { icon: 'layers', text: { es: 'Los reúne sin importar su formato', en: 'Brings them together whatever the format' } },
+        output: { icon: 'database', text: { es: 'Todos los datos en un solo lugar', en: 'All the data in one place' } },
+        fail: { es: 'Un archivo dañado se aparta sin frenar el resto.', en: 'A damaged file is set aside without stopping the rest.' },
+        why: { es: 'Nadie tiene que buscar ni copiar archivos.', en: 'Nobody has to hunt for or copy files.' },
         title: { es: 'Registradores de eventos', en: 'Event recorders' },
-        tag: { es: 'ORIGEN', en: 'SOURCE' },
-        summary: {
-          es: 'Lee los archivos de los registradores a bordo, en 4 formatos distintos, junto con las posiciones GPS.',
-          en: 'Reads the on-board recorder files, in 4 different formats, along with GPS positions.',
-        },
-        resilience: {
-          es: 'Un archivo dañado se aparta en cuarentena sin detener el resto del lote.',
-          en: 'A damaged file is quarantined without stopping the rest of the batch.',
-        },
         tech: 'Python',
         every: { es: 'Cada hora', en: 'Hourly' },
         payload: json({ files: 128, formats: 4, positions: '1.2 M', quarantined: 1 }),
       },
       {
-        icon: 'cpu',
+        name: { es: 'Calcular', en: 'Compute' },
+        input: { icon: 'database', text: { es: 'Los datos reunidos', en: 'The collected data' } },
+        action: { icon: 'cpu', text: { es: 'Calcula plan versus real, tiempos y eventos', en: 'Computes plan vs. actual, times and events' } },
+        output: { icon: 'chart', text: { es: 'Indicadores por tramo, equipo y operador', en: 'KPIs by segment, asset and operator' } },
+        fail: { es: 'Lo incompleto se marca, no desaparece.', en: 'Incomplete records are flagged, they don\'t vanish.' },
+        why: { es: 'El cálculo es el mismo todos los días, sin errores de copia.', en: 'The calculation is the same every day, with no copy errors.' },
         title: { es: 'Viajes y tramos', en: 'Trips and segments' },
-        tag: { es: 'CÁLCULO', en: 'COMPUTE' },
-        summary: {
-          es: 'Arma cada viaje, lo divide por tramo y calcula plan versus real, estadías y eventos.',
-          en: 'Builds each trip, splits it by segment and computes plan vs. actual, dwell times and events.',
-        },
-        resilience: {
-          es: 'Los viajes incompletos no desaparecen del reporte: quedan marcados para revisión.',
-          en: 'Incomplete trips do not vanish from the report: they are flagged for review.',
-        },
         tech: 'Python · Polars',
         every: { es: 'Cada hora', en: 'Hourly' },
         payload: json({ trip: 'T-5039', segments: 4, plan_min: 182, actual_min: 201, late_segments: [2, 4] }),
       },
       {
-        icon: 'database',
+        name: { es: 'Consolidar', en: 'Consolidate' },
+        input: { icon: 'chart', text: { es: 'Los indicadores', en: 'The KPIs' } },
+        action: { icon: 'database', text: { es: 'Los guarda con su historial completo', en: 'Stores them with full history' } },
+        output: { icon: 'layers', text: { es: 'Una sola fuente para toda la empresa', en: 'One source for the whole company' } },
+        fail: { es: 'Si la carga falla, no quedan datos a medias.', en: 'If a load fails, no half-written data is left.' },
+        why: { es: 'Todos parten del mismo dato.', en: 'Everyone starts from the same data.' },
         title: { es: 'Base operacional', en: 'Operations database' },
-        tag: { es: 'HISTORIAL', en: 'HISTORY' },
-        summary: {
-          es: 'Guarda viajes, tramos y eventos en una sola fuente, con historial completo.',
-          en: 'Stores trips, segments and events in a single source, with full history.',
-        },
-        resilience: {
-          es: 'Cargas transaccionales: si algo falla, no quedan datos a medias.',
-          en: 'Transactional loads: if something fails, no half-written data is left behind.',
-        },
         tech: 'PostgreSQL',
         every: { es: 'Cada hora', en: 'Hourly' },
         payload: json({ table: 'trip_segments', rows_inserted: 20156, load: 'ok' }),
       },
       {
-        icon: 'dashboard',
+        name: { es: 'Publicar', en: 'Publish' },
+        input: { icon: 'database', text: { es: 'La fuente única', en: 'The single source' } },
+        action: { icon: 'dashboard', text: { es: 'Actualiza el tablero cada mañana', en: 'Refreshes the dashboard every morning' } },
+        output: { icon: 'users', text: { es: 'El mismo número en cada reunión', en: 'The same number in every meeting' } },
+        fail: { es: 'Si algo falla, muestra la fecha del último dato válido.', en: 'If something fails, it shows the date of the last valid data.' },
+        why: { es: 'Las reuniones discuten decisiones, no qué planilla está bien.', en: 'Meetings discuss decisions, not which spreadsheet is right.' },
         title: { es: 'Tablero único', en: 'Single dashboard' },
-        tag: { es: 'GESTIÓN', en: 'MANAGEMENT' },
-        summary: {
-          es: 'El tablero se actualiza solo cada mañana. Todas las reuniones miran el mismo número.',
-          en: 'The dashboard refreshes itself every morning. Every meeting looks at the same number.',
-        },
-        resilience: {
-          es: 'Si la carga nocturna falla, el tablero muestra la fecha del último dato válido.',
-          en: 'If the nightly load fails, the dashboard shows the date of the last valid data.',
-        },
         tech: 'Power BI',
         every: { es: 'Diario 06:00', en: 'Daily 06:00' },
         payload: json({ dashboard: 'operations_cycles', refreshed: '06:05', trips: 5039, on_time: '87%' }),
       },
       {
-        icon: 'file',
+        name: { es: 'Distribuir', en: 'Distribute' },
+        input: { icon: 'dashboard', text: { es: 'El tablero actualizado', en: 'The updated dashboard' } },
+        action: { icon: 'file', text: { es: 'Genera un informe por operador o área', en: 'Builds a report per operator or department' } },
+        output: { icon: 'mail', text: { es: 'Cada jefatura recibe el suyo', en: 'Each manager gets theirs' } },
+        fail: { es: 'Cada informe lleva fecha y versión.', en: 'Each report carries a date and version.' },
+        why: { es: 'La información llega sola a quien la necesita.', en: 'Information reaches whoever needs it on its own.' },
         title: { es: 'Informe por operador', en: 'Per-operator report' },
-        tag: { es: 'SALIDA', en: 'OUTPUT' },
-        summary: {
-          es: 'Un PDF por operador con velocidades y excesos, enviado a su jefatura.',
-          en: 'A PDF per operator with speeds and violations, sent to their manager.',
-        },
-        resilience: {
-          es: 'Cada informe lleva fecha y versión, para que nadie discuta con uno antiguo.',
-          en: 'Each report carries a date and version, so nobody argues over an old one.',
-        },
         tech: 'Python · PDF',
         every: { es: 'Lunes 08:00', en: 'Mondays 08:00' },
         payload: json({ reports: 42, period: 'week 39', sent_to: 'managers', violations_flagged: 7 }),
@@ -357,72 +313,55 @@ export const areaOps: Record<string, AreaOps> = {
   },
 
   finanzas: {
-    intro: {
-      es: 'Una solicitud de compra, del formulario al documento contabilizado, sin digitar en el ERP.',
-      en: 'A purchase request, from the form to the posted document, with no ERP typing.',
-    },
+    process: { es: 'Así se procesa una solicitud de compra', en: 'How a purchase request gets processed' },
+    appliesTo: { es: 'Sirve para solicitudes de pedido, hojas de servicio, facturas o cualquier documento que hoy se digita en el ERP.', en: 'Works for purchase requisitions, service sheets, invoices or any document typed into the ERP today.' },
+    example: { es: 'una hoja de entrada de servicios en 1,5 minutos', en: 'a service entry sheet in 1.5 minutes' },
     clock: '09:12:05',
     steps: [
       {
-        icon: 'file',
+        name: { es: 'Solicitar', en: 'Request' },
+        input: { icon: 'users', text: { es: 'Alguien que necesita comprar o pagar', en: 'Someone who needs to buy or pay' } },
+        action: { icon: 'file', text: { es: 'Llena un formulario simple y adjunta respaldos', en: 'Fills in a simple form and attaches backups' } },
+        output: { icon: 'inbox', text: { es: 'La solicitud completa', en: 'The complete request' } },
+        fail: { es: 'No acepta la solicitud si falta algo.', en: 'It won\'t accept a request with missing data.' },
+        why: { es: 'Nadie tiene que saber usar el ERP para pedir algo.', en: 'Nobody needs to know the ERP to ask for something.' },
         title: { es: 'Solicitud del área', en: 'Department request' },
-        tag: { es: 'ORIGEN', en: 'SOURCE' },
-        summary: {
-          es: 'El solicitante completa un formulario web con los datos y adjunta los respaldos.',
-          en: 'The requester fills in a web form and attaches the supporting documents.',
-        },
-        resilience: {
-          es: 'Valida los campos obligatorios antes de aceptar la solicitud.',
-          en: 'Required fields are validated before the request is accepted.',
-        },
         tech: 'Formulario web',
         every: { es: 'Por solicitud', en: 'Per request' },
         payload: json({ request: 'REQ-354', type: 'service_entry_sheet', cost_center: 'CC-4410', amount: 1250000, attachments: 2 }),
       },
       {
-        icon: 'calculator',
+        name: { es: 'Validar', en: 'Validate' },
+        input: { icon: 'inbox', text: { es: 'La solicitud', en: 'The request' } },
+        action: { icon: 'calculator', text: { es: 'Revisa centro de costo, cuenta, montos y presupuesto', en: 'Checks cost center, account, amounts and budget' } },
+        output: { icon: 'checkcircle', text: { es: 'Lista para grabar', en: 'Ready to post' } },
+        fail: { es: 'Si algo no cuadra, la devuelve con el motivo.', en: 'If something doesn\'t add up, it sends it back with the reason.' },
+        why: { es: 'Los errores se detectan antes de grabar, no en el cierre.', en: 'Errors are caught before posting, not at month-end.' },
         title: { es: 'Validaciones', en: 'Validations' },
-        tag: { es: 'REGLAS', en: 'RULES' },
-        summary: {
-          es: 'Revisa centro de costo, cuenta, montos y presupuesto disponible antes de tocar el ERP.',
-          en: 'Checks cost center, account, amounts and available budget before touching the ERP.',
-        },
-        resilience: {
-          es: 'Si algo no cuadra, devuelve la solicitud con el motivo en vez de grabar mal.',
-          en: 'If something does not add up, it returns the request with the reason instead of posting it wrong.',
-        },
         tech: 'Python',
         every: { es: 'Por solicitud', en: 'Per request' },
         payload: json({ cost_center: 'ok', account: 'ok', budget_available: true, warnings: 0 }),
       },
       {
-        icon: 'cpu',
+        name: { es: 'Ejecutar en el ERP', en: 'Run in the ERP' },
+        input: { icon: 'checkcircle', text: { es: 'La solicitud validada', en: 'The validated request' } },
+        action: { icon: 'cpu', text: { es: 'El bot la graba en el ERP y adjunta los respaldos', en: 'The bot posts it in the ERP and attaches the backups' } },
+        output: { icon: 'file', text: { es: 'El documento creado, con su número', en: 'The document created, with its number' } },
+        fail: { es: 'Si la sesión se corta, retoma desde el último paso.', en: 'If the session drops, it resumes from the last step.' },
+        why: { es: 'De 21 a 1,5 minutos por documento, sin digitar.', en: 'From 21 to 1.5 minutes per document, with no typing.' },
         title: { es: 'Bot en el ERP', en: 'ERP bot' },
-        tag: { es: 'EJECUCIÓN', en: 'EXECUTION' },
-        summary: {
-          es: 'Crea la solicitud de pedido o la hoja de entrada, adjunta los respaldos y contabiliza la factura.',
-          en: 'Creates the purchase requisition or entry sheet, attaches the backups and posts the invoice.',
-        },
-        resilience: {
-          es: 'Guarda una captura de cada paso. Si la sesión expira, retoma desde el último paso confirmado.',
-          en: 'Saves a screenshot of every step. If the session expires, it resumes from the last confirmed step.',
-        },
         tech: 'SAP GUI Scripting',
         every: { es: 'Cola en horario hábil', en: 'Queue in business hours' },
         payload: json({ document: '4500012345', minutes: 1.5, screenshots: 6, status: 'posted' }),
       },
       {
-        icon: 'wallet',
+        name: { es: 'Controlar el presupuesto', en: 'Control the budget' },
+        input: { icon: 'file', text: { es: 'El documento creado', en: 'The new document' } },
+        action: { icon: 'wallet', text: { es: 'Lo suma al presupuesto real del área', en: 'Adds it to the department\'s actual budget' } },
+        output: { icon: 'dashboard', text: { es: 'Oficial, real y ajustado en una pantalla', en: 'Official, actual and adjusted on one screen' } },
+        fail: { es: 'Se cuadra cada noche con el ERP.', en: 'It is reconciled with the ERP every night.' },
+        why: { es: 'El presupuesto real está a la vista, sin armar planillas.', en: 'The real budget is in plain sight, without spreadsheets.' },
         title: { es: 'Control presupuestario', en: 'Budget control' },
-        tag: { es: 'PLATAFORMA', en: 'PLATFORM' },
-        summary: {
-          es: 'La plataforma web muestra el presupuesto oficial, real y ajustado por área, ya con el documento nuevo.',
-          en: 'The web platform shows official, actual and adjusted budget by department, including the new document.',
-        },
-        resilience: {
-          es: 'Se sincroniza cada noche con el ERP y marca cualquier diferencia.',
-          en: 'It syncs with the ERP every night and flags any difference.',
-        },
         tech: 'Web · PostgreSQL',
         every: { es: 'Diario 02:00', en: 'Daily 02:00' },
         payload: {
@@ -431,17 +370,13 @@ export const areaOps: Record<string, AreaOps> = {
         },
       },
       {
-        icon: 'mail',
+        name: { es: 'Notificar', en: 'Notify' },
+        input: { icon: 'dashboard', text: { es: 'El estado de la solicitud', en: 'The request status' } },
+        action: { icon: 'mail', text: { es: 'Avisa al solicitante con el número de documento', en: 'Tells the requester the document number' } },
+        output: { icon: 'usercheck', text: { es: 'El solicitante informado', en: 'The requester, informed' } },
+        fail: { es: 'El estado queda visible para todos en la plataforma.', en: 'The status stays visible to everyone on the platform.' },
+        why: { es: 'Nadie pregunta por correo en qué va su solicitud.', en: 'Nobody emails to ask about their request.' },
         title: { es: 'Aviso al solicitante', en: 'Requester notice' },
-        tag: { es: 'SALIDA', en: 'OUTPUT' },
-        summary: {
-          es: 'El solicitante recibe el número de documento. Nadie pregunta por correo en qué va.',
-          en: 'The requester gets the document number. Nobody emails to ask about the status.',
-        },
-        resilience: {
-          es: 'El estado de cada solicitud queda visible en la plataforma para todos.',
-          en: 'Every request status stays visible on the platform for everyone.',
-        },
         tech: 'Correo · WhatsApp',
         every: { es: 'Por documento', en: 'Per document' },
         payload: json({ to: 'requester', request: 'REQ-354', document: '4500012345', status: 'done' }),
@@ -464,88 +399,67 @@ export const areaOps: Record<string, AreaOps> = {
   },
 
   ia: {
-    intro: {
-      es: 'Un rodamiento se desgasta sin que la alarma clásica lo note. El modelo lo ve venir y la detención se planifica, no se improvisa.',
-      en: 'A bearing wears out while the classic alarm notices nothing. The model sees it coming and the stop is planned, not improvised.',
-    },
+    process: { es: 'Así se anticipa una falla', en: 'How a failure gets anticipated' },
+    appliesTo: { es: 'Sirve para rodamientos, motores, bombas, demanda o cualquier comportamiento que deja señales antes de fallar.', en: 'Works for bearings, motors, pumps, demand or any behavior that leaves signs before it fails.' },
+    example: { es: 'un rodamiento desgastado, detectado 5 días antes', en: 'a worn bearing, spotted 5 days early' },
     clock: '06:00:00',
     steps: [
       {
-        icon: 'radar',
+        name: { es: 'Medir', en: 'Measure' },
+        input: { icon: 'radar', text: { es: 'Vibración, temperatura o consumo de cada equipo', en: 'Vibration, temperature or consumption of every asset' } },
+        action: { icon: 'database', text: { es: 'Registra las señales de forma continua', en: 'Records the signals continuously' } },
+        output: { icon: 'chart', text: { es: 'El historial de cada equipo', en: 'Each asset\'s history' } },
+        fail: { es: 'El dato faltante se marca, no se inventa.', en: 'Missing data is flagged, never made up.' },
+        why: { es: 'Las señales de desgaste quedan registradas aunque nadie las mire.', en: 'Signs of wear are recorded even when nobody is looking.' },
         title: { es: 'Sensores y telemetría', en: 'Sensors and telemetry' },
-        tag: { es: 'ORIGEN', en: 'SOURCE' },
-        summary: {
-          es: 'Vibración, temperatura y corriente de cada equipo llegan cada minuto desde sensores y PLC.',
-          en: 'Vibration, temperature and current from every asset arrive every minute from sensors and PLCs.',
-        },
-        resilience: {
-          es: 'Si un sensor se desconecta, el dato faltante se marca y no se inventa. El modelo lo sabe y lo informa.',
-          en: 'If a sensor disconnects, the missing data is flagged, never made up. The model knows and reports it.',
-        },
         tech: 'Sensores · PLC · API',
         every: { es: 'Cada minuto', en: 'Every minute' },
         payload: json({ asset: 'PUMP-03', vibration_mm_s: 6.8, temp_c: 71, current_a: 42, ts: '06:00' }),
       },
       {
-        icon: 'layers',
+        name: { es: 'Preparar los datos', en: 'Prepare the data' },
+        input: { icon: 'chart', text: { es: 'Las señales en bruto', en: 'The raw signals' } },
+        action: { icon: 'layers', text: { es: 'Limpia el ruido y calcula tendencias', en: 'Removes noise and computes trends' } },
+        output: { icon: 'listcheck', text: { es: 'Variables listas para el modelo', en: 'Features ready for the model' } },
+        fail: { es: 'Los valores imposibles se descartan antes del modelo.', en: 'Impossible values are dropped before the model.' },
+        why: { es: 'El modelo aprende de datos limpios, no de errores de sensor.', en: 'The model learns from clean data, not sensor glitches.' },
         title: { es: 'Preparación de datos', en: 'Data preparation' },
-        tag: { es: 'VARIABLES', en: 'FEATURES' },
-        summary: {
-          es: 'Limpia el ruido, alinea las señales y calcula tendencias, peaks y variabilidad por turno.',
-          en: 'Removes noise, aligns the signals and computes trends, peaks and variability per shift.',
-        },
-        resilience: {
-          es: 'Los valores físicamente imposibles se descartan con reglas antes de llegar al modelo.',
-          en: 'Physically impossible values are discarded by rules before they reach the model.',
-        },
         tech: 'Python · Pandas',
         every: { es: 'Cada hora', en: 'Hourly' },
         payload: json({ window: '24 h', vib_trend_per_day: '+0.9 mm/s', peaks: 14, missing: '0.3%' }),
       },
       {
-        icon: 'brain',
+        name: { es: 'Predecir', en: 'Predict' },
+        input: { icon: 'listcheck', text: { es: 'Las variables del equipo', en: 'The asset\'s features' } },
+        action: { icon: 'brain', text: { es: 'Estima la probabilidad de falla y cuándo ocurriría', en: 'Estimates the failure probability and when it would happen' } },
+        output: { icon: 'alarm', text: { es: 'Días de anticipación, con su margen', en: 'Days of warning, with their margin' } },
+        fail: { es: 'Si los datos se salen de lo conocido, lo avisa en vez de adivinar.', en: 'If the data leaves known ground, it says so instead of guessing.' },
+        why: { es: 'Sabes qué va a fallar antes de que falle.', en: 'You know what will fail before it fails.' },
         title: { es: 'Modelo predictivo', en: 'Predictive model' },
-        tag: { es: 'PREDICCIÓN', en: 'PREDICTION' },
-        summary: {
-          es: 'Estima la probabilidad de falla y cuántos días faltan para cruzar el límite, con su rango de incertidumbre.',
-          en: 'Estimates the failure probability and how many days remain before crossing the limit, with its uncertainty range.',
-        },
-        resilience: {
-          es: 'Si los datos nuevos se alejan de lo que el modelo conoce, lo marca y no entrega una predicción confiada.',
-          en: 'If new data drifts away from what the model knows, it flags it instead of giving a confident prediction.',
-        },
         tech: 'Python · scikit-learn',
         every: { es: 'Cada hora', en: 'Hourly' },
         payload: json({ asset: 'PUMP-03', failure_prob_7d: 0.82, days_to_limit: '5 (3-7)', model: 'v12' }),
       },
       {
-        icon: 'chart',
+        name: { es: 'Validar el modelo', en: 'Validate the model' },
+        input: { icon: 'alarm', text: { es: 'Cada predicción', en: 'Every prediction' } },
+        action: { icon: 'chart', text: { es: 'La compara con lo que realmente pasó', en: 'Compares it with what actually happened' } },
+        output: { icon: 'checkcircle', text: { es: 'Un modelo que sigue acertando', en: 'A model that stays accurate' } },
+        fail: { es: 'Si su acierto baja, se reentrena.', en: 'If its accuracy drops, it is retrained.' },
+        why: { es: 'La confianza se mide con estadística, no se supone.', en: 'Confidence is measured with statistics, not assumed.' },
         title: { es: 'Validación del modelo', en: 'Model validation' },
-        tag: { es: 'ESTADÍSTICA', en: 'STATISTICS' },
-        summary: {
-          es: 'Compara cada predicción con lo que realmente pasó y mide su acierto. Si baja, el modelo se reentrena.',
-          en: 'Compares every prediction with what actually happened and measures its accuracy. If it drops, the model is retrained.',
-        },
-        resilience: {
-          es: 'Un modelo nuevo solo reemplaza al anterior si le gana con datos que no vio durante el entrenamiento.',
-          en: 'A new model only replaces the old one if it beats it on data it never saw during training.',
-        },
         tech: 'Python · estadística',
         every: { es: 'Semanal', en: 'Weekly' },
         payload: json({ period: 'last 90 days', precision: 0.87, recall: 0.81, retrain: false }),
       },
       {
-        icon: 'wrench',
+        name: { es: 'Actuar a tiempo', en: 'Act in time' },
+        input: { icon: 'alarm', text: { es: 'Una falla probable', en: 'A likely failure' } },
+        action: { icon: 'wrench', text: { es: 'Propone la detención y crea la orden planificada', en: 'Proposes the stop and creates the planned order' } },
+        output: { icon: 'usercheck', text: { es: 'Tu equipo aprueba y planifica', en: 'Your team approves and plans' } },
+        fail: { es: 'El modelo sugiere, tu equipo decide.', en: 'The model suggests, your team decides.' },
+        why: { es: 'Detenciones planificadas en vez de emergencias.', en: 'Planned stops instead of emergencies.' },
         title: { es: 'Orden planificada', en: 'Planned work order' },
-        tag: { es: 'ACCIÓN', en: 'ACTION' },
-        summary: {
-          es: 'Si la probabilidad supera el umbral, propone la detención y crea la orden con el repuesto correcto.',
-          en: 'When the probability crosses the threshold, it proposes the stop and creates the order with the right spare part.',
-        },
-        resilience: {
-          es: 'Una persona aprueba antes de detener el equipo: el modelo sugiere, tu equipo decide.',
-          en: 'A person approves before the asset is stopped: the model suggests, your team decides.',
-        },
         tech: 'API del CMMS',
         every: { es: 'Por predicción', en: 'Per prediction' },
         payload: {
@@ -571,88 +485,67 @@ export const areaOps: Record<string, AreaOps> = {
   },
 
   'datos-web': {
-    intro: {
-      es: 'Mil quinientos formularios en un portal del Estado, cargados en paralelo mientras el equipo hace otra cosa.',
-      en: 'Fifteen hundred forms on a government portal, uploaded in parallel while the team does something else.',
-    },
+    process: { es: 'Así se carga un lote completo en un portal', en: 'How a whole batch gets filed on a portal' },
+    appliesTo: { es: 'Sirve para rendiciones, trámites del SII, postulaciones o cualquier portal donde hoy se llena formulario por formulario.', en: 'Works for expense reports, tax filings, applications or any portal where forms are filled one by one today.' },
+    example: { es: '1.500 formularios cargados en paralelo', en: '1,500 forms filed in parallel' },
     clock: '10:02:00',
     steps: [
       {
-        icon: 'layers',
+        name: { es: 'Reunir', en: 'Gather' },
+        input: { icon: 'layers', text: { es: 'Planillas y datos del sistema interno', en: 'Spreadsheets and internal system data' } },
+        action: { icon: 'scan', text: { es: 'Los ordena y normaliza', en: 'Sorts and normalizes them' } },
+        output: { icon: 'database', text: { es: 'Un lote listo para revisar', en: 'A batch ready for review' } },
+        fail: { es: 'Las filas con errores se apartan.', en: 'Rows with errors are set aside.' },
+        why: { es: 'Nadie copia datos de una planilla a otra.', en: 'Nobody copies data between spreadsheets.' },
         title: { es: 'Planilla de origen', en: 'Source spreadsheet' },
-        tag: { es: 'ORIGEN', en: 'SOURCE' },
-        summary: {
-          es: 'Los datos vienen de planillas y del sistema interno. Se normalizan y validan antes de subir nada.',
-          en: 'Data comes from spreadsheets and the internal system. It is normalized and validated before anything is uploaded.',
-        },
-        resilience: {
-          es: 'Las filas con errores se apartan para revisión y no frenan el resto.',
-          en: 'Rows with errors are set aside for review and do not hold up the rest.',
-        },
         tech: 'Python',
         every: { es: 'Por lote', en: 'Per batch' },
         payload: json({ rows: 1500, valid: 1497, to_review: 3 }),
       },
       {
-        icon: 'globe',
+        name: { es: 'Validar', en: 'Validate' },
+        input: { icon: 'database', text: { es: 'El lote', en: 'The batch' } },
+        action: { icon: 'listcheck', text: { es: 'Revisa cada fila contra las reglas del portal', en: 'Checks every row against the portal\'s rules' } },
+        output: { icon: 'checkcircle', text: { es: 'Filas listas para cargar', en: 'Rows ready to file' } },
+        fail: { es: 'Lo dudoso pasa a revisión humana.', en: 'Anything doubtful goes to human review.' },
+        why: { es: 'El portal no rechaza envíos por errores evitables.', en: 'The portal no longer rejects filings over avoidable errors.' },
         title: { es: 'Bot en el portal', en: 'Portal bot' },
-        tag: { es: 'CARGA', en: 'UPLOAD' },
-        summary: {
-          es: 'Varias sesiones en paralelo completan los formularios del portal, uno por fila, y guardan el comprobante.',
-          en: 'Several parallel sessions fill in the portal forms, one per row, and keep the receipt.',
-        },
-        resilience: {
-          es: 'Si el portal se cae o cambia un campo, el bot pausa, avisa y retoma donde quedó.',
-          en: 'If the portal goes down or a field changes, the bot pauses, alerts and resumes where it left off.',
-        },
         tech: 'Playwright',
         every: { es: '6 sesiones en paralelo', en: '6 parallel sessions' },
         payload: json({ sessions: 6, submitted: 1500, receipts: 1500, avg_s_per_form: 14 }),
       },
       {
-        icon: 'database',
+        name: { es: 'Cargar en el portal', en: 'File on the portal' },
+        input: { icon: 'checkcircle', text: { es: 'Las filas válidas', en: 'The valid rows' } },
+        action: { icon: 'globe', text: { es: 'Varias sesiones llenan los formularios en paralelo', en: 'Several sessions fill in the forms in parallel' } },
+        output: { icon: 'file', text: { es: 'Un comprobante por formulario', en: 'One receipt per form' } },
+        fail: { es: 'Si el portal se cae, pausa y retoma donde quedó.', en: 'If the portal goes down, it pauses and resumes where it left off.' },
+        why: { es: 'Semanas de digitación se vuelven horas.', en: 'Weeks of data entry become hours.' },
         title: { es: 'Comprobantes', en: 'Receipts' },
-        tag: { es: 'REGISTRO', en: 'RECORD' },
-        summary: {
-          es: 'Cada comprobante se guarda con su folio, enlazado a la fila original.',
-          en: 'Each receipt is stored with its reference number, linked to the original row.',
-        },
-        resilience: {
-          es: 'Nada se carga dos veces: el folio se revisa antes de cada envío.',
-          en: 'Nothing is uploaded twice: the reference is checked before each submission.',
-        },
         tech: 'PostgreSQL',
         every: { es: 'Por formulario', en: 'Per form' },
         payload: json({ reference: 'F-001499', row: 1499, pdf: 'receipt_001499.pdf' }),
       },
       {
-        icon: 'news',
+        name: { es: 'Respaldar', en: 'Archive' },
+        input: { icon: 'file', text: { es: 'Los comprobantes', en: 'The receipts' } },
+        action: { icon: 'database', text: { es: 'Guarda cada comprobante con su folio', en: 'Stores each receipt with its reference' } },
+        output: { icon: 'book', text: { es: 'Todo trazable a su fila original', en: 'Everything traceable to its original row' } },
+        fail: { es: 'Nada se carga dos veces.', en: 'Nothing is filed twice.' },
+        why: { es: 'Ante una auditoría, cada respaldo aparece en segundos.', en: 'In an audit, every backup shows up in seconds.' },
         title: { es: 'Newsletter segmentado', en: 'Segmented newsletter' },
-        tag: { es: 'COMUNICACIÓN', en: 'OUTREACH' },
-        summary: {
-          es: 'Con los datos al día, se arma y envía el newsletter para cada segmento.',
-          en: 'With the data up to date, the newsletter is built and sent for each segment.',
-        },
-        resilience: {
-          es: 'Rebotes y bajas se excluyen solos del siguiente envío.',
-          en: 'Bounces and unsubscribes are excluded from the next send automatically.',
-        },
         tech: 'Plantillas · envío masivo',
         every: { es: 'Semanal', en: 'Weekly' },
         payload: json({ segments: 5, recipients: 48210, bounced: '0.4%' }),
       },
       {
-        icon: 'dashboard',
+        name: { es: 'Informar el avance', en: 'Report progress' },
+        input: { icon: 'book', text: { es: 'El registro de cargas', en: 'The filing log' } },
+        action: { icon: 'dashboard', text: { es: 'Muestra en vivo cuánto va y cuánto falta', en: 'Shows live what\'s done and what\'s left' } },
+        output: { icon: 'mail', text: { es: 'Aviso al terminar, con el resumen', en: 'A notice when done, with the summary' } },
+        fail: { es: 'Si el avance se detiene, avisa.', en: 'If progress stalls, it raises an alert.' },
+        why: { es: 'Sabes el estado sin preguntarle a nadie.', en: 'You know the status without asking anyone.' },
         title: { es: 'Tablero de avance', en: 'Progress board' },
-        tag: { es: 'SEGUIMIENTO', en: 'TRACKING' },
-        summary: {
-          es: 'Un tablero muestra en vivo cuántos van, cuántos faltan y cuáles necesitan revisión.',
-          en: 'A board shows live how many are done, how many remain and which need review.',
-        },
-        resilience: {
-          es: 'Si el avance se detiene, avisa antes de que alguien lo note tarde.',
-          en: 'If progress stalls, it raises an alert before anyone notices too late.',
-        },
         tech: 'Dashboard web',
         every: { es: 'Tiempo real', en: 'Real time' },
         payload: json({ done: 1500, pending: 0, to_review: 3, finished_at: 'Friday 16:40' }),

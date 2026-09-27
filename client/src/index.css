@@ -237,6 +237,14 @@
   to { left: 100%; opacity: 0; }
 }
 .ops-pulse { animation: ops-flow 2.8s linear infinite; }
+/* A dot hopping along the arrows of the in -> does -> out diagram */
+@keyframes ops-hop {
+  from { left: -4px; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  to { left: calc(100% - 4px); opacity: 0; }
+}
+.ops-hop { animation: ops-hop 1.4s linear infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .ops-pulse { animation: none; display: none; }
+  .ops-pulse, .ops-hop { animation: none; display: none; }
 }

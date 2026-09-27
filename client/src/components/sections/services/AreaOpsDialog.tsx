@@ -4,19 +4,22 @@ import {
   Radar, BellRing, MonitorCheck, Tablet, NotebookPen, Database, Cpu, BarChart3, MessageSquare, Mic,
   BrainCircuit, Wrench, FileText, Mail, Globe, Satellite, ClipboardCheck, Send, Layers, ShieldCheck,
   Router, Calculator, Wallet, ScanSearch, LayoutDashboard, Newspaper, Workflow, Terminal, Pause, Play,
-  ArrowRight, type LucideIcon,
+  ArrowRight, Code2, Eye, MapPin, AlertTriangle, ListChecks, AlarmClock, Hourglass, UserCheck, Smartphone,
+  CheckCircle2, List, FileBarChart, Users, Inbox, type LucideIcon,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { Area } from '@/data/areas';
-import { areaOps, type AreaOps, type OpsIcon, type OpsLog } from '@/data/areaOps';
+import { areaOps, type AreaOps, type OpsIcon, type OpsLog, type OpsNode } from '@/data/areaOps';
 
 const ICONS: Record<OpsIcon, LucideIcon> = {
   radar: Radar, bell: BellRing, monitor: MonitorCheck, tablet: Tablet, book: NotebookPen, database: Database,
   cpu: Cpu, chart: BarChart3, message: MessageSquare, mic: Mic, brain: BrainCircuit, wrench: Wrench,
   file: FileText, mail: Mail, globe: Globe, satellite: Satellite, check: ClipboardCheck, send: Send,
   layers: Layers, shield: ShieldCheck, router: Router, calculator: Calculator, wallet: Wallet,
-  scan: ScanSearch, dashboard: LayoutDashboard, news: Newspaper,
+  scan: ScanSearch, dashboard: LayoutDashboard, news: Newspaper, eye: Eye, pin: MapPin, alert: AlertTriangle,
+  listcheck: ListChecks, alarm: AlarmClock, hourglass: Hourglass, usercheck: UserCheck, phone: Smartphone,
+  checkcircle: CheckCircle2, list: List, report: FileBarChart, users: Users, inbox: Inbox,
 };
 
 const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -29,12 +32,38 @@ function clockPlus(base: string, n: number) {
 }
 
 // ---------------------------------------------------------------- flow
+/** Arrow between two boxes, with a dot travelling along it (turns vertical on phones). */
+function Arrow({ color, delay = 0 }: { color: string; delay?: number }) {
+  return (
+    <div className="flex items-center justify-center h-7 md:h-auto md:w-10 flex-shrink-0" aria-hidden="true">
+      <div className="relative w-10 h-[2px] bg-night-line rotate-90 md:rotate-0">
+        <span className="ops-hop absolute -top-[3px] h-2 w-2 rounded-full" style={{ backgroundColor: color, animationDelay: `${delay}s` }} />
+      </div>
+    </div>
+  );
+}
+
+function Box({ label, node, color, strong }: { label: string; node: OpsNode; color: string; strong?: boolean }) {
+  const { language } = useLanguage();
+  const Icon = ICONS[node.icon];
+  return (
+    <div className="flex-1 min-w-0 rounded-xl border bg-night-800 p-3" style={{ borderColor: strong ? color : undefined }}>
+      <p className="text-xs text-slate-400 mb-1.5">{label}</p>
+      <p className="flex items-start gap-2 text-sm text-white leading-snug">
+        <Icon className="w-5 h-5 flex-shrink-0" style={{ color: strong ? color : '#94A3B8' }} aria-hidden="true" />
+        {node.text[language]}
+      </p>
+    </div>
+  );
+}
+
 function FlowView({ ops, color }: { ops: AreaOps; color: string }) {
   const { t, language } = useLanguage();
   const [selected, setSelected] = useState(0);
   const [live, setLive] = useState(0);
+  const [techOpen, setTechOpen] = useState(false);
 
-  // A "processing" marker walks through the steps, so the pipeline visibly runs.
+  // A marker walks through the steps, so the process visibly runs.
   useEffect(() => {
     if (reducedMotion()) return;
     const id = window.setInterval(() => setLive((v) => (v + 1) % ops.steps.length), 1400);
@@ -49,22 +78,21 @@ function FlowView({ ops, color }: { ops: AreaOps; color: string }) {
     <div>
       <p className="text-sm text-slate-400 mb-3">{t('areas.ops_flow_hint')}</p>
       <div className="relative">
-        {/* the wire the data travels along (desktop) */}
         <div className="hidden md:block absolute left-[10%] right-[10%] top-1/2 h-px bg-night-line" aria-hidden="true">
           <span className="ops-pulse absolute -top-[3px] h-[7px] w-[7px] rounded-full" style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }} />
         </div>
         <div className="relative flex md:grid md:grid-cols-5 gap-3 overflow-x-auto snap-x pb-2 md:pb-0 -mx-1 px-1" role="tablist">
           {ops.steps.map((s, i) => {
-            const Icon = ICONS[s.icon];
+            const Icon = ICONS[s.action.icon];
             const active = i === selected;
             return (
               <button
-                key={s.title.es}
+                key={s.name.es}
                 type="button"
                 role="tab"
                 aria-selected={active}
                 onClick={() => setSelected(i)}
-                className={`snap-start flex-shrink-0 w-[46%] sm:w-[30%] md:w-auto text-left rounded-xl border p-3 transition-colors ${
+                className={`snap-start flex-shrink-0 w-[40%] sm:w-[28%] md:w-auto text-left rounded-xl border p-3 transition-colors ${
                   active ? 'bg-night-700' : 'bg-night-800 border-night-line hover:border-slate-600'
                 }`}
                 style={active ? { borderColor: color, boxShadow: `0 0 18px ${color}30` } : undefined}
@@ -78,8 +106,7 @@ function FlowView({ ops, color }: { ops: AreaOps; color: string }) {
                     <Icon className="w-4 h-4" style={{ color: active ? color : '#94A3B8' }} aria-hidden="true" />
                   </span>
                 </span>
-                <span className="block font-display text-sm font-bold text-white leading-snug">{s.title[language]}</span>
-                <span className="block font-mono text-xs text-slate-400 mt-1 tracking-wide">{s.tag[language]}</span>
+                <span className="block font-display text-sm font-bold text-white leading-snug">{s.name[language]}</span>
               </button>
             );
           })}
@@ -93,43 +120,66 @@ function FlowView({ ops, color }: { ops: AreaOps; color: string }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.2 }}
-          className="mt-4 grid lg:grid-cols-12 gap-4 rounded-xl border border-night-line bg-night p-4 sm:p-5"
+          className="mt-4 rounded-xl border border-night-line bg-night p-4 sm:p-5"
         >
-          <div className="lg:col-span-7 space-y-3">
-            <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-              <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded border" style={{ color, borderColor: `${color}55`, backgroundColor: `${color}14` }}>
-                <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />
-                {t('areas.ops_online')}
-              </span>
-              <span className="text-slate-400">{t('areas.ops_every')}: <strong className="text-white font-semibold">{step.every[language]}</strong></span>
-              <span className="text-slate-400">{t('areas.ops_tech')}: <strong className="text-white font-semibold">{step.tech}</strong></span>
-            </div>
-            <h4 className="font-display text-lg font-bold text-white">{step.title[language]}</h4>
-            <p className="text-slate-300 leading-relaxed">{step.summary[language]}</p>
-            <div className="rounded-lg border border-night-line bg-white/5 p-3">
-              <p className="flex items-center gap-2 text-xs font-mono font-bold text-gold mb-1">
-                <ShieldCheck className="w-4 h-4" aria-hidden="true" />
-                {t('areas.ops_resilience')}
-              </p>
-              <p className="text-sm text-slate-300">{step.resilience[language]}</p>
-            </div>
-            {next ? (
-              <button type="button" onClick={() => setSelected(selected + 1)} className="inline-flex items-center gap-2 text-sm font-semibold hover:underline" style={{ color }}>
-                {t('areas.ops_next')}: {next.title[language]} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </button>
-            ) : (
-              <button type="button" onClick={() => setSelected(0)} className="inline-flex items-center gap-2 text-sm font-semibold hover:underline" style={{ color }}>
-                {t('areas.ops_restart')} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </button>
-            )}
+          {/* in -> what it does -> out */}
+          <div className="flex flex-col md:flex-row md:items-stretch">
+            <Box label={t('areas.ops_in')} node={step.input} color={color} />
+            <Arrow color={color} />
+            <Box label={t('areas.ops_does')} node={step.action} color={color} strong />
+            <Arrow color={color} delay={0.7} />
+            <Box label={t('areas.ops_out')} node={step.output} color={color} />
           </div>
-          <div className="lg:col-span-5 rounded-lg border border-night-line bg-night-900 p-3 font-mono text-xs self-start">
-            <div className="flex items-center justify-between pb-2 mb-2 border-b border-night-line">
-              <span style={{ color }}>// {t('areas.ops_payload')}</span>
-              <span className="text-slate-400">JSON</span>
-            </div>
-            <pre className="text-slate-200 overflow-x-auto leading-relaxed">{payload}</pre>
+          {/* if it fails: a dashed branch under "what it does" */}
+          <div className="flex items-center gap-3 mt-2 md:ml-[36%]">
+            <span className="block w-0 h-7 border-l-2 border-dashed border-gold/70" aria-hidden="true" />
+            <p className="text-sm text-slate-300">
+              <ShieldCheck className="inline w-4 h-4 mr-1 -mt-0.5 text-gold" aria-hidden="true" />
+              <span className="text-gold font-semibold">{t('areas.ops_fail')}:</span> {step.fail[language]}
+            </p>
           </div>
+
+          <p className="text-white text-base md:text-lg leading-relaxed mt-4">{step.why[language]}</p>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 mt-4">
+            <span className="text-xs rounded-lg px-2.5 py-1.5 border" style={{ color, borderColor: `${color}55`, backgroundColor: `${color}14` }}>
+              {t('areas.ops_example')}: {ops.example[language]}
+            </span>
+            <div className="flex items-center gap-4">
+              <button type="button" onClick={() => setTechOpen((v) => !v)} aria-expanded={techOpen} className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white">
+                <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
+                {techOpen ? t('areas.ops_tech_hide') : t('areas.ops_tech_show')}
+              </button>
+              {next ? (
+                <button type="button" onClick={() => setSelected(selected + 1)} className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline" style={{ color }}>
+                  {t('areas.ops_next')}: {next.name[language]} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </button>
+              ) : (
+                <button type="button" onClick={() => setSelected(0)} className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline" style={{ color }}>
+                  {t('areas.ops_restart')} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* technical detail of the real example, for IT teams */}
+          {techOpen && (
+            <div className="mt-4 grid lg:grid-cols-12 gap-4 border-t border-night-line pt-4">
+              <div className="lg:col-span-5 space-y-2 text-xs font-mono">
+                <p className="text-slate-400">{t('areas.ops_tech_title')}</p>
+                <p className="text-white font-sans text-sm font-semibold">{step.title[language]}</p>
+                <p className="text-slate-400">{t('areas.ops_every')}: <span className="text-white">{step.every[language]}</span></p>
+                <p className="text-slate-400">{t('areas.ops_tech')}: <span className="text-white">{step.tech}</span></p>
+              </div>
+              <div className="lg:col-span-7 rounded-lg border border-night-line bg-night-900 p-3 font-mono text-xs">
+                <div className="flex items-center justify-between pb-2 mb-2 border-b border-night-line">
+                  <span style={{ color }}>// {t('areas.ops_payload')}</span>
+                  <span className="text-slate-400">JSON</span>
+                </div>
+                <pre className="text-slate-200 overflow-x-auto leading-relaxed">{payload}</pre>
+              </div>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -258,14 +308,12 @@ const AreaOpsDialog = ({ area, open, onOpenChange }: Props) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl w-[calc(100%-1.5rem)] max-h-[92vh] overflow-y-auto overflow-x-hidden [&>*]:min-w-0 rounded-2xl border-night-line bg-night-900 p-5 sm:p-7 text-slate-200">
         <DialogHeader className="text-left space-y-2 pr-6">
-          <p className="inline-flex items-center gap-2 font-mono text-xs tracking-wider" style={{ color: area.color }}>
+          <p className="inline-flex flex-wrap items-center gap-2 font-mono text-xs tracking-wider" style={{ color: area.color }}>
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: area.color }} />
-            {t('areas.ops_badge')}
+            {area.name[language].toUpperCase()} · {t('areas.ops_badge')}
           </p>
-          <DialogTitle className="font-display text-xl sm:text-2xl font-bold text-white">
-            {t('areas.ops_title')}: {area.name[language]}
-          </DialogTitle>
-          <DialogDescription className="text-slate-300 text-base">{ops.intro[language]}</DialogDescription>
+          <DialogTitle className="font-display text-xl sm:text-2xl font-bold text-white">{ops.process[language]}</DialogTitle>
+          <DialogDescription className="text-slate-300 text-base">{ops.appliesTo[language]}</DialogDescription>
         </DialogHeader>
 
         <div className="flex gap-2" role="tablist">
