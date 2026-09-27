@@ -67,7 +67,7 @@ if (process.env.NODE_ENV !== "production") {
     const port = 5001;
     server.listen({
       port,
-      host: "localhost",
+      host: "127.0.0.1", // IPv4 loopback: works for every browser and stays local-only
     }, () => {
       log(`serving on port ${port}`);
     });
