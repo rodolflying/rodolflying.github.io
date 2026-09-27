@@ -104,7 +104,7 @@ const ServiceModelSection = () => {
               <span className="inline-flex items-center gap-2 text-slate-200"><span className="w-3 h-3 rounded-sm bg-star" />{t('model.compare_own')}</span>
             </div>
             <div className="mt-auto rounded-xl bg-star/10 border border-star/30 p-5">
-              <p className="font-display text-4xl font-bold text-star">−{Math.round((1 - OWN_5Y / LICENSED_5Y) * 100)}%</p>
+              <p className="font-display text-3xl md:text-4xl font-bold text-star">{t('model.compare_big')}</p>
               <p className="text-slate-200 mt-1">{t('model.compare_result')}</p>
             </div>
           </div>

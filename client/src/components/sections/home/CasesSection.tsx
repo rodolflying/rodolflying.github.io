@@ -58,7 +58,7 @@ const CasesSection = ({ featuredOnly = false }: CasesSectionProps) => {
 
                 <div className="mt-auto flex items-end justify-between gap-4 pt-4 border-t border-night-line">
                   <div>
-                    <p className="text-2xl font-display font-bold" style={{ color: c.color }}>{c.metric.value}</p>
+                    <p className="text-2xl font-display font-bold" style={{ color: c.color }}>{c.metric.value[language]}</p>
                     <p className="text-xs text-slate-400">{c.metric.label[language]}</p>
                   </div>
                   <p className="text-xs text-slate-400 text-right">{c.stack.join(' · ')}</p>

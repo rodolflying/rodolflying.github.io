@@ -423,7 +423,7 @@ export const maintenanceHQScene: PixelScene = (g, time) => {
   g.drawImage(canvas, cx, cy, MAINT_W, MAINT_H, 0, 0, MAINT_W, MAINT_H);
   grade(g, MAINT_W, MAINT_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
   hitStopFx(g, raw, T.click[0], 213 - cx, 80 - cy, MAINT_W, MAINT_H);
-  resultStamp(g, t, T.thumbs[0], STORY - 0.7, { value: '251', icon: 'wrench', color: '#FFC857' }, MAINT_W);
+  resultStamp(g, t, T.thumbs[0], STORY - 0.7, { value: '24/7', icon: 'wrench', color: '#FFC857' }, MAINT_W);
   setCtx(w);
   const fades: Array<[number, number]> = [[T.intro[0] - 0.3, T.intro[0] + 0.1], [T.lapse[1] - 0.15, T.lapse[1] + 0.25], [15.4, 16.2], [-0.4, 0.3]];
   for (const [a, b] of fades) {

@@ -237,15 +237,6 @@ export default {
       message: 'El mensaje debe tener al menos 10 caracteres',
     },
   },
-  stats: {
-    automations: 'automatizaciones construidas por el equipo',
-    hours: 'de trabajo manual liberadas al mes',
-    saving: 'de costo a 5 años vs. RPA con licencia',
-    since: 'Operando desde',
-    ownership: 'Propiedad del código',
-    licenses: 'Licencias de plataforma RPA',
-    industries: 'Industrias atendidas',
-  },
   seo: {
     default_title: 'Star Apps | Software a la medida, RPA e IA sin licencias',
     default_description: 'Desarrollo de software a la medida, automatización RPA e integración de IA con código abierto. Sin licencias recurrentes, código 100% tuyo y soporte continuo.',
@@ -282,7 +273,7 @@ export default {
   areas: {
     badge: 'ÁREAS DE SERVICIO',
     title: 'Automatización para cada área de tu empresa',
-    subtitle: 'Cada área muestra algo que ya construimos y lo que midió en operación real. Elige una.',
+    subtitle: 'Cada área muestra algo que ya construimos y lo que cambió en la operación. Elige una.',
     ops_cta: 'Ver cómo queda operando',
     ops_scene_hint: 'Haz clic en la escena',
     ops_badge: 'SIMULACIÓN ILUSTRATIVA · DATOS FICTICIOS',
@@ -323,7 +314,7 @@ export default {
     efficiency: {
       title: 'Eficiencia operativa',
       text: 'Horas de trabajo manual que se liberan cada mes y su valor en pesos.',
-      example: 'un documento en el ERP pasó de 21 a 1,5 minutos.',
+      example: 'lo que alguien digitaba en el ERP toda la mañana, el bot lo hace mientras esa persona revisa.',
     },
     risk: {
       title: 'Riesgo y cumplimiento',
@@ -345,7 +336,7 @@ export default {
     avoided: {
       title: 'Costo evitado',
       text: 'Lo que costaría la misma solución con un proveedor de RPA: desarrollo, licencia anual y soporte.',
-      example: '62% menos costo a 5 años frente a una plataforma con licencia.',
+      example: 'menos de la mitad del costo a cinco años, frente a una plataforma con licencia.',
     },
   },
   model: {
@@ -404,10 +395,11 @@ export default {
     },
     compare_start: 'Inicio',
     compare_title: 'Costo acumulado a 5 años',
-    compare_note: 'Portafolio de referencia de 14 automatizaciones: desarrollo propio con soporte versus plataforma RPA con licencia anual y soporte mensual.',
+    compare_note: 'Un portafolio real de automatizaciones: desarrollo propio con soporte versus plataforma RPA con licencia anual y soporte mensual.',
     compare_licensed: 'Plataforma RPA con licencia',
     compare_own: 'Desarrollo a medida sin licencias',
-    compare_result: 'de costo total a 5 años, con el código en manos de la empresa.',
+    compare_big: 'Menos de la mitad',
+    compare_result: 'del costo total a cinco años, con el código en manos de la empresa.',
   },
   capabilities: {
     badge: 'QUÉ RESOLVEMOS',

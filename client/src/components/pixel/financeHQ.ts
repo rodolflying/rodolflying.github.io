@@ -642,7 +642,7 @@ export const financeHQScene: PixelScene = (g, time) => {
   g.drawImage(world, cx0, cy0, HQ_W, HQ_H, 0, 0, HQ_W, HQ_H);
   grade(g, HQ_W, HQ_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
   hitStopFx(g, raw, T.click[0], 206 - cx0, 79 - cy0, HQ_W, HQ_H);
-  resultStamp(g, t, 11.2, 13.55, { value: '1,5', old: '21', icon: 'clock', color: '#47E5C2' }, HQ_W);
+  resultStamp(g, t, 11.2, 13.55, { value: '10×', icon: 'clock', color: '#47E5C2' }, HQ_W);
   setEngineCtx(G);
 
   // --- transitions: time-lapse flicker and the fade back to night

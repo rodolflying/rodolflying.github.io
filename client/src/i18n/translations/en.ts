@@ -237,15 +237,6 @@ export default {
       message: 'Message must be at least 10 characters',
     },
   },
-  stats: {
-    automations: 'automations built by the team',
-    hours: 'of manual work freed every month',
-    saving: '5-year cost vs. licensed RPA',
-    since: 'Operating since',
-    ownership: 'Code ownership',
-    licenses: 'RPA platform licenses',
-    industries: 'Industries served',
-  },
   seo: {
     default_title: 'Star Apps | Custom Software, RPA & AI without licenses',
     default_description: 'Custom software development, RPA automation and AI integration built on open source. No recurring licenses, 100% code ownership and ongoing support.',
@@ -282,7 +273,7 @@ export default {
   areas: {
     badge: 'SERVICE AREAS',
     title: 'Automation for every area of your company',
-    subtitle: 'Each area shows something we have already built and what it measured in real operations. Pick one.',
+    subtitle: 'Each area shows something we have already built and what it changed in operations. Pick one.',
     ops_cta: 'See it running',
     ops_scene_hint: 'Click the scene',
     ops_badge: 'ILLUSTRATIVE SIMULATION · SAMPLE DATA',
@@ -323,7 +314,7 @@ export default {
     efficiency: {
       title: 'Operational efficiency',
       text: 'Manual work hours freed every month and their value in money.',
-      example: 'an ERP document went from 21 to 1.5 minutes.',
+      example: 'what someone typed into the ERP all morning, the bot does while that person reviews.',
     },
     risk: {
       title: 'Risk and compliance',
@@ -345,7 +336,7 @@ export default {
     avoided: {
       title: 'Avoided cost',
       text: 'What the same solution would cost from an RPA vendor: development, yearly license and support.',
-      example: '62% lower 5-year cost than a licensed platform.',
+      example: 'less than half the 5-year cost of a licensed platform.',
     },
   },
   model: {
@@ -404,10 +395,11 @@ export default {
     },
     compare_start: 'Start',
     compare_title: '5-year cumulative cost',
-    compare_note: 'Reference portfolio of 14 automations: in-house development with support vs. an RPA platform with yearly license and monthly support.',
+    compare_note: 'A real automation portfolio: in-house development with support vs. an RPA platform with yearly license and monthly support.',
     compare_licensed: 'Licensed RPA platform',
     compare_own: 'Custom development, no licenses',
-    compare_result: 'total 5-year cost, with the code owned by the company.',
+    compare_big: 'Less than half',
+    compare_result: 'of the total 5-year cost, with the code owned by the company.',
   },
   capabilities: {
     badge: 'WHAT WE SOLVE',

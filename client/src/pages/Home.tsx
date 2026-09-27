@@ -6,42 +6,9 @@ import ValueFrameworkSection from '@/components/sections/services/ValueFramework
 import CasesSection from '@/components/sections/home/CasesSection';
 import ProcessSection from '@/components/sections/home/ProcessSection';
 import ConnectDotsSection from '@/components/sections/home/ConnectDotsSection';
-import StackMarquee from '@/components/sections/home/StackMarquee';
 import RoiCalculator from '@/components/sections/proof/RoiCalculator';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-
-const StatsBar = () => {
-  const { t } = useLanguage();
-  const stats = [
-    { value: '14', label: t('stats.automations') },
-    { value: '~190 h', label: t('stats.hours') },
-    { value: '−62%', label: t('stats.saving') },
-    { value: '0', label: t('stats.licenses') },
-  ];
-
-  return (
-    <div className="py-14 bg-night">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              className="text-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-            >
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">{stat.value}</div>
-              <div className="text-slate-300 text-sm sm:text-base">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Home = () => {
   const { t } = useLanguage();
@@ -50,8 +17,6 @@ const Home = () => {
     <Layout>
       <Hero />
       <ConnectDotsSection />
-      <StatsBar />
-      <StackMarquee />
       <AreasOverview />
       <CasesSection featuredOnly />
       <ValueFrameworkSection />

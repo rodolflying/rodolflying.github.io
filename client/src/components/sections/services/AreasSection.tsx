@@ -138,8 +138,8 @@ const AreasSection = () => {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   {area.results.map((r) => (
-                    <div key={r.value} className="rounded-xl bg-night-900 border border-night-line p-3">
-                      <p className="font-display text-2xl md:text-3xl font-bold leading-none" style={{ color: area.color }}>{r.value}</p>
+                    <div key={r.label.es} className="rounded-xl bg-night-900 border border-night-line p-3">
+                      <p className="font-display text-xl md:text-2xl font-bold leading-tight" style={{ color: area.color }}>{r.value[language]}</p>
                       <p className="text-xs sm:text-sm text-slate-300 mt-1.5 leading-snug">{r.label[language]}</p>
                     </div>
                   ))}

@@ -263,7 +263,7 @@ export const dataHQScene: PixelScene = (g, time) => {
   g.drawImage(canvas, cx, cy, DATA_W, DATA_H, 0, 0, DATA_W, DATA_H);
   grade(g, DATA_W, DATA_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
   hitStopFx(g, raw, T.click[0], scr.x + scr.w / 2 - cx, scr.y + 13 - cy, DATA_W, DATA_H);
-  resultStamp(g, t, 10.2, STORY - 0.4, { value: '1.500', icon: 'doc', color: '#C4F18A' }, DATA_W);
+  resultStamp(g, t, 10.2, STORY - 0.4, { value: '10×', icon: 'doc', color: '#C4F18A' }, DATA_W);
   setCtx(w);
   fades(g, t, STORY, DATA_W, DATA_H);
 };

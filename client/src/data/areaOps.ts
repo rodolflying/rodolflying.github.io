@@ -232,7 +232,7 @@ export const areaOps: Record<string, AreaOps> = {
   operaciones: {
     process: { es: 'Así se arma un indicador confiable', en: 'How a reliable KPI gets built' },
     appliesTo: { es: 'Sirve para tiempos de ciclo, productividad, consumo o cualquier número que hoy se arma a mano.', en: 'Works for cycle times, productivity, consumption or any figure built by hand today.' },
-    example: { es: '5.039 viajes con plan versus real por tramo', en: '5,039 trips with plan vs. actual per segment' },
+    example: { es: 'todos los viajes, con plan versus real por tramo', en: 'every trip, with plan vs. actual per segment' },
     clock: '05:30:00',
     steps: [
       {
@@ -315,7 +315,7 @@ export const areaOps: Record<string, AreaOps> = {
   finanzas: {
     process: { es: 'Así se procesa una solicitud de compra', en: 'How a purchase request gets processed' },
     appliesTo: { es: 'Sirve para solicitudes de pedido, hojas de servicio, facturas o cualquier documento que hoy se digita en el ERP.', en: 'Works for purchase requisitions, service sheets, invoices or any document typed into the ERP today.' },
-    example: { es: 'una hoja de entrada de servicios en 1,5 minutos', en: 'a service entry sheet in 1.5 minutes' },
+    example: { es: 'una hoja de entrada de servicios hecha por el bot', en: 'a service entry sheet done by the bot' },
     clock: '09:12:05',
     steps: [
       {
@@ -348,7 +348,7 @@ export const areaOps: Record<string, AreaOps> = {
         action: { icon: 'cpu', text: { es: 'El bot la graba en el ERP y adjunta los respaldos', en: 'The bot posts it in the ERP and attaches the backups' } },
         output: { icon: 'file', text: { es: 'El documento creado, con su número', en: 'The document created, with its number' } },
         fail: { es: 'Si la sesión se corta, retoma desde el último paso.', en: 'If the session drops, it resumes from the last step.' },
-        why: { es: 'De 21 a 1,5 minutos por documento, sin digitar.', en: 'From 21 to 1.5 minutes per document, with no typing.' },
+        why: { es: 'Cada documento toma una fracción del tiempo, sin digitar.', en: 'Each document takes a fraction of the time, with no typing.' },
         title: { es: 'Bot en el ERP', en: 'ERP bot' },
         tech: 'SAP GUI Scripting',
         every: { es: 'Cola en horario hábil', en: 'Queue in business hours' },
@@ -401,7 +401,7 @@ export const areaOps: Record<string, AreaOps> = {
   ia: {
     process: { es: 'Así se anticipa una falla', en: 'How a failure gets anticipated' },
     appliesTo: { es: 'Sirve para rodamientos, motores, bombas, demanda o cualquier comportamiento que deja señales antes de fallar.', en: 'Works for bearings, motors, pumps, demand or any behavior that leaves signs before it fails.' },
-    example: { es: 'un rodamiento desgastado, detectado 5 días antes', en: 'a worn bearing, spotted 5 days early' },
+    example: { es: 'un rodamiento desgastado, detectado días antes de fallar', en: 'a worn bearing, spotted days before it failed' },
     clock: '06:00:00',
     steps: [
       {
@@ -487,7 +487,7 @@ export const areaOps: Record<string, AreaOps> = {
   'datos-web': {
     process: { es: 'Así se carga un lote completo en un portal', en: 'How a whole batch gets filed on a portal' },
     appliesTo: { es: 'Sirve para rendiciones, trámites del SII, postulaciones o cualquier portal donde hoy se llena formulario por formulario.', en: 'Works for expense reports, tax filings, applications or any portal where forms are filled one by one today.' },
-    example: { es: '1.500 formularios cargados en paralelo', en: '1,500 forms filed in parallel' },
+    example: { es: 'más de mil formularios cargados en paralelo', en: 'over a thousand forms filed in parallel' },
     clock: '10:02:00',
     steps: [
       {

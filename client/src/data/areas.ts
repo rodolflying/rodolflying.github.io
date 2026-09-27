@@ -5,7 +5,8 @@ import type { Bilingual } from './cases';
 export type AreaIcon = 'shield' | 'wrench' | 'route' | 'wallet' | 'bot' | 'brain' | 'globe';
 
 export interface AreaResult {
-  value: string;
+  /** A message or a general magnitude, not a one-off count. */
+  value: Bilingual;
   label: Bilingual;
 }
 
@@ -41,8 +42,8 @@ export const areas: Area[] = [
       { es: 'Auditoría de comunicaciones de radio con reconocimiento de voz local', en: 'Radio communication audits with on-premise speech recognition' },
     ],
     results: [
-      { value: '100%', label: { es: 'de las alertas verificadas, no por muestreo', en: 'of alerts verified, not sampled' } },
-      { value: '1.881', label: { es: 'filas de bitácora al año que ya no se tipean', en: 'log rows a year no longer typed by hand' } },
+      { value: { es: 'Todas', en: 'All' }, label: { es: 'las alertas se revisan, sin muestreo', en: 'alerts get reviewed, no sampling' } },
+      { value: { es: 'Cero', en: 'Zero' }, label: { es: 'bitácoras tipeadas a mano', en: 'logs typed by hand' } },
     ],
     risks: [
       { es: 'Evidencia lista ante fiscalizaciones y auditorías', en: 'Evidence ready for inspections and audits' },
@@ -66,8 +67,8 @@ export const areas: Area[] = [
       { es: 'Reinicio preventivo remoto de equipos de red y comunicaciones, con verificación y alertas', en: 'Preventive remote restarts of network and radio equipment, with verification and alerts' },
     ],
     results: [
-      { value: '251', label: { es: 'órdenes de trabajo creadas solas en 6 meses', en: 'work orders created automatically in 6 months' } },
-      { value: '97%', label: { es: 'efectividad en 1.450 reinicios remotos', en: 'success rate across 1,450 remote restarts' } },
+      { value: { es: 'Día y noche', en: 'Day and night' }, label: { es: 'las órdenes de trabajo se crean solas', en: 'work orders create themselves' } },
+      { value: { es: 'Sin viajar', en: 'No travel' }, label: { es: 'casi todos los reinicios resuelven la falla a distancia', en: 'almost every restart fixes the fault remotely' } },
     ],
     risks: [
       { es: 'Fallas del fin de semana atendidas antes del lunes', en: 'Weekend failures handled before Monday' },
@@ -92,8 +93,8 @@ export const areas: Area[] = [
       { es: 'Lectura de documentos de comercio exterior y cruce contra la carga declarada', en: 'Reading foreign-trade documents and cross-checking them against declared cargo' },
     ],
     results: [
-      { value: '5.039', label: { es: 'viajes analizados en minutos, antes solo días puntuales', en: 'trips analyzed in minutes, previously only sample days' } },
-      { value: '4', label: { es: 'formatos de registrador leídos por una sola herramienta', en: 'recorder formats read by a single tool' } },
+      { value: { es: 'Toda la operación', en: 'Every trip' }, label: { es: 'analizada cada día, no solo días de muestra', en: 'analyzed every day, not just sample days' } },
+      { value: { es: 'Una herramienta', en: 'One tool' }, label: { es: 'para todos los formatos de registrador', en: 'for every recorder format' } },
     ],
     risks: [
       { es: 'Registros que desaparecían del reporte, ahora visibles', en: 'Records that silently vanished from reports, now visible' },
@@ -117,8 +118,8 @@ export const areas: Area[] = [
       { es: 'Conciliaciones y validaciones antes de grabar (centro de costo, cuenta, montos)', en: 'Reconciliations and validations before posting (cost center, account, amounts)' },
     ],
     results: [
-      { value: '21 → 1,5', label: { es: 'minutos por documento en el ERP', en: 'minutes per ERP document' } },
-      { value: '354', label: { es: 'documentos procesados para 11 solicitantes', en: 'documents processed for 11 requesters' } },
+      { value: { es: '10× más rápido', en: '10× faster' }, label: { es: 'cada documento en el ERP', en: 'every ERP document' } },
+      { value: { es: 'Cero', en: 'Zero' }, label: { es: 'digitación en el ERP para quien solicita', en: 'ERP typing for requesters' } },
     ],
     risks: [
       { es: 'Respaldos ordenados para auditoría', en: 'Organized backups for audits' },
@@ -144,8 +145,8 @@ export const areas: Area[] = [
       { es: 'Agentes y modelos de lenguaje que corren en tus servidores, cuando la tarea lo justifica', en: 'Agents and language models running on your own servers, when the task calls for it' },
     ],
     results: [
-      { value: '−20%', label: { es: 'de tiempo de espera en un rediseño validado con simulación', en: 'waiting time in a redesign validated with simulation' } },
-      { value: '~2 M', label: { es: 'registros de redes recolectados y clasificados con NLP', en: 'social media records collected and classified with NLP' } },
+      { value: { es: 'Menos espera', en: 'Shorter waits' }, label: { es: 'en un rediseño validado con simulación antes de cambiar nada', en: 'in a redesign validated with simulation before changing anything' } },
+      { value: { es: 'Millones', en: 'Millions' }, label: { es: 'de registros de redes clasificados con NLP', en: 'of social media records classified with NLP' } },
     ],
     risks: [
       { es: 'Detenciones planificadas en vez de emergencias', en: 'Planned stops instead of emergencies' },
@@ -169,8 +170,8 @@ export const areas: Area[] = [
       { es: 'Sitios, dashboards y aplicaciones web a medida', en: 'Custom websites, dashboards and web applications' },
     ],
     results: [
-      { value: '1M+', label: { es: 'destinatarios en envíos automatizados', en: 'recipients in automated sends' } },
-      { value: '~1.500', label: { es: 'documentos cargados sin intervención', en: 'documents uploaded unattended' } },
+      { value: { es: 'Más de un millón', en: 'Over a million' }, label: { es: 'de destinatarios en envíos automatizados', en: 'recipients in automated sends' } },
+      { value: { es: 'De semanas a horas', en: 'Weeks to hours' }, label: { es: 'para cargar un lote completo en un portal', en: 'to file a whole batch on a portal' } },
     ],
     risks: [
       { es: 'Procesos que ya no dependen de una sola persona', en: 'Processes that no longer depend on a single person' },
@@ -178,9 +179,3 @@ export const areas: Area[] = [
   },
 ];
 
-/** Portfolio-level figures (team experience, aggregated and anonymized). */
-export const portfolioStats = {
-  automations: '14',
-  hoursPerMonth: '~190 h',
-  fiveYearSaving: '−62%',
-};

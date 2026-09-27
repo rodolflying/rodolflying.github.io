@@ -271,7 +271,7 @@ export const operationsHQScene: PixelScene = (g, time) => {
   g.drawImage(canvas, cx, cy, OPS_W, OPS_H, 0, 0, OPS_W, OPS_H);
   grade(g, OPS_W, OPS_H, seg(t, T.click[0] + 0.12, T.click[0] + 0.9));
   hitStopFx(g, raw, T.click[0], TV.x + TV.w / 2 - cx, TV.y + 19 - cy, OPS_W, OPS_H);
-  resultStamp(g, t, T.leave[0], STORY - 0.4, { value: thousands(TRIPS), icon: 'truck', color: '#7DD3FC' }, OPS_W);
+  resultStamp(g, t, T.leave[0], STORY - 0.4, { value: '100%', icon: 'truck', color: '#7DD3FC' }, OPS_W);
   setCtx(w);
   fades(g, t, STORY, OPS_W, OPS_H);
 };

@@ -63,7 +63,7 @@ const AreasOverview = () => {
                   <p className="text-slate-300 leading-relaxed mb-5">{area.pitch[language]}</p>
                   <div className="mt-auto flex items-end justify-between gap-4 pt-4 border-t border-night-line">
                     <div>
-                      <p className="font-display text-2xl font-bold" style={{ color: area.color }}>{headline.value}</p>
+                      <p className="font-display text-2xl font-bold" style={{ color: area.color }}>{headline.value[language]}</p>
                       <p className="text-sm text-slate-400">{headline.label[language]}</p>
                     </div>
                     <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-star group-hover:translate-x-1 transition-all flex-shrink-0" />
