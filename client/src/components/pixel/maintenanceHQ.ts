@@ -103,13 +103,18 @@ function drawExterior(t: number, d: number, camX: number) {
   // far road (night convoy)
   rect(0, 118, WORLD_W, 8, C.asphalt1);
   rect(0, 118, WORLD_W, 1, C.asphalt2);
-  for (let x = -((t * 40) % 16); x < WORLD_W; x += 16) rect(x, 122, 7, 1, C.gold1);
+  for (let x = 4; x < WORLD_W; x += 16) rect(x, 122, 7, 1, C.gold1); // painted lines stay put; the trucks move
   rect(0, 126, WORLD_W, 26, C.sand2);
   for (let i = 0; i < 30; i++) { const x = Math.floor(rnd(i + 200) * WORLD_W), y = 128 + Math.floor(rnd(i + 300) * 22); rect(x, y, 2 + (i % 3), 1, C.sand1); }
   // yard (gravel) in the foreground
   rect(0, 152, WORLD_W, 28, C.sand1);
   rect(0, 152, WORLD_W, 1, C.sand3);
   for (let i = 0; i < 60; i++) dot(Math.floor(rnd(i + 400) * WORLD_W), 154 + Math.floor(rnd(i + 500) * 26), i % 3 ? C.sand0 : C.sand2);
+}
+
+/** Depot building and floodlight pole: nearer than the far road (they hide the night convoy),
+ *  farther than the yard (the morning truck passes in front of them). */
+function drawDepot() {
   // depot building
   orect(236, 96, 80, 56, '#3A4660');
   rect(236, 96, 80, 3, '#56627E');
@@ -275,6 +280,7 @@ export const maintenanceHQScene: PixelScene = (g, time) => {
     const d = morning ? 1 - seg(t, 15.2, 16) : 0;
     drawExterior(t, d, cx);
     emissive = [{ x: 0, y: 0, w: WORLD_W, h: 96 }, { x: 0, y: 96, w: 224, h: 8 }];
+    if (morning) drawDepot();
     if (!morning) {
       // night convoy on the far road (scale 1), the middle truck's antenna fails
       for (let i = 0; i < 3; i++) {
@@ -288,6 +294,7 @@ export const maintenanceHQScene: PixelScene = (g, time) => {
           for (let s = 0; s < 6; s++) dot(tx + 36 + Math.cos(s) * k * 8, 101 - Math.abs(Math.sin(s * 2)) * k * 8, s % 2 ? C.gold3 : C.coral2);
         }
       }
+      drawDepot(); // after the convoy: the trucks drive behind the depot and the pole
       lights.push({ x: 228, y: 80, r: 90, c: [1, 0.8, 0.5], i: 1.0 });
       ambient = [0.22, 0.25, 0.42];
     } else {
