@@ -289,6 +289,7 @@ export default {
     ops_tech_show: 'Ver detalle técnico',
     ops_tech_hide: 'Ocultar detalle técnico',
     ops_tech_title: 'Cómo lo implementamos en el ejemplo',
+    ops_prev: 'Paso anterior',
     ops_step: 'PASO',
     ops_online: 'EN LÍNEA',
     ops_every: 'Frecuencia',

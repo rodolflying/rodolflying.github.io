@@ -10,7 +10,8 @@ import {
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useLanguage } from '@/hooks/useLanguage';
 import type { Area } from '@/data/areas';
-import { areaOps, type AreaOps, type OpsIcon, type OpsLog, type OpsNode } from '@/data/areaOps';
+import { areaOps, type AreaOps, type OpsIcon, type OpsLog } from '@/data/areaOps';
+import { STEP_ICONS, type StepIconName } from './StepIcons';
 
 const ICONS: Record<OpsIcon, LucideIcon> = {
   radar: Radar, bell: BellRing, monitor: MonitorCheck, tablet: Tablet, book: NotebookPen, database: Database,
@@ -32,27 +33,15 @@ function clockPlus(base: string, n: number) {
 }
 
 // ---------------------------------------------------------------- flow
-/** Arrow between two boxes, with a dot travelling along it (turns vertical on phones). */
-function Arrow({ color, delay = 0 }: { color: string; delay?: number }) {
+/** A step's animated icon on a dark tile; it only moves while its step is selected. */
+function StepArt({ name, active, color, className = '' }: { name: string; active: boolean; color: string; className?: string }) {
+  const Icon = STEP_ICONS[name as StepIconName] ?? STEP_ICONS.detect;
   return (
-    <div className="flex items-center justify-center h-7 md:h-auto md:w-10 flex-shrink-0" aria-hidden="true">
-      <div className="relative w-10 h-[2px] bg-night-line rotate-90 md:rotate-0">
-        <span className="ops-hop absolute -top-[3px] h-2 w-2 rounded-full" style={{ backgroundColor: color, animationDelay: `${delay}s` }} />
-      </div>
-    </div>
-  );
-}
-
-function Box({ label, node, color, strong }: { label: string; node: OpsNode; color: string; strong?: boolean }) {
-  const { language } = useLanguage();
-  const Icon = ICONS[node.icon];
-  return (
-    <div className="flex-1 min-w-0 rounded-xl border bg-night-800 p-3" style={{ borderColor: strong ? color : undefined }}>
-      <p className="text-xs text-slate-400 mb-1.5">{label}</p>
-      <p className="flex items-start gap-2 text-sm text-white leading-snug">
-        <Icon className="w-5 h-5 flex-shrink-0" style={{ color: strong ? color : '#94A3B8' }} aria-hidden="true" />
-        {node.text[language]}
-      </p>
+    <div
+      className={`rounded-2xl border flex items-center justify-center transition-colors ${className}`}
+      style={{ borderColor: active ? color : '#1E2A40', backgroundColor: active ? `${color}14` : '#0E1626' }}
+    >
+      <Icon color={color} active={active && !reducedMotion()} className="w-3/5 h-3/5" />
     </div>
   );
 }
@@ -60,57 +49,51 @@ function Box({ label, node, color, strong }: { label: string; node: OpsNode; col
 function FlowView({ ops, color }: { ops: AreaOps; color: string }) {
   const { t, language } = useLanguage();
   const [selected, setSelected] = useState(0);
-  const [live, setLive] = useState(0);
   const [techOpen, setTechOpen] = useState(false);
-
-  // A marker walks through the steps, so the process visibly runs.
-  useEffect(() => {
-    if (reducedMotion()) return;
-    const id = window.setInterval(() => setLive((v) => (v + 1) % ops.steps.length), 1400);
-    return () => window.clearInterval(id);
-  }, [ops]);
+  const n = ops.steps.length;
+  const go = (i: number) => setSelected(Math.max(0, Math.min(n - 1, i)));
 
   const step = ops.steps[selected];
-  const next = ops.steps[selected + 1];
+  const InIcon = ICONS[step.input.icon];
+  const OutIcon = ICONS[step.output.icon];
   const payload = typeof step.payload === 'string' ? step.payload : step.payload[language];
 
   return (
-    <div>
-      <p className="text-sm text-slate-400 mb-3">{t('areas.ops_flow_hint')}</p>
+    <div
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(selected + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(selected - 1); }
+      }}
+    >
+      {/* the whole process at a glance: one illustrated tile per step */}
       <div className="relative">
-        <div className="hidden md:block absolute left-[10%] right-[10%] top-1/2 h-px bg-night-line" aria-hidden="true">
-          <span className="ops-pulse absolute -top-[3px] h-[7px] w-[7px] rounded-full" style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }} />
+        <div className="hidden sm:block absolute left-[10%] right-[10%] top-[52px] md:top-[60px] h-px border-t border-dashed border-night-line" aria-hidden="true">
+          <span className="ops-pulse absolute -top-[4px] h-[7px] w-[7px] rounded-full" style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }} />
         </div>
-        <div className="relative flex md:grid md:grid-cols-5 gap-3 overflow-x-auto snap-x pb-2 md:pb-0 -mx-1 px-1" role="tablist">
+        <ol className="relative flex sm:grid sm:grid-cols-5 gap-3 overflow-x-auto snap-x pt-3 pb-2 -mx-1 px-3" role="tablist" aria-label={ops.process[language]}>
           {ops.steps.map((s, i) => {
-            const Icon = ICONS[s.action.icon];
             const active = i === selected;
             return (
-              <button
-                key={s.name.es}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                onClick={() => setSelected(i)}
-                className={`snap-start flex-shrink-0 w-[40%] sm:w-[28%] md:w-auto text-left rounded-xl border p-3 transition-colors ${
-                  active ? 'bg-night-700' : 'bg-night-800 border-night-line hover:border-slate-600'
-                }`}
-                style={active ? { borderColor: color, boxShadow: `0 0 18px ${color}30` } : undefined}
-              >
-                <span className="flex items-center justify-between mb-2">
-                  <span className="font-mono text-xs" style={{ color }}>
-                    {t('areas.ops_step')} {String(i + 1).padStart(2, '0')}
+              <li key={s.name.es} className="snap-start flex-shrink-0 w-24 sm:w-auto">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => go(i)}
+                  className={`group w-full flex flex-col items-center text-center gap-2 transition-opacity ${active ? '' : 'opacity-60 hover:opacity-100'}`}
+                >
+                  <span className="relative">
+                    <StepArt name={s.art} active={active} color={color} className="w-20 h-20 md:w-24 md:h-24" />
+                    <span className="absolute -top-2 -left-2 h-6 w-6 rounded-full bg-night-900 border text-xs font-mono flex items-center justify-center" style={{ borderColor: active ? color : '#1E2A40', color: active ? color : '#94A3B8' }}>
+                      {i + 1}
+                    </span>
                   </span>
-                  <span className="relative flex items-center">
-                    {live === i && <span className="absolute -left-3 h-1.5 w-1.5 rounded-full animate-ping" style={{ backgroundColor: color }} aria-hidden="true" />}
-                    <Icon className="w-4 h-4" style={{ color: active ? color : '#94A3B8' }} aria-hidden="true" />
-                  </span>
-                </span>
-                <span className="block font-display text-sm font-bold text-white leading-snug">{s.name[language]}</span>
-              </button>
+                  <span className={`font-display text-sm font-bold leading-tight ${active ? 'text-white' : 'text-slate-300'}`}>{s.name[language]}</span>
+                </button>
+              </li>
             );
           })}
-        </div>
+        </ol>
       </div>
 
       <AnimatePresence mode="wait">
@@ -120,46 +103,53 @@ function FlowView({ ops, color }: { ops: AreaOps; color: string }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.2 }}
-          className="mt-4 rounded-xl border border-night-line bg-night p-4 sm:p-5"
+          className="mt-5 rounded-xl border border-night-line bg-night p-4 sm:p-6"
         >
-          {/* in -> what it does -> out */}
-          <div className="flex flex-col md:flex-row md:items-stretch">
-            <Box label={t('areas.ops_in')} node={step.input} color={color} />
-            <Arrow color={color} />
-            <Box label={t('areas.ops_does')} node={step.action} color={color} strong />
-            <Arrow color={color} delay={0.7} />
-            <Box label={t('areas.ops_out')} node={step.output} color={color} />
-          </div>
-          {/* if it fails: a dashed branch under "what it does" */}
-          <div className="flex items-center gap-3 mt-2 md:ml-[36%]">
-            <span className="block w-0 h-7 border-l-2 border-dashed border-gold/70" aria-hidden="true" />
-            <p className="text-sm text-slate-300">
-              <ShieldCheck className="inline w-4 h-4 mr-1 -mt-0.5 text-gold" aria-hidden="true" />
-              <span className="text-gold font-semibold">{t('areas.ops_fail')}:</span> {step.fail[language]}
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <p className="font-mono text-xs" style={{ color }}>
+              {t('areas.ops_step')} {selected + 1} / {n} · {step.name[language].toUpperCase()}
             </p>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => go(selected - 1)} disabled={selected === 0} aria-label={t('areas.ops_prev')} className="h-8 w-8 rounded-lg border border-night-line text-slate-300 hover:text-white disabled:opacity-30 flex items-center justify-center">
+                <ArrowRight className="w-4 h-4 rotate-180" aria-hidden="true" />
+              </button>
+              <button type="button" onClick={() => go(selected + 1)} disabled={selected === n - 1} aria-label={t('areas.ops_next')} className="h-8 w-8 rounded-lg border text-white disabled:opacity-30 flex items-center justify-center" style={{ borderColor: color }}>
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </div>
           </div>
 
-          <p className="text-white text-base md:text-lg leading-relaxed mt-4">{step.why[language]}</p>
+          {/* what the step does, said once and big */}
+          <h4 className="font-display text-xl md:text-2xl font-bold text-white leading-snug mb-4">{step.action.text[language]}</h4>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 mt-4">
+          {/* what comes in and what goes out, on one line */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-sm">
+            <span className="inline-flex items-center gap-2 rounded-lg bg-night-800 border border-night-line px-3 py-2 text-slate-200">
+              <InIcon className="w-4 h-4 text-slate-400 flex-shrink-0" aria-hidden="true" />
+              <span><span className="text-slate-400">{t('areas.ops_in')}:</span> {step.input.text[language]}</span>
+            </span>
+            <ArrowRight className="hidden sm:block w-4 h-4 flex-shrink-0" style={{ color }} aria-hidden="true" />
+            <span className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-white" style={{ borderColor: `${color}66`, backgroundColor: `${color}12` }}>
+              <OutIcon className="w-4 h-4 flex-shrink-0" style={{ color }} aria-hidden="true" />
+              <span><span className="text-slate-400">{t('areas.ops_out')}:</span> {step.output.text[language]}</span>
+            </span>
+          </div>
+
+          <p className="text-sm text-slate-300 mt-3">
+            <ShieldCheck className="inline w-4 h-4 mr-1 -mt-0.5 text-gold" aria-hidden="true" />
+            <span className="text-gold font-semibold">{t('areas.ops_fail')}:</span> {step.fail[language]}
+          </p>
+
+          <p className="text-slate-200 text-base md:text-lg leading-relaxed mt-4 pl-3 border-l-2" style={{ borderColor: color }}>{step.why[language]}</p>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 mt-5">
             <span className="text-xs rounded-lg px-2.5 py-1.5 border" style={{ color, borderColor: `${color}55`, backgroundColor: `${color}14` }}>
               {t('areas.ops_example')}: {ops.example[language]}
             </span>
-            <div className="flex items-center gap-4">
-              <button type="button" onClick={() => setTechOpen((v) => !v)} aria-expanded={techOpen} className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white">
-                <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
-                {techOpen ? t('areas.ops_tech_hide') : t('areas.ops_tech_show')}
-              </button>
-              {next ? (
-                <button type="button" onClick={() => setSelected(selected + 1)} className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline" style={{ color }}>
-                  {t('areas.ops_next')}: {next.name[language]} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </button>
-              ) : (
-                <button type="button" onClick={() => setSelected(0)} className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline" style={{ color }}>
-                  {t('areas.ops_restart')} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </button>
-              )}
-            </div>
+            <button type="button" onClick={() => setTechOpen((v) => !v)} aria-expanded={techOpen} className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white">
+              <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
+              {techOpen ? t('areas.ops_tech_hide') : t('areas.ops_tech_show')}
+            </button>
           </div>
 
           {/* technical detail of the real example, for IT teams */}

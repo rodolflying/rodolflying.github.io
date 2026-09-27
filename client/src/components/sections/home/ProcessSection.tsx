@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import PixelCanvas from '@/components/pixel/PixelCanvas';
-import { callStep, buildStep, launchStep, STEP_W, STEP_H } from '@/components/pixel/moreScenes';
+import { DiagnosisArt, BuildArt, SupportArt } from './ProcessArt';
 
 const STEPS = ['diagnosis', 'build', 'support'] as const;
-const STEP_SCENES = { diagnosis: callStep, build: buildStep, support: launchStep };
+const STEP_ART = { diagnosis: DiagnosisArt, build: BuildArt, support: SupportArt };
 
 const ProcessSection = () => {
   const { t } = useLanguage();
@@ -18,7 +17,9 @@ const ProcessSection = () => {
         </div>
 
         <ol className="grid md:grid-cols-3 gap-6 mb-10">
-          {STEPS.map((step, i) => (
+          {STEPS.map((step, i) => {
+            const Art = STEP_ART[step];
+            return (
             <motion.li
               key={step}
               className="spotlight relative rounded-2xl border border-night-line bg-night-800 p-6"
@@ -27,14 +28,15 @@ const ProcessSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
             >
-              <div className="rounded-xl overflow-hidden border border-night-line mb-5">
-                <PixelCanvas scene={STEP_SCENES[step]} width={STEP_W} height={STEP_H} stillAt={3} />
+              <div className="rounded-xl border border-night-line bg-night px-4 py-5 mb-5">
+                <Art />
               </div>
               <p className="font-display text-sm font-bold text-gold mb-1">0{i + 1}</p>
               <h3 className="text-white font-semibold text-lg mb-2">{t(`process.steps.${step}.title`)}</h3>
               <p className="text-slate-400 text-sm leading-relaxed">{t(`process.steps.${step}.text`)}</p>
             </motion.li>
-          ))}
+            );
+          })}
         </ol>
 
         <motion.div

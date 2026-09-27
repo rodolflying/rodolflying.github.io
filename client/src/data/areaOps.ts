@@ -20,6 +20,8 @@ export interface OpsNode {
 export interface OpsStep {
   /** Generic verb for the step (applies to any company). */
   name: Bilingual;
+  /** Animated illustration: a key of STEP_ICONS (components/sections/services/StepIcons.tsx). */
+  art: string;
   input: OpsNode;
   action: OpsNode;
   output: OpsNode;
@@ -71,6 +73,7 @@ export const areaOps: Record<string, AreaOps> = {
     steps: [
       {
         name: { es: 'Detectar', en: 'Detect' },
+        art: 'detect',
         input: { icon: 'radar', text: { es: 'Un evento desde un sensor, sistema o formulario', en: 'An event from a sensor, system or form' } },
         action: { icon: 'eye', text: { es: 'Lo capta al instante, sin que nadie esté mirando', en: 'Catches it instantly, with nobody watching' } },
         output: { icon: 'pin', text: { es: 'El evento con qué, dónde y cuándo', en: 'The event with what, where and when' } },
@@ -83,6 +86,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Clasificar', en: 'Classify' },
+        art: 'classify',
         input: { icon: 'alert', text: { es: 'El evento detectado', en: 'The detected event' } },
         action: { icon: 'listcheck', text: { es: 'Aplica tu protocolo: gravedad y responsable', en: 'Applies your protocol: severity and owner' } },
         output: { icon: 'alarm', text: { es: 'Una alerta con prioridad y plazo', en: 'An alert with priority and deadline' } },
@@ -95,6 +99,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Avisar', en: 'Notify' },
+        art: 'notify',
         input: { icon: 'bell', text: { es: 'La alerta con su plazo', en: 'The alert and its deadline' } },
         action: { icon: 'hourglass', text: { es: 'Avisa al responsable y cuenta el tiempo', en: 'Notifies the owner and counts the time' } },
         output: { icon: 'usercheck', text: { es: 'Alguien se hace cargo', en: 'Someone takes charge' } },
@@ -107,6 +112,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Confirmar', en: 'Confirm' },
+        art: 'confirm',
         input: { icon: 'message', text: { es: 'La instrucción para terreno', en: 'The instruction for the field' } },
         action: { icon: 'phone', text: { es: 'Llega a quien está en terreno y pide confirmación', en: 'Reaches whoever is in the field and asks for confirmation' } },
         output: { icon: 'checkcircle', text: { es: 'La acción confirmada', en: 'The action, confirmed' } },
@@ -119,6 +125,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Registrar', en: 'Record' },
+        art: 'record',
         input: { icon: 'list', text: { es: 'Todo lo anterior', en: 'Everything above' } },
         action: { icon: 'book', text: { es: 'Guarda cada paso con hora y responsable', en: 'Stores every step with time and owner' } },
         output: { icon: 'report', text: { es: 'Reporte periódico y evidencia lista', en: 'Regular report and ready evidence' } },
@@ -154,6 +161,7 @@ export const areaOps: Record<string, AreaOps> = {
     steps: [
       {
         name: { es: 'Monitorear', en: 'Monitor' },
+        art: 'monitor',
         input: { icon: 'satellite', text: { es: 'El estado de cada equipo: GPS, sensores, PLC', en: 'Every asset status: GPS, sensors, PLCs' } },
         action: { icon: 'radar', text: { es: 'Revisa toda la flota cada pocos minutos', en: 'Checks the whole fleet every few minutes' } },
         output: { icon: 'alert', text: { es: 'La falla detectada, con equipo y hora', en: 'The detected fault, with asset and time' } },
@@ -166,6 +174,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Diagnosticar', en: 'Diagnose' },
+        art: 'diagnose',
         input: { icon: 'alert', text: { es: 'La falla detectada', en: 'The detected fault' } },
         action: { icon: 'scan', text: { es: 'La cruza con el historial y el plan de tareas', en: 'Checks it against history and the task plan' } },
         output: { icon: 'listcheck', text: { es: 'Qué hacer y con qué prioridad', en: 'What to do and how urgently' } },
@@ -178,6 +187,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Crear la orden', en: 'Create the order' },
+        art: 'workorder',
         input: { icon: 'listcheck', text: { es: 'El diagnóstico', en: 'The diagnosis' } },
         action: { icon: 'wrench', text: { es: 'Crea la orden en tu sistema de mantenimiento', en: 'Creates the order in your maintenance system' } },
         output: { icon: 'file', text: { es: 'Orden con tareas, equipo y ubicación', en: 'An order with tasks, asset and location' } },
@@ -190,6 +200,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Asignar', en: 'Assign' },
+        art: 'assign',
         input: { icon: 'file', text: { es: 'La orden de trabajo', en: 'The work order' } },
         action: { icon: 'send', text: { es: 'Avisa al técnico por Telegram o WhatsApp', en: 'Notifies the technician on Telegram or WhatsApp' } },
         output: { icon: 'usercheck', text: { es: 'Técnico con ubicación y hora de llegada', en: 'A technician with location and arrival time' } },
@@ -202,6 +213,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Verificar', en: 'Verify' },
+        art: 'verify',
         input: { icon: 'wrench', text: { es: 'El equipo reparado', en: 'The repaired asset' } },
         action: { icon: 'radar', text: { es: 'Confirma que el equipo vuelve a reportar', en: 'Confirms the asset reports again' } },
         output: { icon: 'report', text: { es: 'Orden cerrada e indicadores al día', en: 'Order closed and KPIs up to date' } },
@@ -237,6 +249,7 @@ export const areaOps: Record<string, AreaOps> = {
     steps: [
       {
         name: { es: 'Recolectar', en: 'Collect' },
+        art: 'collect',
         input: { icon: 'router', text: { es: 'Archivos, GPS y registros de cada equipo', en: 'Files, GPS and logs from every asset' } },
         action: { icon: 'layers', text: { es: 'Los reúne sin importar su formato', en: 'Brings them together whatever the format' } },
         output: { icon: 'database', text: { es: 'Todos los datos en un solo lugar', en: 'All the data in one place' } },
@@ -249,6 +262,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Calcular', en: 'Compute' },
+        art: 'compute',
         input: { icon: 'database', text: { es: 'Los datos reunidos', en: 'The collected data' } },
         action: { icon: 'cpu', text: { es: 'Calcula plan versus real, tiempos y eventos', en: 'Computes plan vs. actual, times and events' } },
         output: { icon: 'chart', text: { es: 'Indicadores por tramo, equipo y operador', en: 'KPIs by segment, asset and operator' } },
@@ -261,6 +275,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Consolidar', en: 'Consolidate' },
+        art: 'database',
         input: { icon: 'chart', text: { es: 'Los indicadores', en: 'The KPIs' } },
         action: { icon: 'database', text: { es: 'Los guarda con su historial completo', en: 'Stores them with full history' } },
         output: { icon: 'layers', text: { es: 'Una sola fuente para toda la empresa', en: 'One source for the whole company' } },
@@ -273,6 +288,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Publicar', en: 'Publish' },
+        art: 'dashboard',
         input: { icon: 'database', text: { es: 'La fuente única', en: 'The single source' } },
         action: { icon: 'dashboard', text: { es: 'Actualiza el tablero cada mañana', en: 'Refreshes the dashboard every morning' } },
         output: { icon: 'users', text: { es: 'El mismo número en cada reunión', en: 'The same number in every meeting' } },
@@ -285,6 +301,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Distribuir', en: 'Distribute' },
+        art: 'distribute',
         input: { icon: 'dashboard', text: { es: 'El tablero actualizado', en: 'The updated dashboard' } },
         action: { icon: 'file', text: { es: 'Genera un informe por operador o área', en: 'Builds a report per operator or department' } },
         output: { icon: 'mail', text: { es: 'Cada jefatura recibe el suyo', en: 'Each manager gets theirs' } },
@@ -320,6 +337,7 @@ export const areaOps: Record<string, AreaOps> = {
     steps: [
       {
         name: { es: 'Solicitar', en: 'Request' },
+        art: 'request',
         input: { icon: 'users', text: { es: 'Alguien que necesita comprar o pagar', en: 'Someone who needs to buy or pay' } },
         action: { icon: 'file', text: { es: 'Llena un formulario simple y adjunta respaldos', en: 'Fills in a simple form and attaches backups' } },
         output: { icon: 'inbox', text: { es: 'La solicitud completa', en: 'The complete request' } },
@@ -332,6 +350,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Validar', en: 'Validate' },
+        art: 'validate',
         input: { icon: 'inbox', text: { es: 'La solicitud', en: 'The request' } },
         action: { icon: 'calculator', text: { es: 'Revisa centro de costo, cuenta, montos y presupuesto', en: 'Checks cost center, account, amounts and budget' } },
         output: { icon: 'checkcircle', text: { es: 'Lista para grabar', en: 'Ready to post' } },
@@ -344,6 +363,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Ejecutar en el ERP', en: 'Run in the ERP' },
+        art: 'bot',
         input: { icon: 'checkcircle', text: { es: 'La solicitud validada', en: 'The validated request' } },
         action: { icon: 'cpu', text: { es: 'El bot la graba en el ERP y adjunta los respaldos', en: 'The bot posts it in the ERP and attaches the backups' } },
         output: { icon: 'file', text: { es: 'El documento creado, con su número', en: 'The document created, with its number' } },
@@ -356,6 +376,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Controlar el presupuesto', en: 'Control the budget' },
+        art: 'budget',
         input: { icon: 'file', text: { es: 'El documento creado', en: 'The new document' } },
         action: { icon: 'wallet', text: { es: 'Lo suma al presupuesto real del área', en: 'Adds it to the department\'s actual budget' } },
         output: { icon: 'dashboard', text: { es: 'Oficial, real y ajustado en una pantalla', en: 'Official, actual and adjusted on one screen' } },
@@ -371,6 +392,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Notificar', en: 'Notify' },
+        art: 'message',
         input: { icon: 'dashboard', text: { es: 'El estado de la solicitud', en: 'The request status' } },
         action: { icon: 'mail', text: { es: 'Avisa al solicitante con el número de documento', en: 'Tells the requester the document number' } },
         output: { icon: 'usercheck', text: { es: 'El solicitante informado', en: 'The requester, informed' } },
@@ -406,6 +428,7 @@ export const areaOps: Record<string, AreaOps> = {
     steps: [
       {
         name: { es: 'Medir', en: 'Measure' },
+        art: 'measure',
         input: { icon: 'radar', text: { es: 'Vibración, temperatura o consumo de cada equipo', en: 'Vibration, temperature or consumption of every asset' } },
         action: { icon: 'database', text: { es: 'Registra las señales de forma continua', en: 'Records the signals continuously' } },
         output: { icon: 'chart', text: { es: 'El historial de cada equipo', en: 'Each asset\'s history' } },
@@ -418,6 +441,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Preparar los datos', en: 'Prepare the data' },
+        art: 'prepare',
         input: { icon: 'chart', text: { es: 'Las señales en bruto', en: 'The raw signals' } },
         action: { icon: 'layers', text: { es: 'Limpia el ruido y calcula tendencias', en: 'Removes noise and computes trends' } },
         output: { icon: 'listcheck', text: { es: 'Variables listas para el modelo', en: 'Features ready for the model' } },
@@ -430,6 +454,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Predecir', en: 'Predict' },
+        art: 'predict',
         input: { icon: 'listcheck', text: { es: 'Las variables del equipo', en: 'The asset\'s features' } },
         action: { icon: 'brain', text: { es: 'Estima la probabilidad de falla y cuándo ocurriría', en: 'Estimates the failure probability and when it would happen' } },
         output: { icon: 'alarm', text: { es: 'Días de anticipación, con su margen', en: 'Days of warning, with their margin' } },
@@ -442,6 +467,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Validar el modelo', en: 'Validate the model' },
+        art: 'validateModel',
         input: { icon: 'alarm', text: { es: 'Cada predicción', en: 'Every prediction' } },
         action: { icon: 'chart', text: { es: 'La compara con lo que realmente pasó', en: 'Compares it with what actually happened' } },
         output: { icon: 'checkcircle', text: { es: 'Un modelo que sigue acertando', en: 'A model that stays accurate' } },
@@ -454,6 +480,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Actuar a tiempo', en: 'Act in time' },
+        art: 'act',
         input: { icon: 'alarm', text: { es: 'Una falla probable', en: 'A likely failure' } },
         action: { icon: 'wrench', text: { es: 'Propone la detención y crea la orden planificada', en: 'Proposes the stop and creates the planned order' } },
         output: { icon: 'usercheck', text: { es: 'Tu equipo aprueba y planifica', en: 'Your team approves and plans' } },
@@ -492,6 +519,7 @@ export const areaOps: Record<string, AreaOps> = {
     steps: [
       {
         name: { es: 'Reunir', en: 'Gather' },
+        art: 'collect',
         input: { icon: 'layers', text: { es: 'Planillas y datos del sistema interno', en: 'Spreadsheets and internal system data' } },
         action: { icon: 'scan', text: { es: 'Los ordena y normaliza', en: 'Sorts and normalizes them' } },
         output: { icon: 'database', text: { es: 'Un lote listo para revisar', en: 'A batch ready for review' } },
@@ -504,6 +532,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Validar', en: 'Validate' },
+        art: 'validate',
         input: { icon: 'database', text: { es: 'El lote', en: 'The batch' } },
         action: { icon: 'listcheck', text: { es: 'Revisa cada fila contra las reglas del portal', en: 'Checks every row against the portal\'s rules' } },
         output: { icon: 'checkcircle', text: { es: 'Filas listas para cargar', en: 'Rows ready to file' } },
@@ -516,6 +545,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Cargar en el portal', en: 'File on the portal' },
+        art: 'portal',
         input: { icon: 'checkcircle', text: { es: 'Las filas válidas', en: 'The valid rows' } },
         action: { icon: 'globe', text: { es: 'Varias sesiones llenan los formularios en paralelo', en: 'Several sessions fill in the forms in parallel' } },
         output: { icon: 'file', text: { es: 'Un comprobante por formulario', en: 'One receipt per form' } },
@@ -528,6 +558,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Respaldar', en: 'Archive' },
+        art: 'archive',
         input: { icon: 'file', text: { es: 'Los comprobantes', en: 'The receipts' } },
         action: { icon: 'database', text: { es: 'Guarda cada comprobante con su folio', en: 'Stores each receipt with its reference' } },
         output: { icon: 'book', text: { es: 'Todo trazable a su fila original', en: 'Everything traceable to its original row' } },
@@ -540,6 +571,7 @@ export const areaOps: Record<string, AreaOps> = {
       },
       {
         name: { es: 'Informar el avance', en: 'Report progress' },
+        art: 'progress',
         input: { icon: 'book', text: { es: 'El registro de cargas', en: 'The filing log' } },
         action: { icon: 'dashboard', text: { es: 'Muestra en vivo cuánto va y cuánto falta', en: 'Shows live what\'s done and what\'s left' } },
         output: { icon: 'mail', text: { es: 'Aviso al terminar, con el resumen', en: 'A notice when done, with the summary' } },

@@ -13,8 +13,6 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { useLanguage } from '@/hooks/useLanguage';
-import PixelCanvas from '@/components/pixel/PixelCanvas';
-import { roiScene, ROI_W, ROI_H, type RoiState } from '@/components/pixel/moreScenes';
 
 const COPY = {
   es: {
@@ -151,17 +149,6 @@ export const RoiCalculator = () => {
             CLP ($)
           </button>
         </div>
-      </div>
-
-      {/* The team, the clock and the savings pile react to the sliders */}
-      <div className="rounded-xl overflow-hidden border border-night-line mb-8 relative z-10">
-        <PixelCanvas<RoiState>
-          scene={roiScene}
-          width={ROI_W}
-          height={ROI_H}
-          state={{ hoursPerDay, teamSize, savingsRatio: Math.sqrt(results.annualHoursSaved / 7000) }}
-          stillAt={1}
-        />
       </div>
 
       <div className="grid lg:grid-cols-12 gap-8 items-center">

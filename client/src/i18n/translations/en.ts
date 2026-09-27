@@ -289,6 +289,7 @@ export default {
     ops_tech_show: 'Show technical detail',
     ops_tech_hide: 'Hide technical detail',
     ops_tech_title: 'How we built it in the example',
+    ops_prev: 'Previous step',
     ops_step: 'STEP',
     ops_online: 'ONLINE',
     ops_every: 'Runs',
