@@ -56,30 +56,8 @@
     overflow-x: hidden;
   }
 
-  .cyberpunk-border {
-    position: relative;
-    border: 1px solid #1E2A40;
-    overflow: hidden;
-  }
-  
-  .cyberpunk-border::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #47E5C2, transparent);
-    animation: borderFlow 3s linear infinite;
-  }
-  
-  @keyframes borderFlow {
-    0% { left: -100%; }
-    100% { left: 100%; }
-  }
-
-  /* Subtle static starfield (replaces the old hexagon pattern) */
-  .hex-pattern, .starfield {
+  /* Subtle static starfield */
+  .starfield {
     background-image:
       radial-gradient(1px 1px at 12% 18%, rgba(238,242,248,0.55), transparent 60%),
       radial-gradient(1px 1px at 68% 12%, rgba(238,242,248,0.4), transparent 60%),
@@ -90,89 +68,36 @@
     background-size: 420px 420px;
   }
 
-  .skill-bar {
-    height: 8px;
-    border-radius: 4px;
-    background: #1E2A40;
-    overflow: hidden;
-  }
-  
-  .skill-progress {
-    height: 100%;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #00FFC8, #6B38FB);
-    transition: width 1s ease-in-out;
-  }
-  
-  .timeline-container {
+  /* Browser surfaces carry the brand too */
+  html {
+    /* Non-static so framer-motion can measure scroll-linked sections against the page. */
     position: relative;
+    scrollbar-color: #1E2A40 #070B14;
+    accent-color: #47E5C2;
   }
-  
-  .timeline-line {
-    position: absolute;
-    left: 31px;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(to bottom, #00FFC8, #6B38FB);
+  ::selection {
+    background: rgba(71, 229, 194, 0.28);
+    color: #fff;
+  }
+  input, textarea, [contenteditable] {
+    caret-color: #47E5C2;
   }
 
-  .glitch-effect {
-    position: relative;
+  /* One focus ring for the whole site: mint, 2px, offset. Outlines already follow the element's own
+     border-radius in current browsers; `border-radius: inherit` would copy the PARENT's radius and
+     reshape buttons on focus, so it is deliberately left out. */
+  :focus-visible {
+    outline: 2px solid #47E5C2;
+    outline-offset: 2px;
   }
-  
-  .glitch-effect::before, .glitch-effect::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.8;
-  }
-  
-  .glitch-effect::before {
-    left: 2px;
-    text-shadow: -1px 0 #FF2D55;
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 5s infinite linear alternate-reverse;
-  }
-  
-  .glitch-effect::after {
-    left: -2px;
-    text-shadow: -1px 0 #00FFC8;
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim2 5s infinite linear alternate-reverse;
-  }
-  
-  @keyframes glitch-anim {
-    0% { clip: rect(31px, 9999px, 94px, 0); }
-    10% { clip: rect(112px, 9999px, 76px, 0); }
-    20% { clip: rect(85px, 9999px, 59px, 0); }
-    30% { clip: rect(136px, 9999px, 78px, 0); }
-    40% { clip: rect(115px, 9999px, 34px, 0); }
-    50% { clip: rect(25px, 9999px, 90px, 0); }
-    60% { clip: rect(88px, 9999px, 144px, 0); }
-    70% { clip: rect(123px, 9999px, 67px, 0); }
-    80% { clip: rect(88px, 9999px, 4px, 0); }
-    90% { clip: rect(105px, 9999px, 69px, 0); }
-    100% { clip: rect(66px, 9999px, 91px, 0); }
-  }
-  
-  @keyframes glitch-anim2 {
-    0% { clip: rect(12px, 9999px, 23px, 0); }
-    10% { clip: rect(95px, 9999px, 59px, 0); }
-    20% { clip: rect(11px, 9999px, 48px, 0); }
-    30% { clip: rect(77px, 9999px, 32px, 0); }
-    40% { clip: rect(130px, 9999px, 148px, 0); }
-    50% { clip: rect(18px, 9999px, 71px, 0); }
-    60% { clip: rect(60px, 9999px, 84px, 0); }
-    70% { clip: rect(98px, 9999px, 132px, 0); }
-    80% { clip: rect(34px, 9999px, 115px, 0); }
-    90% { clip: rect(29px, 9999px, 84px, 0); }
-    100% { clip: rect(77px, 9999px, 141px, 0); }
-  }
+
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
 }
 
+@layer utilities {
+  .num { font-variant-numeric: tabular-nums; }
+}
 
 /* Respect users who ask the OS for less motion. */
 @media (prefers-reduced-motion: reduce) {
@@ -219,11 +144,6 @@
   z-index: -1;
 }
 .spotlight:hover::before, .spotlight:hover::after { opacity: 1; }
-
-/* Infinite marquee */
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-track { animation: marquee 40s linear infinite; width: max-content; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
 
 /* Gentle idle float for the tool icons in ConnectDotsSection (transform on an inner element) */
 @keyframes float-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }

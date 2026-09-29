@@ -19,6 +19,12 @@
   body.line canvas { image-rendering: auto; }
   body.line #caption, body.line #brand { font-family: 'Space Grotesk', Inter, sans-serif; }
   body.line #caption p { font-family: Inter, sans-serif; }
+  /* executive scenes: the same HTML lower-third the site shows, at video size */
+  #linecap { position: absolute; left: 36px; bottom: 34px; display: none; align-items: baseline; gap: 14px; max-width: 1100px;
+    padding: 12px 20px; border-radius: 14px; border: 1px solid #1E2A40; background: rgba(7,11,20,0.86);
+    font: 500 30px/1.3 Inter, sans-serif; color: #F1F5F9; opacity: 0; }
+  #linecap b { font: 600 26px 'JetBrains Mono', monospace; color: #47E5C2; }
+  body.line #linecap { display: flex; }
 </style>
 </head>
 <body>
@@ -26,9 +32,11 @@
   <canvas id="c" width="160" height="90"></canvas>
   <div id="brand">STAR <span>APPS</span></div>
   <div id="caption"><h1 id="name"></h1><p id="pitch"></p></div>
+  <p id="linecap"><b id="lctime"></b><span id="lctext"></span></p>
 </div>
 <script type="module">
   import { AREA_SCENE_DEFS, sceneFor } from '/src/components/pixel/areaScenes.ts';
+  import { captionAt, captionTime } from '/src/components/scenes/lineKit.ts';
   import { areas } from '/src/data/areas.ts';
 
   import * as E from '/src/components/pixel/engine.ts';
@@ -98,7 +106,16 @@
   g.imageSmoothingEnabled = !!def.smooth;
 
   window.DURATION = def.loop;
-  window.renderFrame = (t) => { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, def.w, def.h); def.scene(g, t, { lang }); };
+  const lc = document.getElementById('linecap');
+  if (!showCaption) lc.style.visibility = 'hidden';
+  const syncCaption = (t) => {
+    const c = captionAt(def.captions, t % def.loop);
+    lc.style.opacity = c ? String(c.k) : '0';
+    if (!c) return;
+    document.getElementById('lctime').textContent = captionTime(c.cap, lang) ?? '';
+    document.getElementById('lctext').textContent = c.cap[lang];
+  };
+  window.renderFrame = (t) => { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, def.w, def.h); def.scene(g, t, { lang }); if (def.captions) syncCaption(t); };
   if (!params.has('record')) {
     const t0 = performance.now();
     const loop = () => { window.renderFrame((performance.now() - t0) / 1000); requestAnimationFrame(loop); };

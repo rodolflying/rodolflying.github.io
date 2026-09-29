@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Radar, BellRing, MonitorCheck, Tablet, NotebookPen, Database, Cpu, BarChart3, MessageSquare, Mic,
@@ -278,9 +278,11 @@ interface Props {
   area: Area;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Element to focus when the dialog closes (it is opened from outside, not via DialogTrigger). */
+  returnFocusTo?: RefObject<HTMLElement | null>;
 }
 
-const AreaOpsDialog = ({ area, open, onOpenChange }: Props) => {
+const AreaOpsDialog = ({ area, open, onOpenChange, returnFocusTo }: Props) => {
   const { t, language } = useLanguage();
   const ops = areaOps[area.id];
   const [view, setView] = useState<'flow' | 'console'>('flow');
@@ -296,8 +298,15 @@ const AreaOpsDialog = ({ area, open, onOpenChange }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl w-[calc(100%-1.5rem)] max-h-[92vh] overflow-y-auto overflow-x-hidden [&>*]:min-w-0 rounded-2xl border-night-line bg-night-900 p-5 sm:p-7 text-slate-200">
-        <DialogHeader className="text-left space-y-2 pr-6">
+      <DialogContent
+        onCloseAutoFocus={(e) => {
+          // Controlled dialog without a DialogTrigger: hand focus back to the button that opened it.
+          if (returnFocusTo?.current) { e.preventDefault(); returnFocusTo.current.focus(); }
+        }}
+        // The close button (last child, rendered by ui/dialog) gets a 44px hit area.
+        className="max-w-5xl w-[calc(100%-1.5rem)] max-h-[92vh] overflow-y-auto overflow-x-hidden [&>*]:min-w-0 rounded-2xl border-line bg-night-900 p-5 sm:p-7 text-ink-2 [&>button:last-child]:right-2 [&>button:last-child]:top-2 [&>button:last-child]:inline-flex [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:items-center [&>button:last-child]:justify-center [&>button:last-child]:rounded-lg [&>button:last-child]:opacity-80 [&>button:last-child:hover]:bg-white/5 [&>button:last-child>svg]:h-5 [&>button:last-child>svg]:w-5"
+      >
+        <DialogHeader className="text-left space-y-2 pr-10">
           <p className="inline-flex flex-wrap items-center gap-2 font-mono text-xs tracking-wider" style={{ color: area.color }}>
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: area.color }} />
             {area.name[language].toUpperCase()} · {t('areas.ops_badge')}

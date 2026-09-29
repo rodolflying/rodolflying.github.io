@@ -17,6 +17,8 @@ export interface Area {
   name: Bilingual;
   /** Short label for tabs and chips. */
   short: Bilingual;
+  /** One line about the person the automation frees, shown before the pitch. */
+  people: Bilingual;
   pitch: Bilingual;
   solutions: Bilingual[];
   results: AreaResult[];
@@ -27,9 +29,13 @@ export const areas: Area[] = [
   {
     id: 'seguridad',
     icon: 'shield',
-    color: '#FF8FA3',
+    color: '#7C9CFF',
     name: { es: 'Seguridad operacional', en: 'Operational safety' },
     short: { es: 'Seguridad', en: 'Safety' },
+    people: {
+      es: 'El operador deja de perseguir alertas: todas quedan atendidas y registradas.',
+      en: 'The operator stops chasing alerts: every one is handled and logged.',
+    },
     pitch: {
       es: 'Protocolos que se cumplen siempre, no solo cuando alguien alcanza a revisarlos.',
       en: 'Protocols that are followed every time, not only when someone has time to check.',
@@ -56,6 +62,10 @@ export const areas: Area[] = [
     color: '#FFC857',
     name: { es: 'Mantenimiento y activos', en: 'Maintenance and assets' },
     short: { es: 'Mantenimiento', en: 'Maintenance' },
+    people: {
+      es: 'Nadie viaja de noche: la falla se reinicia a distancia y la OT queda lista.',
+      en: 'Nobody drives out at night: the fault is restarted remotely and the work order is ready.',
+    },
     pitch: {
       es: 'Tus equipos avisan cuando fallan y la orden de trabajo se crea sola, de día o de noche.',
       en: 'Your equipment reports its own failures and the work order is created automatically, day or night.',
@@ -78,9 +88,13 @@ export const areas: Area[] = [
   {
     id: 'operaciones',
     icon: 'route',
-    color: '#7DD3FC',
+    color: '#47E5C2',
     name: { es: 'Operaciones y logística', en: 'Operations and logistics' },
     short: { es: 'Operaciones', en: 'Operations' },
+    people: {
+      es: 'La reunión deja de discutir de quién es el número y pasa a decidir.',
+      en: 'The meeting stops arguing about whose number is right and starts deciding.',
+    },
     pitch: {
       es: 'Indicadores de la operación completos y confiables, calculados todos los días.',
       en: 'Complete, reliable operational KPIs, calculated every day.',
@@ -104,9 +118,13 @@ export const areas: Area[] = [
   {
     id: 'finanzas',
     icon: 'wallet',
-    color: '#47E5C2',
+    color: '#FFC857',
     name: { es: 'Presupuesto, compras y finanzas', en: 'Budget, procurement and finance' },
     short: { es: 'Finanzas', en: 'Finance' },
+    people: {
+      es: 'Quien digitaba facturas de noche ahora revisa lo marcado y sale a su hora.',
+      en: 'Whoever typed invoices at night now reviews what is flagged and leaves on time.',
+    },
     pitch: {
       es: 'Menos digitación en el ERP y el presupuesto real a la vista, sin armar planillas a fin de mes.',
       en: 'Less ERP data entry and the real budget in plain sight, without month-end spreadsheets.',
@@ -132,6 +150,10 @@ export const areas: Area[] = [
     color: '#7C9CFF',
     name: { es: 'Modelos predictivos e IA', en: 'Predictive models and AI' },
     short: { es: 'Predicción e IA', en: 'Prediction & AI' },
+    people: {
+      es: 'El mantenedor planifica el cambio antes de la falla, sin correr a la emergencia.',
+      en: 'The maintenance lead plans the swap before the failure instead of rushing to an emergency.',
+    },
     pitch: {
       es: 'Modelos que anticipan fallas y comportamientos, funcionando en vivo, con el impacto demostrado con estadística.',
       en: 'Models that anticipate failures and behavior, running live, with their impact proven with statistics.',
@@ -156,9 +178,13 @@ export const areas: Area[] = [
   {
     id: 'datos-web',
     icon: 'globe',
-    color: '#C4F18A',
+    color: '#47E5C2',
     name: { es: 'Datos, reportes y plataformas web', en: 'Data, reporting and web platforms' },
     short: { es: 'Datos y web', en: 'Data & web' },
+    people: {
+      es: 'La administración deja de cargar formularios uno por uno y vuelve a atender a las personas.',
+      en: 'The admin team stops keying forms one by one and gets back to helping people.',
+    },
     pitch: {
       es: 'Datos de portales, redes y planillas, convertidos en reportes y plataformas propias.',
       en: 'Data from portals, social media and spreadsheets, turned into reports and your own platforms.',

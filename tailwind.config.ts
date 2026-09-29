@@ -21,7 +21,15 @@ export default {
         night: { DEFAULT: '#070B14', 900: '#0A1020', 800: '#0E1626', 700: '#131D31', line: '#1E2A40' },
         star: { DEFAULT: '#47E5C2', soft: '#8DF0D8', deep: '#1FB894' },
         gold: { DEFAULT: '#FFC857', soft: '#FFE2A3' },
+        // Desert copper: the warm accent for people (what they gain), next to mint for the system
+        copper: { DEFAULT: '#D98B54', soft: '#F2C7A5' },
         sky: { star: '#7C9CFF' },
+        // Semantic neutrals tinted toward the night hue (not Tailwind slate). Contrast on surface-1 (#0E1626):
+        // ink 16.1:1, ink-2 11.5:1, ink-3 6.5:1, danger 6.0:1.
+        ink: { DEFAULT: '#EEF2F8', 2: '#C6CFDD', 3: '#8F9CB3' },
+        surface: { 1: '#0E1626', 2: '#131D31' },
+        line: '#1E2A40',
+        danger: '#E5736E',
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

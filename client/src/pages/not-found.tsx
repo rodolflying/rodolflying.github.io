@@ -1,29 +1,27 @@
-import { Link } from 'wouter';
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/hooks/useLanguage';
 import PixelCanvas from '@/components/pixel/PixelCanvas';
 import { lostScene, LOST_W, LOST_H } from '@/components/pixel/moreScenes';
+import { CtaLink } from '@/components/ui/headers';
 
 export default function NotFound() {
   const { t } = useLanguage();
 
   return (
     <Layout title={t('not_found.title')} noindex>
-      <section className="min-h-[70vh] flex items-center justify-center pt-24 pb-16 bg-[#070B14]">
+      <section className="min-h-[70vh] flex items-center justify-center pt-28 pb-16 bg-night">
         <div className="container mx-auto px-4 text-center max-w-lg">
-          <div className="rounded-xl overflow-hidden border border-night-line mb-6">
+          <div className="rounded-xl overflow-hidden mb-8">
             <PixelCanvas scene={lostScene} width={LOST_W} height={LOST_H} stillAt={1} />
           </div>
-          <p className="font-display text-5xl font-bold text-[#47E5C2] mb-4">404</p>
-          <h1 className="text-2xl font-display font-bold text-white mb-4">{t('not_found.title')}</h1>
-          <p className="text-slate-400 mb-8">{t('not_found.text')}</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/" className="px-6 py-3 bg-[#47E5C2] text-[#070B14] font-bold rounded-lg hover:bg-[#47E5C2]/85 transition-colors">
-              {t('not_found.home')}
-            </Link>
-            <Link href="/contact" className="px-6 py-3 border-2 border-[#47E5C2] text-[#47E5C2] font-bold rounded-lg hover:bg-[#47E5C2]/10 transition-colors">
-              {t('navbar.contact')}
-            </Link>
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-3">{t('not_found.title')}</h1>
+          <p className="text-ink-2 mb-8">
+            <span className="num text-ink-3">404 · </span>
+            {t('not_found.text')}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <CtaLink href="/">{t('not_found.home')}</CtaLink>
+            <CtaLink href="/contact" variant="secondary">{t('navbar.contact')}</CtaLink>
           </div>
         </div>
       </section>

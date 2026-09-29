@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
 import { EfficiencyIcon, RiskIcon, DecisionIcon, CostIcon } from './ValueIcons';
+import { SectionHeader } from '@/components/ui/headers';
 
 const PROOF_STEPS = ['baseline', 'pilot', 'impact'] as const;
 
@@ -24,47 +25,44 @@ const ConfidenceCurve = () => {
   );
 };
 
-const DIMENSIONS = [
-  { key: 'efficiency', Icon: EfficiencyIcon, color: '#47E5C2' },
-  { key: 'risk', Icon: RiskIcon, color: '#FF8FA3' },
+const PILLARS = [
+  { key: 'efficiency', Icon: EfficiencyIcon, color: '#D98B54' },
+  { key: 'risk', Icon: RiskIcon, color: '#47E5C2' },
   { key: 'decision', Icon: DecisionIcon, color: '#7C9CFF' },
-  { key: 'avoided', Icon: CostIcon, color: '#FFC857' },
 ] as const;
 
-/** The 4-dimension value framework used in every diagnosis (one sheet per process). */
+/**
+ * What comes back to the company: three pillars (resources, reliable systems, information to
+ * decide), the five-year total cost as a quieter fourth line, and how we prove it.
+ * This is the value sheet every diagnosis delivers, one per process.
+ */
 const ValueFrameworkSection = () => {
   const { t } = useLanguage();
   const reduce = useReducedMotion();
 
   return (
-    <section id="valor" className="py-20 bg-night-900 border-y border-night-line">
+    <section id="valor" className="py-20 bg-night-900/40 border-y border-night-line">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 max-w-3xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">{t('value.title')}</h2>
-          <p className="text-slate-300 text-lg">{t('value.subtitle')}</p>
-        </div>
+        <SectionHeader title={t('value.title')} subtitle={t('value.subtitle')} />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {DIMENSIONS.map(({ key, Icon, color }, i) => (
-            // the card's states ("show" on scroll, "hover") also drive its icon's animation
+        <div className="grid md:grid-cols-3 gap-x-10 gap-y-10">
+          {PILLARS.map(({ key, Icon, color }) => (
+            // the column's states ("show" on scroll, "hover") also drive its icon's animation
             <motion.article
               key={key}
-              className="spotlight rounded-2xl border border-night-line bg-night-800 p-6 flex flex-col"
+              className="border-t border-night-line pt-6 flex flex-col"
               initial={reduce ? false : 'hidden'}
               whileInView="show"
               whileHover={reduce ? undefined : 'hover'}
               viewport={{ once: true }}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.4, delay: i * 0.08, when: 'beforeChildren' } },
-              }}
+              variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.4, when: 'beforeChildren' } } }}
             >
               <div className="mb-4">
                 <Icon color={color} />
               </div>
-              <h3 className="font-display text-lg font-bold text-white mb-2">{t(`value.${key}.title`)}</h3>
-              <p className="text-slate-300 leading-relaxed mb-4">{t(`value.${key}.text`)}</p>
-              <p className="mt-auto text-sm text-slate-400 border-t border-night-line pt-3">
+              <h3 className="font-display text-xl font-bold text-white mb-2">{t(`value.${key}.title`)}</h3>
+              <p className="text-slate-300 leading-relaxed mb-3">{t(`value.${key}.text`)}</p>
+              <p className="mt-auto text-sm text-slate-400">
                 <span className="font-semibold" style={{ color }}>{t('value.example')}: </span>
                 {t(`value.${key}.example`)}
               </p>
@@ -72,16 +70,29 @@ const ValueFrameworkSection = () => {
           ))}
         </div>
 
+        {/* The quieter fourth line of the sheet: total cost, information rather than attack */}
+        <div className="mt-10 flex flex-col sm:flex-row sm:items-start gap-4 border-t border-night-line pt-6">
+          <div className="flex-shrink-0 opacity-80">
+            <CostIcon color="#94A3B8" />
+          </div>
+          <div>
+            <h3 className="font-display text-lg font-bold text-white mb-1">{t('value.avoided.title')}</h3>
+            <p className="text-slate-300 leading-relaxed">
+              {t('value.avoided.text')} <span className="text-slate-400">{t('value.example')}: {t('value.avoided.example')}</span>
+            </p>
+          </div>
+        </div>
+
         {/* Measure before, prove after: the statistics behind every project */}
-        <div className="mt-8 rounded-2xl border border-night-line bg-night-800 p-6 md:p-8 grid lg:grid-cols-12 gap-6 items-start">
+        <div className="mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-4">
-            <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-2">{t('value.proof_title')}</h3>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 text-balance">{t('value.proof_title')}</h3>
             <p className="text-slate-300 leading-relaxed">{t('value.proof_subtitle')}</p>
           </div>
-          <ol className="lg:col-span-8 grid sm:grid-cols-3 gap-4">
+          <ol className="lg:col-span-8 grid sm:grid-cols-3 gap-x-8 gap-y-6">
             {PROOF_STEPS.map((key, i) => (
-              <li key={key} className="rounded-xl border border-night-line bg-night-900 p-4 flex flex-col">
-                <span className="font-mono text-xs text-star mb-2">{String(i + 1).padStart(2, '0')}</span>
+              <li key={key} className="border-t-2 pt-4 flex flex-col" style={{ borderColor: i === 2 ? '#47E5C2' : '#1E2A40' }}>
+                <span className="font-mono text-xs text-star mb-2">{i + 1}</span>
                 <p className="font-display font-bold text-white mb-1">{t(`value.proof.${key}.title`)}</p>
                 <p className="text-sm text-slate-300 leading-relaxed">{t(`value.proof.${key}.text`)}</p>
                 {key === 'impact' && <ConfidenceCurve />}

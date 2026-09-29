@@ -1,39 +1,34 @@
 import { useLanguage } from '@/hooks/useLanguage';
 
-interface LanguageSwitchProps {
-  isMobile?: boolean;
-}
+const LANGS = [
+  { code: 'es', short: 'ES', name: 'Español' },
+  { code: 'en', short: 'EN', name: 'English' },
+] as const;
 
-export const LanguageSwitch = ({ isMobile = false }: LanguageSwitchProps) => {
+/** Segmented ES | EN control: two real buttons, visible text, the pressed one is the active language. */
+export const LanguageSwitch = ({ className = '' }: { className?: string; isMobile?: boolean }) => {
   const { language, toggleLanguage } = useLanguage();
 
-  const id = isMobile ? 'mobile-language-toggle' : 'language-toggle';
-
   return (
-    <div className="language-switch flex items-center">
-      <span className="mr-2 text-sm">EN</span>
-      <div className="relative inline-block w-[60px] h-[30px] select-none">
-        <input
-          type="checkbox"
-          id={id}
-          className="opacity-0 w-0 h-0"
-          checked={language === 'es'}
-          onChange={toggleLanguage}
-        />
-        <label
-          htmlFor={id}
-          className="cursor-pointer absolute top-0 left-0 right-0 bottom-0 bg-[#1E2A40] rounded-full"
-        >
-          <span
-            className={`absolute top-[3px] w-[24px] h-[24px] rounded-full transition-all duration-300 ${
-              language === 'es' 
-                ? 'bg-[#FF7A85] right-[3px]' 
-                : 'bg-[#47E5C2] left-[3px]'
+    <div role="group" aria-label={language === 'es' ? 'Idioma' : 'Language'} className={`inline-flex items-center rounded-lg border border-line p-0.5 ${className}`}>
+      {LANGS.map(({ code, short, name }) => {
+        const active = language === code;
+        return (
+          <button
+            key={code}
+            type="button"
+            lang={code}
+            aria-label={name}
+            aria-pressed={active}
+            onClick={() => { if (!active) toggleLanguage(); }}
+            className={`h-8 min-w-[2.25rem] rounded-md px-2 text-xs font-semibold tracking-wide transition-colors ${
+              active ? 'bg-star/15 text-star' : 'text-ink-3 hover:text-white'
             }`}
-          />
-        </label>
-      </div>
-      <span className="ml-2 text-sm">ES</span>
+          >
+            {short}
+          </button>
+        );
+      })}
     </div>
   );
 };

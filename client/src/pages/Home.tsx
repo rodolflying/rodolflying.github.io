@@ -7,48 +7,40 @@ import CasesSection from '@/components/sections/home/CasesSection';
 import ProcessSection from '@/components/sections/home/ProcessSection';
 import ConnectDotsSection from '@/components/sections/home/ConnectDotsSection';
 import RoiCalculator from '@/components/sections/proof/RoiCalculator';
-import { Link } from 'wouter';
-import { motion } from 'framer-motion';
+import { CtaLink } from '@/components/ui/headers';
+import { DawnSky, ConstellationThread } from '@/components/ui/NightToDawn';
 
 const Home = () => {
   const { t } = useLanguage();
 
   return (
     <Layout>
+      <DawnSky />
       <Hero />
-      <ConnectDotsSection />
-      <AreasOverview />
-      <CasesSection featuredOnly />
-      <ValueFrameworkSection />
-      <ProcessSection />
+      {/* From here down, a constellation line joins the sections as you scroll */}
+      <ConstellationThread>
+        <ConnectDotsSection />
+        <AreasOverview />
+        <ValueFrameworkSection />
+        <CasesSection featuredOnly />
+        <ProcessSection />
 
-      {/* ROI estimate with the interactive pixel scene */}
-      <section id="roi" className="py-20 bg-[#0A1020] border-t border-night-line">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <RoiCalculator />
-        </div>
-      </section>
+        {/* How much time comes back: the estimate */}
+        <section id="roi" className="py-20 bg-night-900/40 border-t border-night-line">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <RoiCalculator />
+          </div>
+        </section>
 
-      {/* Call To Action Banner */}
-      <section className="py-16 bg-gradient-to-br from-[#47E5C2]/5 via-transparent to-[#7C9CFF]/5 border-t border-night-line">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-2xl font-display font-bold text-white mb-4">{t('home.cta_title')}</h2>
-            <p className="text-slate-400 mb-8 max-w-lg mx-auto">{t('home.cta_subtitle')}</p>
-            <Link
-              href="/contact?service=diagnostico"
-              className="inline-block px-8 py-3 bg-[#47E5C2] text-[#070B14] font-bold rounded-lg hover:bg-[#47E5C2]/85 transition-colors shadow-lg shadow-[#47E5C2]/20"
-            >
-              {t('home.cta_contact')}
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+        {/* The one call to action */}
+        <section id="cta" className="py-20 border-t border-night-line">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4 text-balance">{t('home.cta_title')}</h2>
+            <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">{t('home.cta_subtitle')}</p>
+            <CtaLink href="/contact?service=diagnostico">{t('home.cta_contact')}</CtaLink>
+          </div>
+        </section>
+      </ConstellationThread>
     </Layout>
   );
 };

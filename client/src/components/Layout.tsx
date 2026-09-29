@@ -57,9 +57,18 @@ const Layout = ({ children, page, title, description, image, noindex }: LayoutPr
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
       </Helmet>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-star focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-night"
+      >
+        {/* TODO copy: a11y.skip_to_content */}
+        {language === 'es' ? 'Saltar al contenido' : 'Skip to content'}
+      </a>
       <Navbar />
       <motion.main
-        className="flex-grow"
+        id="main"
+        tabIndex={-1}
+        className="flex-grow focus:outline-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.35 }}

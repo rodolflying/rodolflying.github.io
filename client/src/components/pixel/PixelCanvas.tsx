@@ -17,6 +17,8 @@ interface PixelCanvasProps<S> {
   play?: boolean;
   /** Vector scenes (the executive style): draw smoothed and scale the canvas without pixelation. */
   smooth?: boolean;
+  /** Called with the loop time of every drawn frame (e.g. to sync an HTML caption). */
+  onFrame?: (t: number) => void;
   className?: string;
   label?: string;
 }
@@ -26,12 +28,14 @@ interface PixelCanvasProps<S> {
  * `image-rendering: pixelated`. Animates only while on screen (and while `play`), and
  * renders a single still frame for prefers-reduced-motion.
  */
-function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = true, smooth = false, className = '', label }: PixelCanvasProps<S>) {
+function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = true, smooth = false, onFrame, className = '', label }: PixelCanvasProps<S>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
   const sceneRef = useRef(scene);
   sceneRef.current = scene;
+  const onFrameRef = useRef(onFrame);
+  onFrameRef.current = onFrame;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,11 +51,13 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = 
 
     const frame = (now: number) => {
       if (now - last >= minGap || reduce) {
-        last = now;
+        // keep the remainder so a 30 fps cap really draws 30 fps on a 60 Hz screen
+        last = minGap && Number.isFinite(last) ? now - ((now - last) % minGap) : now;
         const t = reduce ? stillAt : (now - start) / 1000;
         g.setTransform(1, 0, 0, 1, 0, 0); // vector scenes scale the context; start each frame clean
         g.clearRect(0, 0, width, height);
         sceneRef.current(g, t, stateRef.current as S);
+        onFrameRef.current?.(t);
       }
       if (!reduce && visible) raf = requestAnimationFrame(frame);
     };
@@ -63,7 +69,11 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = 
     });
     io.observe(canvas);
     raf = requestAnimationFrame(frame);
+    // a still frame is drawn once: draw it again when the web fonts arrive
+    let alive = true;
+    if (reduce) document.fonts?.ready.then(() => alive && requestAnimationFrame(frame));
     return () => {
+      alive = false;
       cancelAnimationFrame(raf);
       io.disconnect();
     };

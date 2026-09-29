@@ -5,8 +5,10 @@ import { useEffect, useRef } from 'react';
  * scattered stars fly in and form the Star Apps star with the logo's target rings;
  * a hand clicks the centre and a shockwave lights the star and links it to the
  * surrounding stars ("one click and everything connects"). Visitors can click
- * anywhere to trigger the same effect. Canvas only; pauses off-screen and renders a
- * static star for prefers-reduced-motion.
+ * anywhere to trigger the same effect. The star never breaks apart: as the page
+ * scrolls, its tips and the brightest stars light up with diffraction spikes (the look
+ * of deep-space telescope images). Canvas only; pauses off-screen and renders a static
+ * star for prefers-reduced-motion.
  */
 
 const MINT = '71, 229, 194';
@@ -149,10 +151,49 @@ const StarConstellation = ({ className = '' }: StarConstellationProps) => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    // Disperse as the canvas scrolls out of view (beside the headline on desktop, below it on mobile).
-    const scrollProgress = () => {
+    // Scroll lights the star up instead of breaking it: 0 at rest, 1 as it leaves the screen.
+    const scrollGlint = () => {
       const rect = canvas.getBoundingClientRect();
-      return clamp01(-rect.top / (rect.height * 0.9));
+      const centre = rect.top + rect.height / 2;
+      return clamp01((window.innerHeight * 0.55 - centre) / (rect.height * 0.7));
+    };
+    // Who gets diffraction spikes: the five tips of the star and the brightest background stars.
+    const tipIdx = particles.map((p, i) => (p.sx !== null && i % (OUTLINE_POINTS_PER_EDGE * 2) === 0 ? i : -1)).filter((i) => i >= 0);
+    const brightIdx = particles
+      .map((p, i) => ({ i, size: p.sx === null ? p.size : -1 }))
+      .sort((a, b) => b.size - a.size)
+      .slice(0, 12)
+      .map((o) => o.i);
+
+    /** Diffraction spikes: six long rays (vertical + diagonals at 60°) and two short horizontal ones. */
+    const spikes = (x: number, y: number, len: number, alpha: number, color: string) => {
+      if (alpha <= 0.02 || len < 1) return;
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const core = ctx.createRadialGradient(x, y, 0, x, y, len * 0.28);
+      core.addColorStop(0, `rgba(${color}, ${0.55 * alpha})`);
+      core.addColorStop(1, `rgba(${color}, 0)`);
+      ctx.fillStyle = core;
+      ctx.beginPath();
+      ctx.arc(x, y, len * 0.28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.lineCap = 'round';
+      for (let k = 0; k < 8; k++) {
+        const horizontal = k >= 6;
+        const a = horizontal ? (k === 6 ? 0 : Math.PI) : Math.PI / 2 + (k * Math.PI) / 3;
+        const l = horizontal ? len * 0.45 : len;
+        const ex = x + Math.cos(a) * l, ey = y + Math.sin(a) * l;
+        const g = ctx.createLinearGradient(x, y, ex, ey);
+        g.addColorStop(0, `rgba(${color}, ${(horizontal ? 0.5 : 0.9) * alpha})`);
+        g.addColorStop(1, `rgba(${color}, 0)`);
+        ctx.strokeStyle = g;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+      }
+      ctx.restore();
     };
 
     /** A click (demo or visitor): shockwave, lit stars and new links toward nearby stars. */
@@ -200,7 +241,8 @@ const StarConstellation = ({ className = '' }: StarConstellationProps) => {
       ctx.clearRect(0, 0, width, height);
       const { cx, cy, radius } = geometry();
       const elapsed = reduceMotion ? 10 : nowS - formStart / 1000;
-      const scatter = reduceMotion ? 0 : scrollProgress();
+      const scatter = 0; // the star stays whole; scrolling makes it shine instead
+      const glint = reduceMotion ? 0 : scrollGlint();
       const formed = clamp01((elapsed - 1.2) / 1.2) * (1 - scatter);
 
       // Demo click loop once the star is formed and the visitor is not interacting.
@@ -384,6 +426,21 @@ const StarConstellation = ({ className = '' }: StarConstellationProps) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * (1 + p.glow * 0.9), 0, Math.PI * 2);
         ctx.fill();
+      }
+
+      // Diffraction spikes: a brief sparkle now and then, and full light as the page scrolls.
+      if (!reduceMotion) {
+        const sparkle = (phase: number, speed: number) => Math.pow(Math.max(0, Math.sin(nowS * speed + phase)), 14);
+        for (const i of tipIdx) {
+          const p = particles[i];
+          const k = Math.max(glint, sparkle(p.phase, 0.7) * 0.8) * formed;
+          spikes(p.x, p.y, radius * (0.12 + 0.3 * glint + 0.08 * flash), k, GOLD);
+        }
+        for (const i of brightIdx) {
+          const p = particles[i];
+          const k = Math.max(glint * 0.8, sparkle(p.phase, 0.45) * 0.7);
+          spikes(p.x, p.y, 8 + 22 * glint + p.size * 3, k, WHITE);
+        }
       }
 
       if (hand) drawHand(hand.x, hand.y, hand.scale, hand.alpha);

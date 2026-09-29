@@ -45,3 +45,7 @@ _historico_md/
 
 # Rendered marketing videos (regenerate with scripts/render-video.mjs)
 _media/
+
+# Impeccable design critiques (internal)
+.impeccable/
+.playwright-cli/

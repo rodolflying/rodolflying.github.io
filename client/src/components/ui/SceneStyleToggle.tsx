@@ -1,33 +1,24 @@
+import { Gamepad2, PenLine } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { setSceneStyle, useSceneStyle } from '@/hooks/useSceneStyle';
-import type { SceneStyle } from '@/components/pixel/areaScenes';
 
-/** Small segmented control to switch the story illustrations between executive and pixel art. */
+/**
+ * A quiet link under the stories: line illustrations are the site's voice, and the pixel-art
+ * versions stay one click away as a retro alternative (remembered in this browser).
+ */
 const SceneStyleToggle = ({ className = '' }: { className?: string }) => {
   const { t } = useLanguage();
-  const style = useSceneStyle();
-  const options: Array<{ id: SceneStyle; label: string }> = [
-    { id: 'line', label: t('areas.style_line') },
-    { id: 'pixel', label: t('areas.style_pixel') },
-  ];
+  const retro = useSceneStyle() === 'pixel';
+  const Icon = retro ? PenLine : Gamepad2;
   return (
-    <div className={`inline-flex items-center gap-2 text-xs text-slate-400 ${className}`}>
-      <span>{t('areas.style_label')}</span>
-      <div className="inline-flex rounded-full border border-night-line bg-night-800 p-0.5" role="radiogroup" aria-label={t('areas.style_label')}>
-        {options.map((o) => (
-          <button
-            key={o.id}
-            type="button"
-            role="radio"
-            aria-checked={style === o.id}
-            onClick={() => setSceneStyle(o.id)}
-            className={`rounded-full px-3 py-1 font-medium transition-colors ${style === o.id ? 'bg-night-700 text-white' : 'text-slate-400 hover:text-white'}`}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
-    </div>
+    <button
+      type="button"
+      onClick={() => setSceneStyle(retro ? 'line' : 'pixel')}
+      className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-slate-400 underline-offset-4 transition-colors hover:text-star hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-star ${className}`}
+    >
+      <Icon className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+      {t(retro ? 'areas.style_back' : 'areas.style_retro')}
+    </button>
   );
 };
 

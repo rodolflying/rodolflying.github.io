@@ -11,14 +11,17 @@ import {
 } from 'framer-motion';
 import { FileSpreadsheet, Database, Mail, Globe, FileText, MessageCircle, Boxes, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import starAppsLogo from '@assets/START_APPS_LOGO-removebg-preview.png';
+import { LOGO_SRC } from '@/components/Navbar';
 
 /**
- * Scroll-driven brand story: scattered tools (the "dots") that a team connects by hand
- * get pulled, one after another, into orbit around Star Apps and wired into a single
- * automated flow. Positions are percentages of the square stage; movement uses
- * transforms (GPU) and a spring on the scroll progress for smoothness.
+ * Scroll-driven brand story: scattered tools (the "dots") that a team connects by hand get
+ * pulled, one after another, into orbit around Star Apps and wired into a single automated
+ * flow. The story completes in the first ~70% of the pinned scroll and then holds the
+ * connected state, so it never feels cut off; a light spring keeps wheel steps smooth
+ * without lagging behind the finger. Positions are percentages of the square stage and
+ * move with transforms (GPU).
  */
+const STORY_END = 0.72;
 
 interface Dot {
   key: string;
@@ -98,7 +101,8 @@ const MovingDot = ({
   const x = useTransform([motionPos.px, stage], ([p, s]: number[]) => (p / 100) * s);
   const y = useTransform([motionPos.py, stage], ([p, s]: number[]) => (p / 100) * s);
   const rotate = useTransform(progress, [start, end], [dot.chaos[2], 0], { ease: easeInOut });
-  const border = useTransform(progress, [end - 0.06, end], ['rgba(255,122,133,0.55)', 'rgba(71,229,194,0.75)']);
+  // danger (#E5736E) while the tool is loose, mint once it is wired in
+  const border = useTransform(progress, [end - 0.06, end], ['rgba(229,115,110,0.55)', 'rgba(71,229,194,0.75)']);
   const Icon = dot.icon;
 
   return (
@@ -111,10 +115,10 @@ const MovingDot = ({
             className="float-slow w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-night-800 flex items-center justify-center border-2 shadow-lg"
             style={{ borderColor: border, animationDelay: `${index * -0.7}s` }}
           >
-            <Icon className="w-6 h-6 text-slate-100" />
+            <Icon className="w-6 h-6 text-ink" />
           </motion.div>
           {/* Label hangs below so the icon itself is centred on the wire end */}
-          <span className="absolute top-full mt-1.5 text-xs sm:text-sm font-medium text-slate-200 whitespace-nowrap">
+          <span className="absolute top-full mt-1.5 text-xs sm:text-sm font-medium text-ink-2 whitespace-nowrap">
             {dot.label[language]}
           </span>
         </motion.div>
@@ -138,9 +142,10 @@ const ConnectDotsSection = () => {
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
-  const smooth = useSpring(scrollYProgress, { stiffness: 110, damping: 28, mass: 0.35, restDelta: 0.0005 });
-  // With reduced motion, jump straight to the connected state.
-  const progress = useTransform(smooth, (v) => (reduceMotion ? 1 : v));
+  // Nearly direct: smooths wheel steps without trailing behind the scroll.
+  const smooth = useSpring(scrollYProgress, { stiffness: 320, damping: 40, mass: 0.2, restDelta: 0.0005 });
+  // 0 = scattered, 1 = connected (reached at STORY_END, then held). Reduced motion: connected.
+  const progress = useTransform(smooth, (v) => (reduceMotion ? 1 : Math.min(1, v / STORY_END)));
 
   // Stage size in px, so percentages can be turned into transforms.
   const stage = useMotionValue(0);
@@ -157,33 +162,34 @@ const ConnectDotsSection = () => {
   const manualOpacity = useTransform(progress, [0.05, 0.22, 0.4], [0.9, 0.9, 0]);
   const hubScale = useTransform(progress, [0.25, 0.55], [0.7, 1], { ease: easeInOut });
   const hubGlow = useTransform(progress, [0.55, 0.85], [0, 1]);
-  const beforeOpacity = useTransform(progress, [0, 0.2, 0.32], [1, 1, 0]);
-  const afterOpacity = useTransform(progress, [0.52, 0.66], [0, 1]);
+  // Overlapping ranges: "after" starts fading in before "before" is gone, so the text column is never empty.
+  const beforeOpacity = useTransform(progress, [0, 0.3, 0.38], [1, 1, 0]);
+  const afterOpacity = useTransform(progress, [0.35, 0.45], [0, 1]);
   const pulsesOpacity = useTransform(progress, [0.82, 0.9], [0, 1]);
 
   return (
-    <section id="puntos" ref={sectionRef} className="relative h-[260vh] bg-night">
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden starfield">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8 items-center">
+    <section id="puntos" ref={sectionRef} className="relative h-[200vh]">
+      {/* Pinned below the navbar and sized to the visible screen, so it always fits */}
+      <div className="sticky top-16 h-[calc(100svh-4rem)] flex flex-col justify-center overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-4 lg:gap-8 items-center">
           {/* Story text */}
-          <div className="lg:col-span-5 relative min-h-[220px] sm:min-h-[260px]">
-            <p className="text-sm font-semibold text-gold tracking-widest mb-3">{t('dots.badge')}</p>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">{t('dots.title')}</h2>
+          <div className="lg:col-span-5 relative">
+            <h2 className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-3 sm:mb-6">{t('dots.title')}</h2>
             <div className="relative">
               <motion.div style={{ opacity: beforeOpacity }} className="absolute inset-0">
-                <p className="text-lg font-semibold text-[#FF9AA4] mb-2">{t('dots.before_title')}</p>
-                <p className="text-slate-300 text-base sm:text-lg leading-relaxed">{t('dots.before_text')}</p>
+                <p className="text-lg font-semibold text-danger mb-2">{t('dots.before_title')}</p>
+                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed">{t('dots.before_text')}</p>
               </motion.div>
               <motion.div style={{ opacity: afterOpacity }}>
                 <p className="text-lg font-semibold text-star mb-2">{t('dots.after_title')}</p>
-                <p className="text-slate-300 text-base sm:text-lg leading-relaxed">{t('dots.after_text')}</p>
+                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed">{t('dots.after_text')}</p>
               </motion.div>
             </div>
           </div>
 
           {/* Stage */}
           <div className="lg:col-span-7">
-            <div ref={stageRef} className="relative aspect-square w-full max-w-[560px] mx-auto">
+            <div ref={stageRef} className="relative aspect-square w-full max-w-[min(560px,46svh)] lg:max-w-[min(560px,72svh)] mx-auto">
               <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" aria-hidden="true">
                 {/* Manual copy/paste jumps follow the tools while they fade out */}
                 <motion.g style={{ opacity: manualOpacity }}>
@@ -194,7 +200,7 @@ const ConnectDotsSection = () => {
                       y1={positions[a].py}
                       x2={positions[b].px}
                       y2={positions[b].py}
-                      stroke="#FF7A85"
+                      stroke="#E5736E"
                       strokeWidth="0.35"
                       strokeDasharray="1.2 1.2"
                       className="manual-link"
@@ -230,7 +236,7 @@ const ConnectDotsSection = () => {
                     className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full"
                     style={{ opacity: hubGlow, background: 'radial-gradient(circle, rgba(71,229,194,0.45), transparent 70%)' }}
                   />
-                  <img src={starAppsLogo} alt="" className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl" />
+                  <img src={LOGO_SRC} alt="" width={80} height={80} className="relative w-16 h-16 sm:w-20 sm:h-20" />
                   <span className="absolute top-full mt-2 px-2 py-0.5 rounded bg-night/85 font-brand text-xs text-white tracking-widest whitespace-nowrap">STAR APPS</span>
                 </motion.div>
               </div>

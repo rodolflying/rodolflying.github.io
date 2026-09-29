@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 12 460 460" role="img" aria-label="Star Apps">
+  <defs>
+    <mask id="sa-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="500" height="500">
+      <rect width="500" height="500" fill="#fff"/>
+      <g fill="none" stroke="#000" stroke-linecap="round">
+        <circle cx="257" cy="258" r="54" stroke-width="16"/>
+        <circle cx="257" cy="258" r="27.5" stroke-width="16"/>
+        <path d="M249 70 232 124M257 99 252 121M166 320 138 400M182 358 173 384" stroke-width="9"/>
+      </g>
+    </mask>
+  </defs>
+  <path mask="url(#sa-cut)" fill="#47E5C2" stroke="#47E5C2" stroke-width="14" stroke-linejoin="round"
+        d="M251 34 320 166 464 178 356 294 393 448 256 372 106 450 147 303 37 189 190 166Z"/>
+  <g stroke="#47E5C2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="#47E5C2">
+    <path d="M258 262 330 322" stroke-width="40"/>
+    <path d="M290 346 326 340" stroke-width="34"/>
+    <path d="M316 296C324 264 340 240 360 238C372 238 380 248 392 262L424 296C432 306 432 322 434 330L444 340 412 380 400 374C380 372 350 370 330 366Z"/>
+  </g>
+  <g stroke="#0E1626" stroke-linecap="round" stroke-linejoin="round" fill="#0E1626">
+    <path d="M258 262 330 322" stroke-width="28"/>
+    <path d="M290 346 326 340" stroke-width="22"/>
+    <path d="M316 296C324 264 340 240 360 238C372 238 380 248 392 262L424 296C432 306 432 322 434 330L444 340 412 380 400 374C380 372 350 370 330 366Z" stroke-width="0"/>
+  </g>
+</svg>

@@ -1,12 +1,16 @@
 import Layout from '@/components/Layout';
 import Contact from '@/components/sections/Contact';
+import { PageHeader } from '@/components/ui/headers';
+import { useLanguage } from '@/hooks/useLanguage';
 
-const ContactPage = () => (
-  <Layout page="contact">
-    <div className="pt-20">
+const ContactPage = () => {
+  const { t } = useLanguage();
+  return (
+    <Layout page="contact">
+      <PageHeader title={t('contact.title')} subtitle={t('contact.subtitle')} />
       <Contact />
-    </div>
-  </Layout>
-);
+    </Layout>
+  );
+};
 
 export default ContactPage;
