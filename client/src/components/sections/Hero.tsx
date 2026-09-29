@@ -3,9 +3,11 @@ import { ArrowRight, Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import StarConstellation from '@/components/ui/StarConstellation';
 import { CtaLink } from '@/components/ui/headers';
+import { useHyphenate } from '@/hooks/useHyphenate';
 
 const Hero = () => {
   const { t } = useLanguage();
+  const hy = useHyphenate();
   // The last words (what the team gains) carry the warm copper accent.
   const accent = t('hero.title_accent');
   const title = t('hero.title');
@@ -42,7 +44,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25, duration: 0.6 }}
             >
-              {t('hero.subtitle')}
+              {hy(t('hero.subtitle'))}
             </motion.p>
 
             <motion.div

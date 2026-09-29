@@ -12,6 +12,7 @@ import {
 import { FileSpreadsheet, Database, Mail, Globe, FileText, MessageCircle, Boxes, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { LOGO_SRC } from '@/components/Navbar';
+import { useHyphenate } from '@/hooks/useHyphenate';
 
 /**
  * Scroll-driven brand story: scattered tools (the "dots") that a team connects by hand get
@@ -138,6 +139,7 @@ const Wire = ({ index, progress }: { index: number; progress: MotionValue<number
 
 const ConnectDotsSection = () => {
   const { t, language } = useLanguage();
+  const hy = useHyphenate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
@@ -178,11 +180,11 @@ const ConnectDotsSection = () => {
             <div className="relative">
               <motion.div style={{ opacity: beforeOpacity }} className="absolute inset-0">
                 <p className="text-lg font-semibold text-danger mb-2">{t('dots.before_title')}</p>
-                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed text-justify hyphens-auto">{t('dots.before_text')}</p>
+                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed text-justify hyphens-auto">{hy(t('dots.before_text'))}</p>
               </motion.div>
               <motion.div style={{ opacity: afterOpacity }}>
                 <p className="text-lg font-semibold text-star mb-2">{t('dots.after_title')}</p>
-                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed text-justify hyphens-auto">{t('dots.after_text')}</p>
+                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed text-justify hyphens-auto">{hy(t('dots.after_text'))}</p>
               </motion.div>
             </div>
           </div>

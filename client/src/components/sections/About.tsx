@@ -1,6 +1,7 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import { Linkedin, Code2, KeyRound, LifeBuoy, FileText, ArrowRight } from 'lucide-react';
 import { SectionHeader, CtaLink } from '@/components/ui/headers';
+import { useHyphenate } from '@/hooks/useHyphenate';
 
 const PRINCIPLES = [
   { key: 'ownership', icon: KeyRound },
@@ -14,6 +15,7 @@ const INDUSTRIES = ['media', 'real_estate', 'social_research', 'logistics', 'acc
 /** The body of /about; the page header (h1) lives in AboutPage. */
 const About = () => {
   const { t } = useLanguage();
+  const hy = useHyphenate();
 
   return (
     <section id="about" className="bg-night pt-6 pb-24">
@@ -22,8 +24,8 @@ const About = () => {
         <div className="grid gap-12 border-t border-night-line pt-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <h2 className="font-display text-2xl md:text-3xl font-bold leading-tight text-white text-balance">{t('about.who_title')}</h2>
-            <p className="mt-5 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{t('about.who_p1')}</p>
-            <p className="mt-4 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{t('about.who_p2')}</p>
+            <p className="mt-5 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{hy(t('about.who_p1'))}</p>
+            <p className="mt-4 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{hy(t('about.who_p2'))}</p>
             <p className="mt-6 text-sm text-slate-400">Star Apps SpA · RUT 77.373.407-0 · {t('about.country')}</p>
           </div>
 
@@ -43,7 +45,7 @@ const About = () => {
                 <p className="text-sm text-slate-400">{t('about.founder_role')}</p>
               </div>
             </div>
-            <p className="mt-5 leading-relaxed text-slate-300 text-justify hyphens-auto">{t('about.founder_bio')}</p>
+            <p className="mt-5 leading-relaxed text-slate-300 text-justify hyphens-auto">{hy(t('about.founder_bio'))}</p>
             <a
               href="https://www.linkedin.com/in/rodolfo-sepulveda-847532135/"
               target="_blank"
@@ -66,7 +68,7 @@ const About = () => {
                   <Icon className="h-5 w-5 flex-shrink-0 self-center text-star" strokeWidth={1.75} aria-hidden="true" />
                   {t(`about.principles.${key}.title`)}
                 </h3>
-                <p className="max-w-prose leading-relaxed text-slate-300 text-pretty md:pl-0 pl-8">{t(`about.principles.${key}.text`)}</p>
+                <p className="max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto md:pl-0 pl-8">{hy(t(`about.principles.${key}.text`))}</p>
               </li>
             ))}
           </ul>
