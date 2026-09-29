@@ -4,7 +4,9 @@ import { ShieldCheck, Wrench, Route, Wallet, Bot, BrainCircuit, Globe, Check, Al
 import { useLanguage } from '@/hooks/useLanguage';
 import { areas, type AreaIcon } from '@/data/areas';
 import PixelCanvas from '@/components/pixel/PixelCanvas';
-import { AREA_SCENE_DEFS } from '@/components/pixel/areaScenes';
+import { sceneFor } from '@/components/pixel/areaScenes';
+import { useSceneStyle } from '@/hooks/useSceneStyle';
+import SceneStyleToggle from '@/components/ui/SceneStyleToggle';
 
 // Loaded on first open: keeps the dialog, its data and the dialog library out of the main bundle.
 const AreaOpsDialog = lazy(() => import('./AreaOpsDialog'));
@@ -47,7 +49,8 @@ const AreasSection = () => {
 
   const area = areas.find((a) => a.id === activeId) ?? areas[0];
   const Icon = AREA_ICONS[area.icon];
-  const def = AREA_SCENE_DEFS[area.id];
+  const style = useSceneStyle();
+  const def = sceneFor(area.id, style);
 
   return (
     <section id="areas" className="py-16 md:py-20 bg-night">
@@ -55,6 +58,7 @@ const AreasSection = () => {
         <div className="text-center mb-8">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-3">{t('areas.title')}</h2>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">{t('areas.subtitle')}</p>
+          <SceneStyleToggle className="mt-4" />
         </div>
 
         {/* Area selector: one compact row (scrolls sideways on phones) */}
@@ -106,7 +110,7 @@ const AreasSection = () => {
                   aria-label={`${t('areas.ops_cta')}: ${area.name[language]}`}
                   className="group relative block w-full rounded-xl overflow-hidden border border-night-line text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-star"
                 >
-                  <PixelCanvas key={area.id} scene={def.scene} width={def.w} height={def.h} stillAt={def.still} fps={def.fps} label={area.pitch[language]} />
+                  <PixelCanvas key={`${area.id}-${style}`} scene={def.scene} width={def.w} height={def.h} stillAt={def.still} fps={def.fps} smooth={def.smooth} state={{ lang: language }} label={area.pitch[language]} />
                   <span className="pointer-events-none absolute inset-0 rounded-xl ring-inset ring-0 group-hover:ring-2 transition-all" style={{ ['--tw-ring-color' as string]: area.color }} />
                   <span
                     className="absolute top-2 right-2 inline-flex items-center gap-2 rounded-md border bg-night/85 px-2.5 py-1.5 font-mono text-xs text-white transition-colors group-hover:bg-night"

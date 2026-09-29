@@ -6,10 +6,13 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { areas } from '@/data/areas';
 import { AREA_ICONS } from '@/components/sections/services/AreasSection';
 import PixelCanvas from '@/components/pixel/PixelCanvas';
-import { AREA_SCENE_DEFS } from '@/components/pixel/areaScenes';
+import { sceneFor } from '@/components/pixel/areaScenes';
+import { useSceneStyle } from '@/hooks/useSceneStyle';
+import SceneStyleToggle from '@/components/ui/SceneStyleToggle';
 
 const AreasOverview = () => {
   const { t, language } = useLanguage();
+  const style = useSceneStyle();
   // Six story scenes at once is a lot of work: with a mouse, a card plays its story while
   // hovered or focused and shows its key frame otherwise. Touch screens play what is visible.
   const [canHover] = useState(() => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
@@ -21,6 +24,7 @@ const AreasOverview = () => {
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">{t('areas.title')}</h2>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">{t('areas.subtitle')}</p>
+          <SceneStyleToggle className="mt-4" />
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -44,9 +48,9 @@ const AreasOverview = () => {
                   className="spotlight group h-full rounded-2xl border border-night-line bg-night-800 p-6 flex flex-col"
                 >
                   <div className="relative rounded-xl overflow-hidden border border-night-line mb-5 -mx-1">
-                    <PixelCanvas scene={AREA_SCENE_DEFS[area.id].scene} width={AREA_SCENE_DEFS[area.id].w} height={AREA_SCENE_DEFS[area.id].h} stillAt={AREA_SCENE_DEFS[area.id].still} fps={AREA_SCENE_DEFS[area.id].fps} play={!canHover || active === area.id} />
+                    {(() => { const def = sceneFor(area.id, style); return <PixelCanvas key={`${area.id}-${style}`} scene={def.scene} width={def.w} height={def.h} stillAt={def.still} fps={def.fps} smooth={def.smooth} state={{ lang: language }} play={!canHover || active === area.id} />; })()}
                     {canHover && active !== area.id && (
-                      <span className="absolute bottom-2 left-2 rounded-md bg-night/80 border border-night-line px-2 py-1 font-mono text-xs text-star" aria-hidden="true">
+                      <span className={`absolute ${sceneFor(area.id, style).smooth ? 'top-2' : 'bottom-2'} left-2 rounded-md bg-night/80 border border-night-line px-2 py-1 font-mono text-xs text-star`} aria-hidden="true">
                         ▶ {language === 'es' ? 'ver historia' : 'play story'}
                       </span>
                     )}

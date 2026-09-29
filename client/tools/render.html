@@ -5,7 +5,7 @@
 <title>Star Apps · render de escenas pixel</title>
 <!-- Dev-only page (not part of the production build). Renders an area scene at 1280x720
      for social videos: /tools/render.html?scene=finanzas&lang=es -->
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   html, body { margin: 0; background: #070B14; }
   #stage { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #070B14; }
@@ -16,6 +16,9 @@
   #caption p { margin: 0; font-size: 24px; color: #B4C0D3; }
   #brand { position: absolute; right: 40px; top: 28px; font-family: 'Pixelify Sans', monospace; font-size: 26px; font-weight: 700; color: #EEF2F8; letter-spacing: 2px; }
   #brand span { color: #47E5C2; }
+  body.line canvas { image-rendering: auto; }
+  body.line #caption, body.line #brand { font-family: 'Space Grotesk', Inter, sans-serif; }
+  body.line #caption p { font-family: Inter, sans-serif; }
 </style>
 </head>
 <body>
@@ -25,7 +28,7 @@
   <div id="caption"><h1 id="name"></h1><p id="pitch"></p></div>
 </div>
 <script type="module">
-  import { AREA_SCENE_DEFS } from '/src/components/pixel/areaScenes.ts';
+  import { AREA_SCENE_DEFS, sceneFor } from '/src/components/pixel/areaScenes.ts';
   import { areas } from '/src/data/areas.ts';
 
   import * as E from '/src/components/pixel/engine.ts';
@@ -78,20 +81,24 @@
   const areaId = hq ? id.replace(/-hq$/, '') : id;
   const area = areas.find((a) => a.id === areaId);
   // every area has a story scene now; "<area>-hq" is still accepted for older links
-  const def = AREA_SCENE_DEFS[areaId];
+  // ?style=line renders the executive version when the area has one
+  const style = params.get('style') === 'line' ? 'line' : 'pixel';
+  const def = sceneFor(areaId, style);
+  if (def.smooth) document.body.classList.add('line');
   const cv = document.getElementById('c');
   cv.width = def.w; cv.height = def.h;
   const showCaption = !params.has('nocaption');
-  document.getElementById('caption').style.display = showCaption ? '' : 'none';
+  // executive scenes carry their own captions, so the page title stays hidden
+  document.getElementById('caption').style.display = showCaption && !def.smooth ? '' : 'none';
   document.getElementById('brand').style.display = showCaption ? '' : 'none';
   document.getElementById('name').textContent = area.name[lang];
   document.getElementById('name').style.color = area.color;
   document.getElementById('pitch').textContent = area.pitch[lang];
   const g = cv.getContext('2d', { willReadFrequently: true });
-  g.imageSmoothingEnabled = false;
+  g.imageSmoothingEnabled = !!def.smooth;
 
   window.DURATION = def.loop;
-  window.renderFrame = (t) => { g.clearRect(0, 0, def.w, def.h); def.scene(g, t, undefined); };
+  window.renderFrame = (t) => { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, def.w, def.h); def.scene(g, t, { lang }); };
   if (!params.has('record')) {
     const t0 = performance.now();
     const loop = () => { window.renderFrame((performance.now() - t0) / 1000); requestAnimationFrame(loop); };

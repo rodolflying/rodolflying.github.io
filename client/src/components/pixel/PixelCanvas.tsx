@@ -15,6 +15,8 @@ interface PixelCanvasProps<S> {
   fps?: number;
   /** When false, draw the `stillAt` frame once and stay still (e.g. until hovered). */
   play?: boolean;
+  /** Vector scenes (the executive style): draw smoothed and scale the canvas without pixelation. */
+  smooth?: boolean;
   className?: string;
   label?: string;
 }
@@ -24,7 +26,7 @@ interface PixelCanvasProps<S> {
  * `image-rendering: pixelated`. Animates only while on screen (and while `play`), and
  * renders a single still frame for prefers-reduced-motion.
  */
-function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = true, className = '', label }: PixelCanvasProps<S>) {
+function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = true, smooth = false, className = '', label }: PixelCanvasProps<S>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -35,7 +37,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = 
     const canvas = canvasRef.current;
     const g = canvas?.getContext('2d');
     if (!canvas || !g) return;
-    g.imageSmoothingEnabled = false;
+    g.imageSmoothingEnabled = smooth;
     const reduce = !play || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0;
     let visible = false;
@@ -47,6 +49,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = 
       if (now - last >= minGap || reduce) {
         last = now;
         const t = reduce ? stillAt : (now - start) / 1000;
+        g.setTransform(1, 0, 0, 1, 0, 0); // vector scenes scale the context; start each frame clean
         g.clearRect(0, 0, width, height);
         sceneRef.current(g, t, stateRef.current as S);
       }
@@ -64,7 +67,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = 
       cancelAnimationFrame(raf);
       io.disconnect();
     };
-  }, [width, height, stillAt, fps, play]);
+  }, [width, height, stillAt, fps, play, smooth]);
 
   return (
     <canvas
@@ -75,7 +78,7 @@ function PixelCanvas<S>({ scene, width, height, state, stillAt = 2, fps, play = 
       aria-label={label}
       aria-hidden={label ? undefined : true}
       className={`block w-full h-auto ${className}`}
-      style={{ imageRendering: 'pixelated', aspectRatio: `${width} / ${height}` }}
+      style={{ imageRendering: smooth ? 'auto' : 'pixelated', aspectRatio: `${width} / ${height}` }}
     />
   );
 }

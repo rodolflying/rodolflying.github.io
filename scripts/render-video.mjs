@@ -1,6 +1,7 @@
 // Render the pixel-art area scenes to MP4 for social media.
 //   node scripts/render-video.mjs              -> all areas (story scenes), Spanish
 //   node scripts/render-video.mjs finanzas en  -> one area, English
+//   node scripts/render-video.mjs mantenimiento es line -> executive (line-art) version
 // Needs Google Chrome and ffmpeg on the machine. Output: _media/redes/*.mp4 (gitignored).
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -13,7 +14,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CHROME = process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const AREAS = ['seguridad', 'mantenimiento', 'operaciones', 'finanzas', 'ia', 'datos-web'];
 const FPS = 30;
-const [onlyArea, langArg] = process.argv.slice(2);
+const [onlyArea, langArg, styleArg] = process.argv.slice(2);
+const style = styleArg === 'line' ? 'line' : 'pixel';
 const lang = langArg === 'en' ? 'en' : 'es';
 const targets = onlyArea ? [onlyArea.replace(/-hq$/, '')] : AREAS;
 const outDir = path.join(ROOT, '_media', 'redes');
@@ -49,7 +51,7 @@ try {
     const frames = path.join(outDir, `.frames-${area}`);
     rmSync(frames, { recursive: true, force: true });
     mkdirSync(frames, { recursive: true });
-    await send('Page.navigate', { url: `http://localhost:5199/tools/render.html?scene=${area}-hq&lang=${lang}&record` });
+    await send('Page.navigate', { url: `http://localhost:5199/tools/render.html?scene=${area}-hq&lang=${lang}&style=${style}&record` });
     for (let i = 0; i < 60 && !(await evaluate('!!window.READY')); i++) await sleep(250);
     await evaluate('document.fonts.ready.then(() => true)');
     const total = Math.round((await evaluate('window.DURATION')) * FPS);
@@ -58,7 +60,7 @@ try {
       const { result } = await send('Page.captureScreenshot', { format: 'png', clip: { x: 0, y: 0, width: 1280, height: 720, scale: 1 } });
       writeFileSync(path.join(frames, `f${String(i).padStart(5, '0')}.png`), Buffer.from(result.data, 'base64'));
     }
-    const out = path.join(outDir, `star-apps-${area}${lang === 'en' ? '-en' : ''}.mp4`);
+    const out = path.join(outDir, `star-apps-${area}${style === 'line' ? '-ejecutivo' : ''}${lang === 'en' ? '-en' : ''}.mp4`);
     const ff = spawnSync('ffmpeg', ['-y', '-v', 'error', '-framerate', String(FPS), '-i', path.join(frames, 'f%05d.png'), '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out], { encoding: 'utf8' });
     rmSync(frames, { recursive: true, force: true });
     if (ff.status !== 0) throw new Error(ff.stderr);
