@@ -22,8 +22,8 @@ const About = () => {
         <div className="grid gap-12 border-t border-night-line pt-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <h2 className="font-display text-2xl md:text-3xl font-bold leading-tight text-white text-balance">{t('about.who_title')}</h2>
-            <p className="mt-5 max-w-prose leading-relaxed text-slate-300 text-pretty">{t('about.who_p1')}</p>
-            <p className="mt-4 max-w-prose leading-relaxed text-slate-300 text-pretty">{t('about.who_p2')}</p>
+            <p className="mt-5 max-w-prose leading-relaxed text-slate-300 sm:text-justify hyphens-auto">{t('about.who_p1')}</p>
+            <p className="mt-4 max-w-prose leading-relaxed text-slate-300 sm:text-justify hyphens-auto">{t('about.who_p2')}</p>
             <p className="mt-6 text-sm text-slate-400">Star Apps SpA · RUT 77.373.407-0 · {t('about.country')}</p>
           </div>
 
@@ -43,7 +43,7 @@ const About = () => {
                 <p className="text-sm text-slate-400">{t('about.founder_role')}</p>
               </div>
             </div>
-            <p className="mt-5 leading-relaxed text-slate-300 text-pretty">{t('about.founder_bio')}</p>
+            <p className="mt-5 leading-relaxed text-slate-300 sm:text-justify hyphens-auto">{t('about.founder_bio')}</p>
             <a
               href="https://www.linkedin.com/in/rodolfo-sepulveda-847532135/"
               target="_blank"
