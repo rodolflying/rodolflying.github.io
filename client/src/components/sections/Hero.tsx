@@ -37,7 +37,7 @@ const Hero = () => {
             </motion.h1>
 
             <motion.p
-              className="text-slate-300 text-lg leading-relaxed max-w-2xl mb-8 sm:text-justify hyphens-auto"
+              className="text-slate-300 text-lg leading-relaxed max-w-2xl mb-8 text-justify hyphens-auto"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25, duration: 0.6 }}

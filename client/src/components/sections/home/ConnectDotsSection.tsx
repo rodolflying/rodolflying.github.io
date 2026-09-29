@@ -178,11 +178,11 @@ const ConnectDotsSection = () => {
             <div className="relative">
               <motion.div style={{ opacity: beforeOpacity }} className="absolute inset-0">
                 <p className="text-lg font-semibold text-danger mb-2">{t('dots.before_title')}</p>
-                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed sm:text-justify hyphens-auto">{t('dots.before_text')}</p>
+                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed text-justify hyphens-auto">{t('dots.before_text')}</p>
               </motion.div>
               <motion.div style={{ opacity: afterOpacity }}>
                 <p className="text-lg font-semibold text-star mb-2">{t('dots.after_title')}</p>
-                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed sm:text-justify hyphens-auto">{t('dots.after_text')}</p>
+                <p className="text-ink-2 text-sm sm:text-lg leading-relaxed text-justify hyphens-auto">{t('dots.after_text')}</p>
               </motion.div>
             </div>
           </div>

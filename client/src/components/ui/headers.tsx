@@ -13,7 +13,7 @@ export const PageHeader = ({ title, subtitle, children }: { title: ReactNode; su
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl">
         <h1 className="font-display text-[2.5rem] leading-[1.1] md:text-5xl font-bold tracking-[-0.02em] text-white text-balance">{title}</h1>
-        {subtitle && <p className="mt-4 text-lg leading-relaxed text-ink-2 text-pretty max-w-[65ch]">{subtitle}</p>}
+        {subtitle && <p className="mt-4 text-lg leading-relaxed text-ink-2 text-justify hyphens-auto max-w-[65ch]">{subtitle}</p>}
         {children}
       </div>
     </div>

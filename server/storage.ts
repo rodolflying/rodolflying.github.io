@@ -39,18 +39,15 @@ export class SupabaseStorage implements IStorage {
   }
   
   async createMessage(insertMessage: InsertMessage): Promise<Message> {
-    const { data, error } = await this.supabase
-      .from("messages")
-      .insert([insertMessage])
-      .select()
-      .single();
+    // Insert only: with RLS the public key may write messages but never read them back.
+    const { error } = await this.supabase.from("messages").insert([insertMessage]);
 
     if (error) {
       console.error("Error inserting message into Supabase:", error);
       throw new Error(`Failed to save message: ${error.message}`);
     }
 
-    return data as Message;
+    return { id: 0, createdAt: new Date().toISOString(), ...insertMessage };
   }
 }
 
