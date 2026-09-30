@@ -2,7 +2,6 @@ import { useLanguage } from '@/hooks/useLanguage';
 import Layout from '@/components/Layout';
 import Hero from '@/components/sections/Hero';
 import AreasOverview from '@/components/sections/home/AreasOverview';
-import ValueFrameworkSection from '@/components/sections/services/ValueFrameworkSection';
 import CasesSection from '@/components/sections/home/CasesSection';
 import ProcessSection from '@/components/sections/home/ProcessSection';
 import ConnectDotsSection from '@/components/sections/home/ConnectDotsSection';
@@ -21,7 +20,6 @@ const Home = () => {
       <ConstellationThread>
         <ConnectDotsSection />
         <AreasOverview />
-        <ValueFrameworkSection />
         <CasesSection featuredOnly />
         <ProcessSection />
 

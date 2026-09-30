@@ -50,7 +50,7 @@ export const DawnSky = () => {
 interface Node { x: number; y: number }
 
 /** Section ids (in page order) the thread connects; the last one gets the star. */
-const ANCHORS = ['puntos', 'capacidades', 'valor', 'casos', 'proceso', 'roi', 'cta'];
+const ANCHORS = ['puntos', 'capacidades', 'casos', 'proceso', 'roi', 'cta'];
 const GUTTER = 44; // px of free space needed left of the content
 
 /** Wraps the page body and draws the constellation thread in its left gutter (wide screens only). */

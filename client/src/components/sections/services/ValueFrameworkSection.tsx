@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/hooks/useLanguage';
-import { EfficiencyIcon, RiskIcon, DecisionIcon, CostIcon } from './ValueIcons';
+import { EfficiencyIcon, RiskIcon, DecisionIcon } from './ValueIcons';
 import { SectionHeader } from '@/components/ui/headers';
 
 const PROOF_STEPS = ['baseline', 'pilot', 'impact'] as const;
@@ -33,7 +33,7 @@ const PILLARS = [
 
 /**
  * What comes back to the company: three pillars (resources, reliable systems, information to
- * decide), the five-year total cost as a quieter fourth line, and how we prove it.
+ * decide) and how we prove it (measure before, show after). Lives on the services page.
  * This is the value sheet every diagnosis delivers, one per process.
  */
 const ValueFrameworkSection = () => {
@@ -68,19 +68,6 @@ const ValueFrameworkSection = () => {
               </p>
             </motion.article>
           ))}
-        </div>
-
-        {/* The quieter fourth line of the sheet: total cost, information rather than attack */}
-        <div className="mt-10 flex flex-col sm:flex-row sm:items-start gap-4 border-t border-night-line pt-6">
-          <div className="flex-shrink-0 opacity-80">
-            <CostIcon color="#94A3B8" />
-          </div>
-          <div>
-            <h3 className="font-display text-lg font-bold text-white mb-1">{t('value.avoided.title')}</h3>
-            <p className="text-slate-300 leading-relaxed">
-              {t('value.avoided.text')} <span className="text-slate-400">{t('value.example')}: {t('value.avoided.example')}</span>
-            </p>
-          </div>
         </div>
 
         {/* Measure before, prove after: the statistics behind every project */}
