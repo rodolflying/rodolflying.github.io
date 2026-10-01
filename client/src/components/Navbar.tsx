@@ -54,7 +54,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-3">
           <Link href="/" className="flex items-center gap-2 rounded-lg">
             <img src={LOGO_SRC} alt="" width={36} height={36} className="h-9 w-9" />
-            <span className="text-lg font-brand font-bold text-white tracking-wider">
+            <span className="hidden min-[370px]:inline text-base min-[400px]:text-lg font-brand font-bold text-white tracking-wider whitespace-nowrap">
               STAR <span className="text-star">APPS</span>
             </span>
           </Link>

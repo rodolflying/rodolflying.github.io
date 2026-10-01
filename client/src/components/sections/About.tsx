@@ -20,12 +20,23 @@ const About = () => {
   return (
     <section id="about" className="bg-night pt-6 pb-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Mission and vision: what we do and where we're going */}
+        <div className="grid gap-10 border-t border-night-line pt-10 md:grid-cols-2 md:gap-16">
+          {(['mission', 'vision'] as const).map((key) => (
+            <div key={key}>
+              <h2 className="font-display text-2xl md:text-3xl font-bold leading-tight text-white">{t(`about.${key}_title`)}</h2>
+              <p className="mt-4 text-lg leading-relaxed text-copper-soft text-justify hyphens-auto">{hy(t(`about.${key}`))}</p>
+            </div>
+          ))}
+        </div>
+
         {/* Who we are + founder: two open columns on a thin rule */}
-        <div className="grid gap-12 border-t border-night-line pt-10 lg:grid-cols-12 lg:gap-16">
+        <div className="mt-16 grid gap-12 border-t border-night-line pt-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <h2 className="font-display text-2xl md:text-3xl font-bold leading-tight text-white text-balance">{t('about.who_title')}</h2>
             <p className="mt-5 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{hy(t('about.who_p1'))}</p>
             <p className="mt-4 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{hy(t('about.who_p2'))}</p>
+            <p className="mt-4 max-w-prose leading-relaxed text-slate-300 text-justify hyphens-auto">{hy(t('about.who_p3'))}</p>
             <p className="mt-6 text-sm text-slate-400">Star Apps SpA · RUT 77.373.407-0 · {t('about.country')}</p>
           </div>
 
