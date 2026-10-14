@@ -16,6 +16,7 @@ const Footer = () => {
     { href: '/', label: t('navbar.home') },
     { href: '/services', label: t('navbar.services') },
     { href: '/projects', label: t('navbar.projects') },
+    { href: '/blog', label: t('navbar.blog') },
     { href: '/about', label: t('navbar.about') },
     { href: '/contact', label: t('navbar.contact') },
   ];

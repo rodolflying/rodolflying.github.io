@@ -12,6 +12,7 @@ import ServicesPage from "@/pages/ServicesPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import DownloadsPage from "@/pages/DownloadsPage";
 import BlogPage from "@/pages/BlogPage";
+import BlogPostPage from "@/pages/BlogPostPage";
 import ContactPage from "@/pages/ContactPage";
 
 function Router() {
@@ -23,8 +24,8 @@ function Router() {
       <Route path="/projects" component={ProjectsPage} />
       <Route path="/recursos" component={DownloadsPage} />
       <Route path="/downloads"><Redirect to="/recursos" replace /></Route>
-      {/* Blog: accesible por URL directa pero fuera del menú y con noindex hasta tener artículos propios */}
       <Route path="/blog" component={BlogPage} />
+      <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/contact" component={ContactPage} />
       <Route component={NotFound} />
     </Switch>

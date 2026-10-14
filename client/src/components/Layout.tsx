@@ -21,9 +21,13 @@ interface LayoutProps {
   image?: string;
   /** Keeps unfinished or demo pages out of search results. */
   noindex?: boolean;
+  /** og:type; blog posts are articles. */
+  type?: 'website' | 'article';
+  /** When the canonical URL differs from the route, e.g. the blog index at /blog/. */
+  canonicalPath?: string;
 }
 
-const Layout = ({ children, page, title, description, image, noindex }: LayoutProps) => {
+const Layout = ({ children, page, title, description, image, noindex, type = 'website', canonicalPath }: LayoutProps) => {
   const { t, language } = useLanguage();
   const [location] = useLocation();
 
@@ -31,7 +35,7 @@ const Layout = ({ children, page, title, description, image, noindex }: LayoutPr
   const fullTitle = pageTitle ? `${pageTitle} | Star Apps` : t('seo.default_title');
   const metaDescription = description || (page && t(`seo.${page}_desc`)) || t('seo.default_description');
   const ogImage = image || DEFAULT_OG_IMAGE;
-  const canonical = `${SITE_URL}${location === '/' ? '/' : location}`;
+  const canonical = `${SITE_URL}${canonicalPath || location}`;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,7 +49,7 @@ const Layout = ({ children, page, title, description, image, noindex }: LayoutPr
         <meta name="description" content={metaDescription} />
         <link rel="canonical" href={canonical} />
         {noindex && <meta name="robots" content="noindex, nofollow" />}
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={type} />
         <meta property="og:site_name" content="Star Apps" />
         <meta property="og:locale" content={language === 'es' ? 'es_CL' : 'en_US'} />
         <meta property="og:title" content={fullTitle} />

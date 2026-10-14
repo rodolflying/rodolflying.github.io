@@ -6,11 +6,12 @@ import { Menu, X } from 'lucide-react';
 
 export const LOGO_SRC = '/star-apps-logo.svg';
 
-/** Recursos and Blog stay reachable by URL but are out of the navigation. */
+/** Recursos stays reachable by URL but is out of the navigation. */
 const NAV_LINKS = [
   { href: '/', label: 'navbar.home' },
   { href: '/services', label: 'navbar.services' },
   { href: '/projects', label: 'navbar.projects' },
+  { href: '/blog', label: 'navbar.blog' },
   { href: '/about', label: 'navbar.about' },
   { href: '/contact', label: 'navbar.contact' },
 ];
